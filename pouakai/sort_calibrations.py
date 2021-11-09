@@ -10,7 +10,7 @@ moa_flats_dir = '/home/phys/astro8/MJArchive/MOA/FLAT/'
 
 def sort_darks():
 
-	dark_list = pd.read_csv('dark_list.csv')
+	dark_list = pd.read_csv('cal_lists/dark_list.csv')
 	
 	dark_files = set(glob(moa_darks_dir))
 
@@ -32,12 +32,12 @@ def sort_darks():
 		
 		darktable = darktable.append(entry, ignore_index=True)
 
-	darktable.to_csv('dark_list.csv',index=False)
+	darktable.to_csv('cal_lists/dark_list.csv',index=False)
 
 
 def sort_darks():
 
-	flat_list = pd.read_csv('flat_list.csv')
+	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	
 	flat_files = set(glob(moa_flats_dir))
 
@@ -60,4 +60,4 @@ def sort_darks():
 		
 		darktable = flattable.append(entry, ignore_index=True)
 
-	flattable.to_csv('flat_list.csv',index=False)
+	flattable.to_csv('cal_lists/flat_list.csv',index=False)
