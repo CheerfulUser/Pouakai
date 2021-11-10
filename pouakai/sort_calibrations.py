@@ -8,7 +8,7 @@ from unlzw import unlzw
 moa_darks_dir = '/home/phys/astro8/MJArchive/MOA/DARK/'
 moa_flats_dir = '/home/phys/astro8/MJArchive/MOA/FLAT/'
 
-def sort_darks():
+def sort_darks(verbose=False):
 
 	dark_list = pd.read_csv('cal_lists/dark_list.csv')
 	
@@ -33,13 +33,17 @@ def sort_darks():
 		entry['jd'] = header['JDSTART']
 		entry['date'] = header['DATE-OBS']
 		entry['filename'] = n
+		if verbose:
+			print('Done ', n)
+			print('len n ',len(new))
 		
 		dark_list = dark_list.append(entry, ignore_index=True)
+		dark_list.to_csv('cal_lists/dark_list.csv',index=False)
 
-	dark_list.to_csv('cal_lists/dark_list.csv',index=False)
+	
 
 
-def sort_flats():
+def sort_flats(verbose = False):
 
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	
@@ -61,7 +65,11 @@ def sort_flats():
 		entry['jd'] = header['JDSTART']
 		entry['date'] = header['DATE-OBS']
 		entry['filename'] = n
+		if verbose:
+			print('Done ', n)
+			print('len n ',len(new))
 		
 		flat_list = flat_list.append(entry, ignore_index=True)
+		flat_list.to_csv('cal_lists/flat_list.csv',index=False)
 
-	flat_list.to_csv('cal_lists/flat_list.csv',index=False)
+	
