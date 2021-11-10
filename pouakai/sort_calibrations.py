@@ -30,9 +30,9 @@ def sort_darks():
 		entry['date'] = header['DATE-OBS']
 		entry['filename'] = n
 		
-		darktable = darktable.append(entry, ignore_index=True)
+		dark_list = dark_list.append(entry, ignore_index=True)
 
-	darktable.to_csv('cal_lists/dark_list.csv',index=False)
+	dark_list.to_csv('cal_lists/dark_list.csv',index=False)
 
 
 def sort_darks():
@@ -58,6 +58,6 @@ def sort_darks():
 		entry['date'] = header['DATE-OBS']
 		entry['filename'] = n
 		
-		darktable = flattable.append(entry, ignore_index=True)
+		flat_list = flat_list.append(entry, ignore_index=True)
 
-	flattable.to_csv('cal_lists/flat_list.csv',index=False)
+	flat_list.to_csv('cal_lists/flat_list.csv',index=False)
