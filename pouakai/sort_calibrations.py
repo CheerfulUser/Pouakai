@@ -23,7 +23,11 @@ def sort_darks():
 		n = new.pop()
 		name = n.split('/')[-1].split('.')[0]
 		entry['name'] = name
-		header = fits.HDUList.fromstring(unlzw(open(n,mode='rb').read()))[0].header
+		try:
+			header = fits.HDUList.fromstring(unlzw(open(n,mode='rb').read()))[0].header
+		except:
+			print(n)
+			return
 		entry['chip'] = header['CHIP']
 		entry['exptime'] = header['EXPTIME']
 		entry['jd'] = header['JDSTART']
@@ -35,7 +39,7 @@ def sort_darks():
 	dark_list.to_csv('cal_lists/dark_list.csv',index=False)
 
 
-def sort_darks():
+def sort_flats():
 
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	
