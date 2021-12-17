@@ -12,7 +12,7 @@ def sort_darks(verbose=False):
 
 	dark_list = pd.read_csv('cal_lists/dark_list.csv')
 	
-	dark_files = set(glob(moa_darks_dir + '*.Z'))
+	dark_files = set(glob(moa_darks_dir + '*.gz'))
 
 	old = set(dark_list['filename'])
 
@@ -47,7 +47,7 @@ def sort_flats(verbose = False):
 
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	
-	flat_files = set(glob(moa_flats_dir + '*.Z'))
+	flat_files = set(glob(moa_flats_dir + '*.gz'))
 
 	old = set(flat_list['filename'])
 
