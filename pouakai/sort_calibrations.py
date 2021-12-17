@@ -9,14 +9,16 @@ moa_darks_dir = '/home/phys/astro8/MJArchive/MOA/DARK/'
 moa_flats_dir = '/home/phys/astro8/MJArchive/MOA/FLAT/'
 
 def sort_darks(verbose=False):
+	try:
+		dark_list = pd.read_csv('cal_lists/dark_list.csv')
+		
+		dark_files = set(glob(moa_darks_dir + '*.gz'))
 
-	dark_list = pd.read_csv('cal_lists/dark_list.csv')
-	
-	dark_files = set(glob(moa_darks_dir + '*.gz'))
+		old = set(dark_list['filename'])
 
-	old = set(dark_list['filename'])
-
-	new = dark_files ^ old
+		new = dark_files ^ old
+	except:
+		new = dark_files
 
 	while len(new) > 0:
 		entry = {}
@@ -45,13 +47,16 @@ def sort_darks(verbose=False):
 
 def sort_flats(verbose = False):
 
-	flat_list = pd.read_csv('cal_lists/flat_list.csv')
-	
-	flat_files = set(glob(moa_flats_dir + '*.gz'))
+	try:
+		flat_list = pd.read_csv('cal_lists/flat_list.csv')
+		
+		flat_files = set(glob(moa_flats_dir + '*.gz'))
 
-	old = set(flat_list['filename'])
+		old = set(flat_list['filename'])
 
-	new = flat_files ^ old
+		new = flat_files ^ old
+	except:
+		new = flat_files
 
 	while len(new) > 0:
 		entry = {}
