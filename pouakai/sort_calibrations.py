@@ -59,12 +59,22 @@ def sort_flats(verbose = False):
 		name = n.split('/')[-1].split('.')[0]
 		entry['name'] = name
 		header = fits.open(n)[0].header
+		data = fits.open(n)[0].data
+		average = np.nanmedian(data)
+		if average < 18000:
+			note = 'lower'
+		elif average > 45000:
+			note = 'over'
+		else:
+			note = 'good'
+
 		entry['band'] = header['COLOUR']
 		entry['chip'] = header['CHIP']
 		entry['exptime'] = header['EXPTIME']
 		entry['jd'] = header['JDSTART']
 		entry['date'] = header['DATE-OBS']
 		entry['filename'] = n
+		entry['note'] = note
 		if verbose:
 			print('Done ', n)
 			print('len n ',len(new))
