@@ -2,7 +2,6 @@ from astropy.io import fits
 import pandas as pd
 import numpy as np
 from glob import glob
-from unlzw import unlzw
 
 
 moa_darks_dir = '/home/phys/astro8/MJArchive/MOA/DARK/'
@@ -27,15 +26,15 @@ def sort_darks(verbose=False):
 		name = n.split('/')[-1].split('.')[0]
 		entry['name'] = name
 		try:
-			header = fits.HDUList.fromstring(unlzw(open(n,mode='rb').read()))[0].header
+			header = fits.open(n)[0].header
+
+			entry['chip'] = header['CHIP']
+			entry['exptime'] = header['EXPTIME']
+			entry['jd'] = header['JDSTART']
+			entry['date'] = header['DATE-OBS']
+			entry['filename'] = n
 		except:
-			print(n)
-			return
-		entry['chip'] = header['CHIP']
-		entry['exptime'] = header['EXPTIME']
-		entry['jd'] = header['JDSTART']
-		entry['date'] = header['DATE-OBS']
-		entry['filename'] = n
+			print('bad ',n)
 		if verbose:
 			print('Done ', n)
 			print('len n ',len(new))
@@ -48,23 +47,18 @@ def sort_darks(verbose=False):
 
 def sort_flats(verbose = False):
 	flat_files = set(glob(moa_flats_dir + '*.gz'))
-	try:
-		flat_list = pd.read_csv('cal_lists/flat_list.csv')
-		
-		
+	flat_list = pd.read_csv('cal_lists/flat_list.csv')
+			
+	old = set(flat_list['filename'])
 
-		old = set(flat_list['filename'])
-
-		new = flat_files ^ old
-	except:
-		new = flat_files
+	new = flat_files ^ old
 
 	while len(new) > 0:
 		entry = {}
 		n = new.pop()
 		name = n.split('/')[-1].split('.')[0]
 		entry['name'] = name
-		header = fits.HDUList.fromstring(unlzw(open(n,mode='rb').read()))[0].header
+		header = fits.open(n)[0].header
 		entry['band'] = header['COLOUR']
 		entry['chip'] = header['CHIP']
 		entry['exptime'] = header['EXPTIME']
