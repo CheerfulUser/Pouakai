@@ -38,7 +38,7 @@ def make_master_darks(save_location = '/home/users/rri38/data/dark/',verbose=Fal
 				master += [data]
 			master = np.array(master)
 			m = np.nanmedian(master,axis=0)
-			std = np.nansrd(master,axis=0)
+			std = np.nanstd(master,axis=0)
 			time = np.nanmean(chip['jd'])
 			header['JDSTART'] = time 
 			header['MASTER'] = True
