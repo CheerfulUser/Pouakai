@@ -19,6 +19,7 @@ def make_master_darks(save_location = '/home/users/rri38/data/dark/',verbose=Fal
 
 	new = all_names ^ master_names
 	new = list(new)
+	new.sort(reverse=True)
 	for i in range(len(new)):
 		entry = {}
 		n = new[i]
