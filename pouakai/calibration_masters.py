@@ -80,12 +80,8 @@ def get_master_dark(jd,exptime,chip):
 	dchips = darks['chip'].values
 	dexptime = darks['exptime'].values
 	chip_ind = dchips == chip
-	print(chip_ind.shape)
-	print('exptime',exptime)
-	print(dexptime)
 
 	exp_ind = dexptime == exptime
-	print(cexp_ind.shape)
 	ind = chip_ind & exp_ind
 	good = darks.iloc[ind]
 	if len(good) > 0:
