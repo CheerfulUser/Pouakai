@@ -94,7 +94,7 @@ def get_master_dark(jd,exptime,chip):
 		min_ind = np.argmin(abs(diff))
 		t_diff = diff[min_ind]
 		dark = darks.iloc[min_ind]
-		fname = dark['filename']
+		fname = dark['filename'].values
 		return fname, t_diff
 	else:
 		return 'none', -999
@@ -139,7 +139,7 @@ def make_master_flats(save_location = '/home/users/rri38/data/flat/',verbose=Fal
 			if verbose:
 				print('Used ',len(master),' images in median')
 			# get dark frame
-			fname, tdiff = get_master_dark(chip['jd'], chip['exptime'], i)
+			fname, tdiff = get_master_dark(chip['jd'].values, chip['exptime'].values, i)
 			if verbose:
 				print('using dark frame ',fname)
 			try:
