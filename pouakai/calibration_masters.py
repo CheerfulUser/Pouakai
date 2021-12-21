@@ -133,6 +133,8 @@ def make_master_flats(save_location = '/home/users/rri38/data/flat/',verbose=Fal
 				print('Used ',len(master),' images in median')
 			# get dark frame
 			fname, tdiff = get_master_dark(chip['jd'], chip['exptime'], i)
+			if verbose:
+				print('using dark frame ',fname)
 			try:
 				dark = fits.open(fname)[0].data
 				master = master - dark
