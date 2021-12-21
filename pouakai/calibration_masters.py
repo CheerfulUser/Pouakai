@@ -52,7 +52,7 @@ def make_master_darks(save_location = '/home/users/rri38/data/dark/',verbose=Fal
 
 			letter = file.split('-')[2]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
-			save_name = save_location + base_name + '.fits.gz'
+			save_name = save_location + base_name + '.fits'
 			hdul.writeto(save_name)
 		
 			entry['name'] = base_name
