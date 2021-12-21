@@ -37,6 +37,8 @@ def make_master_darks(save_location = '/home/users/rri38/data/dark/',verbose=Fal
 				data = hdu.data
 				master += [data]
 			master = np.array(master)
+			if verbose:
+				print('Used ',len(master),' images in median')
 			m = np.nanmedian(master,axis=0)
 			std = np.nanstd(master,axis=0)
 			time = np.nanmean(chip['jd'])
