@@ -90,7 +90,7 @@ def get_master_dark(jd,exptime,chip):
 		min_ind = np.argmin(abs(diff))
 		t_diff = diff[min_ind]
 		dark = darks.iloc[min_ind]
-		fname = dark['filename'].values
+		fname = dark['filename']
 		return fname, t_diff
 	else:
 		return 'none', -999
