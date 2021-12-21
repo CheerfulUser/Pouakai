@@ -123,7 +123,7 @@ def make_master_flats(save_location = '/home/users/rri38/data/flat/',verbose=Fal
 				header = hdu.header
 				data = hdu.data.astype(float)
 
-				saturations = data > 40000
+				saturations = (data > 40000).flatten()
 				if sum(saturations) > 100:
 					data = data * np.nan
 
