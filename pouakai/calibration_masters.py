@@ -18,7 +18,7 @@ def make_master_darks(save_location = '/home/users/rri38/data/dark/',verbose=Fal
 	master_names = set(split_names(masters['name'].values))
 
 	new = all_names ^ master_names
-	new = list(nmew)
+	new = list(new)
 	for i in range(len(new)):
 		entry = {}
 		n = new[i]
