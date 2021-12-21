@@ -79,7 +79,11 @@ def get_master_dark(jd,exptime,chip):
 	darks = pd.read_csv('cal_lists/master_dark_list.csv')
 	dchips = darks['chip'].values
 	dexptime = darks['exptime'].values
-	ind = (dchips == chip) & (dexptime == exptime)
+	chip_ind = dchips == chip
+	print(chip_ind.shape)
+	exp_ind = dexptime == exptime
+	print(cexp_ind.shape)
+	ind = chip_ind & exp_ind
 	good = darks.iloc[ind]
 	if len(good) > 0:
 		djd = good['jd'].values
