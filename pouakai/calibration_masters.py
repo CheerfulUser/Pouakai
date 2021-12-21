@@ -77,8 +77,8 @@ def make_master_darks(save_location = '/home/users/rri38/data/dark/',verbose=Fal
 
 def get_master_dark(jd,exptime,chip):
 	darks = pd.read_csv('cal_lists/master_dark_list.csv')
-	dchips = dark['chip'].values
-	dexptime = dark['exptime'].values
+	dchips = darks['chip'].values
+	dexptime = darks['exptime'].values
 	ind = (dchips == chip) & (dexptime == exptime)
 	good = darks.iloc[ind]
 	if len(good) > 0:
