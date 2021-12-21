@@ -61,7 +61,7 @@ def make_master_darks(save_location = '/home/users/rri38/data/dark/',verbose=Fal
 			entry['filename'] = save_name
 		
 			if verbose:
-				print('Done ', n)
+				print('Done ', base_name)
 		
 			masters = masters.append(entry, ignore_index=True)
 			masters.to_csv('cal_lists/master_dark_list.csv',index=False)
