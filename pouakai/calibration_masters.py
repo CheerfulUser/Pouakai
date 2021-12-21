@@ -138,6 +138,7 @@ def make_master_flats(save_location = '/home/users/rri38/data/flat/',verbose=Fal
 			fname, tdiff = get_master_dark(chip['jd'].values, chip['exptime'].values, i)
 			if verbose:
 				print('using dark frame ',fname)
+				print('time difference ',tdiff)
 			try:
 				dark = fits.open(fname)[0].data
 				master = master - dark
@@ -154,13 +155,13 @@ def make_master_flats(save_location = '/home/users/rri38/data/flat/',verbose=Fal
 			hdul = fits.HDUList([phdu, ehdu])
 
 
-			letter = file.split('-')[2]
+			letter = file.split('-')[3]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
 			save_name = save_location + base_name + '.fits'
 			hdul.writeto(save_name)
 		
 			entry['name'] = base_name
-
+			entry['band'] = header['COLOUR']
 			entry['chip'] = header['CHIP']
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = time
