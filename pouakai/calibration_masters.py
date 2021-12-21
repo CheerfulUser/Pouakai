@@ -27,7 +27,7 @@ def make_master_darks(save_location = '/home/users/rri38/data/dark/',verbose=Fal
 
 		for i in range(10):
 			i += 1
-			chip_ind = all_chips['chip'].value == i
+			chip_ind = all_chips['chip'].values == i
 			chip = all_chips.iloc[chip_ind]
 			chip_files = chip['filename'].values
 			master = []
