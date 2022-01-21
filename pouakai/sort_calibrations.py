@@ -4,8 +4,8 @@ import numpy as np
 from glob import glob
 
 
-moa_darks_dir = '/home/phys/astro8/MJArchive/MOA/DARK/'
-moa_flats_dir = '/home/phys/astro8/MJArchive/MOA/FLAT/'
+moa_darks_dir = '/home/phys/astro8/rri38/moa/data/DARK/'
+moa_flats_dir = '/home/phys/astro8/rri38/moa/data/FLAT/'
 
 def sort_darks(verbose=False):
 	dark_files = set(glob(moa_darks_dir + '*.gz'))
@@ -82,4 +82,8 @@ def sort_flats(verbose = False):
 		flat_list = flat_list.append(entry, ignore_index=True)
 		flat_list.to_csv('cal_lists/flat_list.csv',index=False)
 
-	
+
+
+if __name__=='__main__':
+	sort_darks(verbose=True)
+	sort_flats(verbose=True)
