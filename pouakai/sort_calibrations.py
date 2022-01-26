@@ -4,8 +4,8 @@ import numpy as np
 from glob import glob
 
 
-moa_darks_dir = '/home/phys/astro8/rri38/moa/data/DARK/'
-moa_flats_dir = '/home/phys/astro8/rri38/moa/data/FLAT/'
+moa_darks_dir = '/home/phys/astro8/MJArchive/MOA/DARK/'
+moa_flats_dir = '/home/phys/astro8/MJArchive/MOA/FLAT/'
 
 def sort_darks(verbose=False):
 	dark_files = set(glob(moa_darks_dir + '*.gz'))
