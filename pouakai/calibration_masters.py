@@ -9,7 +9,7 @@ def split_names(files):
 	return names
 
 
-def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/dark/',verbose=False):
+def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/master/dark/',verbose=False):
 	# make save_location an environment variable
 	dark_list = pd.read_csv('cal_lists/dark_list.csv')
 	masters = pd.read_csv('cal_lists/master_dark_list.csv')
@@ -26,9 +26,9 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/dark/',v
 		ind = np.array(names) == n
 		all_chips = dark_list.iloc[ind]
 
-		for i in range(10):
-			i += 1
-			chip_ind = all_chips['chip'].values == i
+		for j in range(10):
+			j += 1
+			chip_ind = all_chips['chip'].values == j
 			chip = all_chips.iloc[chip_ind]
 			chip_files = chip['filename'].values
 			master = []
@@ -52,7 +52,7 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/dark/',v
 
 			letter = file.split('-')[2]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
-			save_name = save_location + base_name + '.fits'
+			save_name = save_location + base_name + '.fits.gz'
 			hdul.writeto(save_name)
 		
 			entry['name'] = base_name
@@ -61,6 +61,7 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/dark/',v
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = time
 			entry['date'] = header['DATE-OBS']
+			entry['nimages'] = len(master)
 			entry['filename'] = save_name
 			if len(master) < 3:
 				note = 'bad'
@@ -75,8 +76,11 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/dark/',v
 			masters.to_csv('cal_lists/master_dark_list.csv',index=False)
 
 
-def get_master_dark(jd,exptime,chip):
+def get_master_dark(jd,exptime,chip,strict=False):
 	darks = pd.read_csv('cal_lists/master_dark_list.csv')
+	if strict:
+		ind = darks['note'].values =='good'
+		darks = darks.iloc[ind]
 	dchips = darks['chip'].values
 	dexptime = darks['exptime'].values
 	chip_ind = dchips == chip
@@ -98,7 +102,7 @@ def get_master_dark(jd,exptime,chip):
 
 
 
-def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/flat/',verbose=False):
+def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/master/flat/', verbose=False):
 	# make save_location an environment variable
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	masters = pd.read_csv('cal_lists/master_flat_list.csv')
@@ -115,9 +119,9 @@ def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/flat/',v
 		ind = np.array(names) == n
 		all_chips = flat_list.iloc[ind]
 
-		for i in range(10):
-			i += 1
-			chip_ind = all_chips['chip'].values == i
+		for j in range(10):
+			j += 1
+			chip_ind = all_chips['chip'].values == j
 			chip = all_chips.iloc[chip_ind]
 			chip_files = chip['filename'].values
 			master = []
@@ -127,7 +131,8 @@ def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/flat/',v
 				data = hdu.data.astype(float)
 
 				saturations = (data > 40000).flatten()
-				if sum(saturations) > 100:
+				# if more than 10% of pixels are saturated, set array to nan
+				if sum(saturations) > len(saturations)*0.1:
 					data = data * np.nan
 
 				master += [data]
@@ -135,7 +140,13 @@ def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/flat/',v
 			if verbose:
 				print('Used ',len(master),' images in median')
 			# get dark frame
-			fname, tdiff = get_master_dark(chip['jd'].values, chip['exptime'].values, i)
+			if j == 1:
+				fname, tdiff = get_master_dark(chip['jd'].values[0], chip['exptime'].values[0], i)
+				dark_name = fname.split('1.fits.gz')[0]
+				d_tdiff = tdiff
+			else:
+				fname = dark_name + str(j) + '.fits.gz'
+				tdiff = d_tdiff
 			if verbose:
 				print('using dark frame ',fname)
 				print('time difference ',tdiff)
@@ -157,7 +168,7 @@ def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/flat/',v
 
 			letter = file.split('-')[3]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
-			save_name = save_location + base_name + '.fits'
+			save_name = save_location + base_name + '.fits.gz'
 			hdul.writeto(save_name)
 		
 			entry['name'] = base_name
@@ -169,6 +180,7 @@ def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/flat/',v
 			entry['filename'] = save_name
 			entry['dark_file'] = fname 
 			entry['time_diff'] = tdiff
+			entry['nimages'] = len(master)
 			if (np.nanmedian(m) < 15000):
 				note = 'bad'
 			else:
@@ -180,7 +192,7 @@ def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/flat/',v
 				flat_type = 'dome'
 			else:
 				flat_type = 'sky'
-			
+			entry['field'] = field
 			entry['flat_type'] = flat_type
 
 			if verbose:

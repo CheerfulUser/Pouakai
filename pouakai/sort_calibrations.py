@@ -11,14 +11,11 @@ def sort_darks(verbose=False):
 	dark_files = set(glob(moa_darks_dir + '*.gz'))
 	try:
 		dark_list = pd.read_csv('cal_lists/dark_list.csv')
-		
-		
-
 		old = set(dark_list['filename'])
-
 		new = dark_files ^ old
 	except:
 		new = dark_files
+		dark_list = pd.DataFrame(columns=['name','chip','exptime','jd','date','filename','note'])
 
 	while len(new) > 0:
 		entry = {}
@@ -47,11 +44,13 @@ def sort_darks(verbose=False):
 
 def sort_flats(verbose = False):
 	flat_files = set(glob(moa_flats_dir + '*.gz'))
-	flat_list = pd.read_csv('cal_lists/flat_list.csv')
-			
-	old = set(flat_list['filename'])
-
-	new = flat_files ^ old
+	try:
+		flat_list = pd.read_csv('cal_lists/flat_list.csv')	
+		old = set(flat_list['filename'])
+		new = flat_files ^ old
+	except:
+		new = flat_files
+		flat_list = pd.DataFrame(columns=['name','band','chip','exptime','jd','date','field','filename','note'])
 
 	while len(new) > 0:
 		entry = {}
@@ -73,6 +72,7 @@ def sort_flats(verbose = False):
 		entry['exptime'] = header['EXPTIME']
 		entry['jd'] = header['JDSTART']
 		entry['date'] = header['DATE-OBS']
+		entry['field'] = header['FIELD']
 		entry['filename'] = n
 		entry['note'] = note
 		if verbose:
