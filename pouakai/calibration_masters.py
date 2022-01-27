@@ -20,17 +20,20 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/master/d
 	new = all_names ^ master_names
 	new = list(new)
 	new.sort(reverse=True)
+	print('sorted')
 	for i in range(len(new)):
 		entry = {}
 		n = new[i]
 		ind = np.array(names) == n
 		all_chips = dark_list.iloc[ind]
+		print('index 1')
 
 		for j in range(10):
 			j += 1
 			chip_ind = all_chips['chip'].values == j
 			chip = all_chips.iloc[chip_ind]
 			chip_files = chip['filename'].values
+			print('index 2')
 			master = []
 			for file in chip_files:
 				hdu = fits.open(file)[0]
@@ -38,11 +41,13 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/master/d
 				data = hdu.data
 				master += [data]
 			master = np.array(master)
+			print('made array')
 			if verbose:
 				print('Used ',len(master),' images in median')
-			m = np.nanmedian(master,axis=0)
+			m = np.nanmean(master,axis=0)
 			std = np.nanstd(master,axis=0)
 			time = np.nanmean(chip['jd'])
+			print('calc mean')
 			header['JDSTART'] = time 
 			header['MASTER'] = True
 			phdu = fits.PrimaryHDU(data = m, header = header)
