@@ -44,7 +44,7 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/master/d
 			print('made array')
 			if verbose:
 				print('Used ',len(master),' images in median')
-			m = np.nanmean(master,axis=0)
+			m = np.nanmedian(master,axis=0)
 			std = np.nanstd(master,axis=0)
 			time = np.nanmean(chip['jd'])
 			print('calc mean')
@@ -57,9 +57,10 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/master/d
 
 			letter = file.split('-')[2]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
-			save_name = save_location + base_name + '.fits'
+			save_name = save_location + base_name + '.fits.gz'
+			print('saving')
 			hdul.writeto(save_name,overwrite=True)
-		
+			print('saved')
 			entry['name'] = base_name
 
 			entry['chip'] = header['CHIP']
