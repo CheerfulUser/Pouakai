@@ -57,7 +57,7 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/master/d
 
 			letter = file.split('-')[2]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
-			save_name = save_location + base_name + '.fits.gz'
+			save_name = save_location + base_name + '.fits'
 			hdul.writeto(save_name,overwrite=True)
 		
 			entry['name'] = base_name
@@ -150,7 +150,7 @@ def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/master/f
 				dark_name = fname.split('1.fits.gz')[0]
 				d_tdiff = tdiff
 			else:
-				fname = dark_name + str(j) + '.fits.gz'
+				fname = dark_name + str(j) + '.fits'
 				tdiff = d_tdiff
 			if verbose:
 				print('using dark frame ',fname)
