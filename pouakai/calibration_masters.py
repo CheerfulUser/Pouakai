@@ -208,3 +208,5 @@ def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/master/f
 			masters.to_csv('cal_lists/master_flat_list.csv',index=False)
 
 
+if __name__=='__main__':
+	make_master_darks(verbose=True)
