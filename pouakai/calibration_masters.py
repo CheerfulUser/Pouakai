@@ -53,7 +53,7 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/master/d
 			letter = file.split('-')[2]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
 			save_name = save_location + base_name + '.fits.gz'
-			hdul.writeto(save_name)
+			hdul.writeto(save_name,overwrite=True)
 		
 			entry['name'] = base_name
 
@@ -169,7 +169,7 @@ def make_master_flats(save_location = '/home/phys/astro8/rri38/moa/data/master/f
 			letter = file.split('-')[3]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
 			save_name = save_location + base_name + '.fits.gz'
-			hdul.writeto(save_name)
+			hdul.writeto(save_name,overwrite=True)
 		
 			entry['name'] = base_name
 			entry['band'] = header['COLOUR']
