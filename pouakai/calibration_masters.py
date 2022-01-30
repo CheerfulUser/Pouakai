@@ -9,7 +9,7 @@ def split_names(files):
 	return names
 
 
-def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/master/dark/',verbose=False):
+def make_master_darks(save_location = '/home/users/rri38/code/test_moa/dark/',verbose=False):
 	# make save_location an environment variable
 	dark_list = pd.read_csv('cal_lists/dark_list.csv')
 	masters = pd.read_csv('cal_lists/master_dark_list.csv')
