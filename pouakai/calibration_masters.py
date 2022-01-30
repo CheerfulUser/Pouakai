@@ -57,7 +57,7 @@ def make_master_darks(save_location = '/home/users/rri38/code/test_moa/dark/',ve
 
 			letter = file.split('-')[2]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
-			save_name = save_location + base_name + '.fits.gz'
+			save_name = save_location + base_name + '.fits'
 			print('saving')
 			hdul.writeto(save_name,overwrite=True)
 			print('saved')
