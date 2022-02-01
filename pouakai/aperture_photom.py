@@ -18,10 +18,11 @@ package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 class aperture_photom():
 
-	def __init__(self,file,fwhm=5.0,threshold=5.0,run=True):
+	def __init__(self,file=None,data=None,wcs=None,header=None,
+				 fwhm=5.0,threshold=5.0,run=True,cal_model='ckmodel'):
 		self.file = file
-		self.data = None
-		self.wcs = None
+		self.data = data
+		self.wcs = wcs
 		self.hdu = None
 		self.band = None
 
@@ -35,6 +36,7 @@ class aperture_photom():
 		self.ap_photom = None
 
 		self.cal_sys = None
+		self.cal_model = cal_model.lower()
 		self.band = None
 		self.sauron = None
 		self.zp = None 
@@ -48,14 +50,19 @@ class aperture_photom():
 
 
 	def _load_image(self):
-		if type(self.file) == str:
+		if file is not None:
 			self.hdu = fits.open(self.file)[0]
+			self.header = self.hdu.header
 			self.data = self.hdu.data
-			self.wcs = WCS(self.hdu.header)
-			self.band = self.hdu.header['COLOUR'].strip(' ')
-
+			self.wcs = WCS(self.header)
+			self._get_filter()
 		else:
-			raise ValueError('input "file" must be a string')
+			#self._check_input()
+			self._get_filter()
+
+	def _get_filter(self):
+		self.band = self.header['COLOUR'].strip(' ')
+
 
 
 	def _image_stats(self,sigma=3):
@@ -173,7 +180,8 @@ class aperture_photom():
 			self.cal_sys = 'skymapper'
 		else:
 			self.cal_sys = 'ps1'
-		fname = 'cal_files/MOA-{filt}_{sys}.npy'.format(filt=self.band,sys=self.cal_sys)
+		fname = 'cal_files/MOA-{filt}_{sys}_{model}.npy'.format(filt=self.band,
+										sys=self.cal_sys,model=self.cal_model)
 		self.sauron = sauron(load_state = package_directory + fname)
 
 	def predict_mags(self):
@@ -181,8 +189,11 @@ class aperture_photom():
 		if self.sauron is not None:
 			self.pred_mag = self.sauron.estimate_mag(ra=ra,dec=dec)
 
-	def calc_zp(self):
+	def calc_zp(self,maglim=17,brightlim=14):
 		zps = self.pred_mag - self.ap_photom['sysmag'].values
+		ind = (self.pred_mag > brightlim) & (self.pred_mag < maglim)
+		# cut out saturated and faint sources
+		zps[~ind] = np.nan
 		ind = sigma_clip(zps).mask
 		zps[ind] = np.nan
 		zp = np.nanmedian(zps)
