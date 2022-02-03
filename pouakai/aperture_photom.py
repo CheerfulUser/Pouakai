@@ -212,3 +212,22 @@ class aperture_photom():
 		self._load_sauron()
 		self.predict_mags()
 		self.calc_zp()
+                  
+	def _fitted_line(self, model, sn):
+		self.fittedmodel = model[1] + model[0] * np.log10(sn)
+    
+	def _mag_limit(self):  
+		counts_to_noise = self.ap_phom['aper_sum_bkgsub'] / (self.ap_phom['aperture_std'])
+		mag = np.isfinite(self.ap_phom['mag'].values) & np.isfinite(np.log10(counts_to_noise.values)) & np.isfinite(self.zp)
+		model = np.polyfit(np.log10(counts_to_noise.values)[mag], (phots['mag']+self.zp).values[mag], 1)
+		sigclip = ~sigma_clip((self.ap_phom['mag']+self.zp)[mag] - fitted_line(self.fittedmodel, counts_to_noise[mag])).mask
+		fitted_model = np.polyfit(np.log10(counts_to_noise)[mag][sigclip], (self.ap_phom['mag']+self.zp).values[mag][sigclip], 1)
+
+		pfit = np.polyfit((self.ap_phom['mag']+self.zp)[mag][sigclip],np.log10(counts_to_noise[mag][sigclip]), 2)
+		chi_squared = np.sum((np.polyval(pfit, (self.ap_phom['mag']+self.zp)[mag][sigclip]) - np.log10(counts_to_noise[mag][sigclip])) ** 2)
+		mag_lim3, maglim5 = self.fitted_line(fitted_model,3), self.fitted_line(fitted_model,5)
+        
+		self.fitted_model = fitted_model
+		self.chi_squared = chi_squared
+		self.maglim3 = mag_lim3
+		self.maglim5 = mag_lim5
