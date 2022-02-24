@@ -19,11 +19,28 @@ class pouakai():
 		self._get_master('dark')
 		self._get_master('flat')
 
+		self.reduce(reduction)
 
-		if (reduction.lower() == 'full'):
-			self.reduce_image()
+	def reduce(self,reduction,local_astrom=True):
+		self._check_reduction(reduction)
+		self.reduce_image()
+		if local_astrom:
+			self.wcs_astrometrynet_local()
+		else:
+			self.wcs_astrometrynet()
 
+		self.calculate_zp()
+
+		if (reduction == 'full'):
 			self.save_intermediate()
+
+	def _start_record(self):
+		document = {'name':None,'band':None,'chip':None,
+					'exptime':None,'jd':None,'date':None,
+					'field':None,'filename':None,'flat':None,
+					'dark':None,'tdiff_flat':None,
+					'tdiff_dark':None,'zp':None,'zperr':None,
+					'maglim5':None,'maglim3':None}
 
 
 	def _read_fits(self):
@@ -64,15 +81,19 @@ class pouakai():
 		else:
 			raise ValueError('Only flat and dark are valid options!!')
 		file = self._find_master(masters)
-		hdu = fits.open(file)[0]
-		data = hdu.data
+		hdu = fits.open(file)
+		data = hdu[0].data
+		err =  hdu[1].data
+
 
 		if cal_type.lower() == 'flat':
 			self.flat_file = file 
 			self.flat = data
+			self.flat_err = err
 		elif cal_type.lower() == 'dark':
 			self.dark_file = file 
 			self.dark = data
+			self.dark_err = err
 
 
 	def _find_master(self,masters):
@@ -118,24 +139,6 @@ class pouakai():
 	def _update_header_zeropoint(self):
 		self.header['ZP'] = (self.zp,'Calibrimbore ' + self.system)
 		
-
-	def _get_wcs(self):
-		attempt = 0
-		solved = False
-		while (attempt < 10) | (not solved):
-			try:
-				wcs_head = ast.solve_from_image(self.tmp_file)
-				del wcs_head['COMMENT']
-				del wcs_head['HISTORY']
-				solved = True
-			except:
-				attempt += 1
-		if (attempt > 10) | (not solved):
-			raise ValueError('Could not solve WCS in {} attempts'.format(attempt))
-		new_head = deepcopy(header)
-		for key in wcs_head:
-			new_head[key] = (wcs_head[key],wcs_head.comments[key])
-		self.header = new_head
 		
 
 	def _check_vars(self):
@@ -171,10 +174,21 @@ class pouakai():
 		self.red_name = name
 
 
-		if verbose:
+		if self.verbose:
 			print('Saving intermediated calibrated file')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
 
+
+	def save_image(self):
+		self._update_header_sky()
+		self._update_header_dark()
+		self._update_header_flat()
+		name = self.savepath + 'cal/' + self.base_name + '_cal.fits'
+		self.cal_name = name
+
+		if self.verbose:
+			print('Saving final calibrated image')
+		fits.writeto(name,self.image,header=self.header,overwrite=True)
 
 	def wcs_astrometrynet(self,timeout=120):
 		ast = AstrometryNet()
@@ -209,8 +223,10 @@ class pouakai():
 									dec = self.field_coord.dec.deg, file = self.red_name)
 		os.system(solver)
 
-		new_header = fits.open(name + '.new')[0].header
-		self.header = header
+		wcs_header = fits.open(name + '.new')[0].header
+		del wcs_head['COMMENT']
+		del wcs_head['HISTORY']
+		self.header = wcs_header
 		self.wcs = WCS(self.header)
 		
 		clear = 'rm ' + self.savepath + 'wcs_tmp/' + self.base_name + '*'
@@ -230,8 +246,11 @@ class pouakai():
 	def calculate_zp(self,threshold=100,model='ckmodel'):
 		self.cal = aperture_photom(data=self.data,wcs=self.wcs, header=self.header,
 								   threshold=threshold,cal_model=model)
-		self.header['ZP'] = self.cal.zp
-		self.header['ZPERR'] = self.cal.zp_std
+		self.header['ZP'] = (self.cal.zp, 'Calibrimbore zeropoint')
+		self.header['ZPERR'] = (self.cal.zp_std, 'Calibrimbore zeropoint error')
+		self.header['MAGLIM5'] = (self.cal.maglim5, '5 sigma mag lim')
+		self.header['MAGLIM3'] = (self.cal.maglim3, '3 sigma mag lim')
+
 		
 
 

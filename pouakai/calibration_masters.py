@@ -60,15 +60,17 @@ def make_master_darks(save_location = '/home/phys/astro8/rri38/moa/data/master/d
 			save_name = save_location + base_name + '.fits'
 			print('saving')
 			hdul.writeto(save_name,overwrite=True)
+			compress = 'gzip ' + savename
+			os.system(compress)
 			print('saved')
-			entry['name'] = base_name
+			entry['name'] = base_name + '.gz'
 
 			entry['chip'] = header['CHIP']
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = time
 			entry['date'] = header['DATE-OBS']
 			entry['nimages'] = len(master)
-			entry['filename'] = save_name
+			entry['filename'] = save_name + '.gz'
 			if len(master) < 3:
 				note = 'bad'
 			else:
