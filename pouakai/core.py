@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from astroquery.astrometry_net import AstrometryNet
 from astropy.coordinates import SkyCoord
 import astropy.units as u
+from scipy.stats import iqr
 
 class pouakai():
 
@@ -19,6 +20,8 @@ class pouakai():
 		self._get_master('dark')
 		self._get_master('flat')
 
+		self._setup_fig()
+
 		self.reduce(reduction)
 
 	def reduce(self,reduction,local_astrom=True):
@@ -30,9 +33,10 @@ class pouakai():
 			self.wcs_astrometrynet()
 
 		self.calculate_zp()
-
+		self.savefig()
 		if (reduction == 'full'):
 			self.save_intermediate()
+			
 
 	def _start_record(self):
 		document = {'name':None,'band':None,'chip':None,
@@ -153,17 +157,22 @@ class pouakai():
 			raise ValueError(m)
 
 	def _check_dirs(self):
-		dirlist = ['wcs','wcs_tmp','red','cal']
+		dirlist = ['wcs','wcs_tmp','red','cal','fig']
 		for d in dirlist:
 			if ~os.path.isdir(self.savepath + d):
 				os.mkdir(self.savepath + d)
 
 	def reduce_image(self):
 		self._check_vars()
-
+		
 		image = (self.raw_image - self.dark) / self.flat
 
 		self.image = image
+
+		self._add_image(self.raw_image,'A')
+		self._add_image(self.flat,'B')
+		self._add_image(image,'C')
+		self._add_image(image,'D')
 
 
 	def save_intermediate(self):
@@ -245,17 +254,67 @@ class pouakai():
 
 	def calculate_zp(self,threshold=100,model='ckmodel'):
 		self.cal = aperture_photom(data=self.data,wcs=self.wcs, header=self.header,
-								   threshold=threshold,cal_model=model)
+									threshold=threshold,cal_model=model)
 		self.header['ZP'] = (self.cal.zp, 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (self.cal.zp_std, 'Calibrimbore zeropoint error')
 		self.header['MAGLIM5'] = (self.cal.maglim5, '5 sigma mag lim')
 		self.header['MAGLIM3'] = (self.cal.maglim3, '3 sigma mag lim')
+		self.fig_axis['D'].plot(self.cal.source_x,source_y,'r.')
+		self._zp_hist()
+		self._zp_color()
 
-		
+	def _zp_hist(self):
+		zps = self.cal.zps
+		b = int(np.nanmax(zps) - np.nanmin(zps) /(2*iqr(zps)*len(zps)**(-1/3)))
+		self.fig_axis['D'].hist(zps,bins=b,alpha=0.5)		
+		med = self.cal.zp
+		high = self.cal.zp+self.cal.zp_std
+		low = self.cal.zp-self.cal.zp_std
+		self.fig_axis['D'].axvline(med,color='k',ls='--')
+		self.fig_axis['D'].axvline(low,color='k',ls=':')
+		self.fig_axis['D'].axvline(high,color='k',ls=':')
+		s = ('$zp='+str((np.round(med,2)))+'^{+' + 
+			str(np.round(high-med,2))+'}_{'+
+			str(np.round(low-med,2))+'}$')
+		self.fig_axis['D'].annotate(s,(.75,.8),fontsize=10,xycoords='axes fraction')
+		self.fig_axis['D'].set_xlabel('zeropoint',fontsize=15)
+		self.fig_axis['D'].set_ylabel('Occurrence',fontsize=15)
 
+	def _zp_color(self):
+		zps = self.cal.zps
+		gr = self.cal.SOMETHING['g'] - self.cal.SOMETHING['r']
 
+		self.fig_axis['F'].plot(gr,zps,'.')
+		self.fig_axis['D'].set_ylabel('zeropoint',fontsize=15)
+		self.fig_axis['D'].set_xlabel('$g-r$',fontsize=15)		
 
+	def save_fig(self):
+		name = self.savepath + 'wcs_tmp/' + self.base_name + '_diag.pdf'
+		self.fig.savefig(name)
 
+	def _setup_fig(self):
+		self.fig = plt.figure(figsize=(8.27,11.69),constrained_layout=True)
+		self.fig_axis = fig.subplot_mosaic(
+											"""
+											AB
+											AB
+											CD
+											CD
+											EF
+											"""
+										  )
+		self.fig_axis['A'].set_title('Raw image',fontsize=15)
+		self.fig_axis['B'].set_title('Flat image',fontsize=15)
+		self.fig_axis['C'].set_title('Reduced image',fontsize=15)
+		self.fig_axis['D'].set_title('Calibration sources',fontsize=15)
+		self.fig_axis['E'].set_title('Zeropoint',fontsize=15)
+		self.fig_axis['F'].set_title('Color dependance',fontsize=15)
+
+	def _add_image(self,image,ax_ind):
+		vmin = np.percentile(image,16)
+		vmax = np.percentile(image,84)
+		self.fig_axis[ax_ind].imshow(image,origin='lower',
+									 vmin=vmin,vmax=vmax)
 
 
 

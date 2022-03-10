@@ -82,8 +82,11 @@ class aperture_photom():
 	def _calc_radii(self):
 		xcoords = self.sources['xcentroid'] + 0.5
 		xcoords = xcoords.astype(int)
+		self.source_x = xcoords
+
 		ycoords = self.sources['ycentroid'] + 0.5
 		ycoords = ycoords.astype(int)
+		self.source_y = ycoords
 		
 		data = deepcopy(self.data) - self.data_median
 
