@@ -2,6 +2,7 @@ from astropy.io import fits
 import pandas as pd
 import numpy as np
 from glob import glob
+import os
 
 
 def split_names(files):
