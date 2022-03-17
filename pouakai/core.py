@@ -282,11 +282,15 @@ class pouakai():
 
 	def _zp_color(self):
 		zps = self.cal.zps
-		gr = self.cal.SOMETHING['g'] - self.cal.SOMETHING['r']
+		gr = self.cal.cat_mags['g'] - self.cal.cat_mags['r']
 
 		self.fig_axis['F'].plot(gr,zps,'.')
-		self.fig_axis['D'].set_ylabel('zeropoint',fontsize=15)
-		self.fig_axis['D'].set_xlabel('$g-r$',fontsize=15)		
+		self.fig_axis['F'].set_ylabel('zeropoint',fontsize=15)
+		self.fig_axis['F'].set_xlabel('$g-r$',fontsize=15)	
+
+	def _maglim_fig(self):
+		r = self.cal.cat_mags['r']
+
 
 	def save_fig(self):
 		name = self.savepath + 'wcs_tmp/' + self.base_name + '_diag.pdf'
