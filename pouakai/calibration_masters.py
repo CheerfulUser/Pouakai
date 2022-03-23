@@ -86,6 +86,9 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 
 
 def get_master_dark(jd,exptime,chip,strict=False):
+	"""
+	ytdhgvj
+	"""
 	darks = pd.read_csv('cal_lists/master_dark_list.csv')
 	if strict:
 		ind = darks['note'].values =='good'
@@ -94,9 +97,7 @@ def get_master_dark(jd,exptime,chip,strict=False):
 	dexptime = darks['exptime'].values
 	chip_ind = dchips == chip
 
-	print(exptime)
 	exp_ind = dexptime == exptime
-	print(exp_ind.any())
 	ind = chip_ind & exp_ind
 	good = darks.iloc[ind]
 
@@ -153,7 +154,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 				print('Used ',len(master),' images in median')
 			# get dark frame
 			if j == 1:
-				fname, tdiff = get_master_dark(chip['jd'].values[0], chip['exptime'].values[0], i)
+				fname, tdiff = get_master_dark(chip['jd'].values[0], chip['exptime'].values[0], j)
 				dark_name = fname.split('1.fits.gz')[0]
 				d_tdiff = tdiff
 			else:
