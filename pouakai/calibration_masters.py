@@ -131,10 +131,9 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 		n = new[i]
 		ind = np.array(names) == n
 		all_chips = flat_list.iloc[ind]
-
+		dark_get = True
 		for j in range(10):
 			j += 1
-			dark_get = False
 			chip_ind = all_chips['chip'].values == j
 			chip = all_chips.iloc[chip_ind]
 			chip_files = chip['filename'].values
@@ -220,4 +219,6 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 
 if __name__=='__main__':
 	make_master_darks(verbose=True)
+	print('!!! Finished darks !!!')
 	make_master_flats(verbose=True)
+	print('!!! Finished flats !!!')
