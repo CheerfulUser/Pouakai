@@ -218,7 +218,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 
 
 if __name__=='__main__':
-	make_master_darks(verbose=True)
+	#make_master_darks(verbose=True)
 	print('!!! Finished darks !!!')
 	make_master_flats(verbose=True)
 	print('!!! Finished flats !!!')
