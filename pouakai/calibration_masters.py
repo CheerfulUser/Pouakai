@@ -134,6 +134,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 
 		for j in range(10):
 			j += 1
+			dark_get = False
 			chip_ind = all_chips['chip'].values == j
 			chip = all_chips.iloc[chip_ind]
 			chip_files = chip['filename'].values
@@ -153,10 +154,11 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			if verbose:
 				print('Used ',len(master),' images in median')
 			# get dark frame
-			if j == 1:
+			if dark_get:
 				fname, tdiff = get_master_dark(chip['jd'].values[0], chip['exptime'].values[0], j)
 				dark_name = fname.split('1.fits.gz')[0]
 				d_tdiff = tdiff
+				dark_get = False
 			else:
 				fname = dark_name + str(j) + '.fits'
 				tdiff = d_tdiff
@@ -165,6 +167,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 				print('time difference ',tdiff)
 			try:
 				dark = fits.open(fname)[0].data
+				print(dark)
 				master = master - dark
 			except:
 				m = '!!! Warning: No dark found !!!'
