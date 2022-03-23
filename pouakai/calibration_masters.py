@@ -94,9 +94,12 @@ def get_master_dark(jd,exptime,chip,strict=False):
 	dexptime = darks['exptime'].values
 	chip_ind = dchips == chip
 
+	print(exptime)
 	exp_ind = dexptime == exptime
+	print(exp_ind.any())
 	ind = chip_ind & exp_ind
 	good = darks.iloc[ind]
+
 	if len(good) > 0:
 		djd = good['jd'].values
 		diff = jd - djd
