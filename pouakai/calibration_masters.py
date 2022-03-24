@@ -61,7 +61,7 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			save_name = save_location + base_name + '.fits'
 			print('saving')
 			hdul.writeto(save_name,overwrite=True)
-			compress = 'gzip -f' + save_name
+			compress = 'gzip -f ' + save_name
 			os.system(compress)
 			print('saved')
 			entry['name'] = base_name + '.gz'
@@ -186,7 +186,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			save_name = save_location + base_name + '.fits'
 			print('saving')
 			hdul.writeto(save_name,overwrite=True)
-			compress = 'gzip -f' + save_name
+			compress = 'gzip -f ' + save_name
 			os.system(compress)
 			print('saved')
 			entry['name'] = base_name + '.gz'
