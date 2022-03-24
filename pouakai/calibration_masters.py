@@ -164,13 +164,13 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			if verbose:
 				print('using dark frame ',fname)
 				print('time difference ',tdiff)
-			try:
-				dark = fits.open(fname)[0].data
-				print(dark)
-				master = master - dark
-			except:
-				m = '!!! Warning: No dark found !!!'
-				print(m)
+			#try:
+			dark = fits.open(fname)[0].data
+			print(dark)
+			master = master - dark
+			#except:
+			#	m = '!!! Warning: No dark found !!!'
+			#	print(m)
 			m = np.nanmedian(master,axis=0)
 			std = np.nanstd(master,axis=0)
 			time = np.nanmean(chip['jd'])
