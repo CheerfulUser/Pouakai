@@ -183,10 +183,14 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 
 			letter = file.split('-')[3]
 			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
-			save_name = save_location + base_name + '.fits.gz'
+			save_name = save_location + base_name + '.fits'
+			print('saving')
 			hdul.writeto(save_name,overwrite=True)
-		
-			entry['name'] = base_name
+			compress = 'gzip ' + save_name
+			os.system(compress)
+			print('saved')
+			entry['name'] = base_name + '.gz'
+			
 			entry['band'] = header['COLOUR']
 			entry['chip'] = header['CHIP']
 			entry['exptime'] = header['EXPTIME']
