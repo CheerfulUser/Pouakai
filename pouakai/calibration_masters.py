@@ -85,13 +85,13 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			masters.to_csv('cal_lists/master_dark_list.csv',index=False)
 
 
-def get_master_dark(jd,exptime,chip,strict=False):
+def get_master_dark(jd,exptime,chip,strict=True,tol=100):
 	"""
 	ytdhgvj
 	"""
 	darks = pd.read_csv('cal_lists/master_dark_list.csv')
 	if strict:
-		ind = darks['note'].values =='good'
+		ind = darks['note'].values == 'good'
 		darks = darks.iloc[ind]
 	dchips = darks['chip'].values
 	dexptime = darks['exptime'].values
@@ -108,17 +108,28 @@ def get_master_dark(jd,exptime,chip,strict=False):
 		t_diff = diff[min_ind]
 		dark = darks.iloc[min_ind]
 		fname = dark['filename']
-		return fname, t_diff
+		if abs(t_diff) < tol:
+			return fname, t_diff
+		else:
+			return 'none', -999	
 	else:
 		return 'none', -999
 
 
+def cut_bad_reductions(table):
+	"""
+	remove all reductions with no good dark frames to see if anything better can be done
+	"""
+	ind = table['time_diff'].values != -999
+	return table.iloc[ind]
 
 
-def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/', verbose=False):
+def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',redo_bad=True, verbose=False):
 	# make save_location an environment variable
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	masters = pd.read_csv('cal_lists/master_flat_list.csv')
+	if redo_bad:
+		masters = cut_bad_reductions(masters)
 	names = split_names(flat_list['name'].values)
 	all_names = set(names)
 	master_names = set(split_names(masters['name'].values))
@@ -155,7 +166,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			# get dark frame
 			if dark_get:
 				fname, tdiff = get_master_dark(chip['jd'].values[0], chip['exptime'].values[0], j)
-				dark_name = fname.split('1.fits.gz')[0]
+				dark_name = fname.split(str(j)+'.fits.gz')[0]
 				d_tdiff = tdiff
 				dark_get = False
 			else:
@@ -170,6 +181,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			except:
 				m = '!!! Warning: No dark found !!!'
 				print(m)
+				tdiff = -999
 			
 			m = np.nanmedian(master,axis=0)
 			std = np.nanstd(master,axis=0)
