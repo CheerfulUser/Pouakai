@@ -21,6 +21,7 @@ def sort_darks(verbose=False):
 	while len(new) > 0:
 		entry = {}
 		n = new.pop()
+		print(n)
 		name = n.split('/')[-1].split('.')[0]
 		entry['name'] = name
 		try:
