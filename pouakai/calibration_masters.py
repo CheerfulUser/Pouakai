@@ -124,7 +124,7 @@ def cut_bad_reductions(table):
 	return table.iloc[ind]
 
 
-def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',redo_bad=True, verbose=False):
+def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',redo_bad=False, verbose=False):
 	# make save_location an environment variable
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	masters = pd.read_csv('cal_lists/master_flat_list.csv')
