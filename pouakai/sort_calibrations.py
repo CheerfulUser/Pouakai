@@ -9,13 +9,14 @@ moa_flats_dir = '/home/phys/astro8/MJArchive/MOA/FLAT/'
 
 def sort_darks(verbose=False):
 	dark_files = set(glob(moa_darks_dir + '*.gz'))
-	try:
-		dark_list = pd.read_csv('cal_lists/dark_list.csv')
-		old = set(dark_list['filename'])
-		new = dark_files ^ old
-	except:
-		new = dark_files
-		dark_list = pd.DataFrame(columns=['name','chip','exptime','jd','date','filename','note'])
+	#try:
+	dark_list = pd.read_csv('cal_lists/dark_list.csv')
+	old = set(dark_list['filename'])
+	new = dark_files ^ old
+	print(len(new))
+	#except:
+	#	new = dark_files
+	#	dark_list = pd.DataFrame(columns=['name','chip','exptime','jd','date','filename','note'])
 
 	while len(new) > 0:
 		entry = {}
