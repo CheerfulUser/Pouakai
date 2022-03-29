@@ -133,7 +133,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 	names = split_names(flat_list['name'].values)
 	all_names = set(names)
 	master_names = set(split_names(masters['name'].values))
-
+	print(all_names)
 	new = all_names ^ master_names
 	new = list(new)
 	print(new)
