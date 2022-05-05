@@ -128,8 +128,8 @@ def cut_bad_reductions(table):
 	tab = deepcopy(table)
 	for i in range(len(bad_names)):
 		print('Dropping ' + bad_names[i])
-		inds = names == bad_names[i]
-		tab = tab.iloc[~inds]
+		inds = names != bad_names[i]
+		tab = tab.iloc[inds]
 		print(tab)
 	return tab
 
