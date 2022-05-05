@@ -128,7 +128,7 @@ def cut_bad_reductions(table):
 	tab = deepcopy(table)
 	for i in range(len(bad_names)):
 		print('Dropping ' + bad_names[i])
-		bad = np.zeros(len(names))
+		bad = np.zeros(len(names),dtype='str')
 		bad[:] = bad_names[i]
 		inds = np.where(names != bad)[0]
 		print(inds)
