@@ -129,10 +129,8 @@ def cut_bad_reductions(table):
 	for i in range(len(bad_names)):
 		print('Dropping ' + bad_names[i])
 		inds = np.where(names != bad_names[i])[0]
-		print(np.where(names == bad_names[i])[0])
 		tab = tab.iloc[inds]
 		names = split_names(tab['name'])
-		#print(tab)
 	return tab
 
 
@@ -237,7 +235,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			if (np.nanmedian(m) < 15000):
 				note = 'bad'
 			else:
-				if (nimages <= 2) & (flat_type == 'dome'):
+				if (len(master) < 2) & (flat_type == 'dome'):
 					note = 'bad'
 				else:
 					note = 'good'
