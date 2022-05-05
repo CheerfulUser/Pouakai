@@ -133,7 +133,7 @@ def cut_bad_reductions(table):
 	return tab
 
 
-def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',redo_bad=False, verbose=False):
+def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',redo_bad=True, verbose=False):
 	# make save_location an environment variable
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	masters = pd.read_csv('cal_lists/master_flat_list.csv')
@@ -142,7 +142,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 	names = split_names(flat_list['name'].values)
 	all_names = set(names)
 	master_names = set(split_names(masters['name'].values))
-	print(all_names)
+	#print(all_names)
 	new = all_names ^ master_names
 	new = list(new)
 	print(new)
