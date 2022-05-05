@@ -131,7 +131,7 @@ def cut_bad_reductions(table):
 		bad = np.zeros(len(names),dtype='str')
 		bad[:] = bad_names[i]
 		inds = np.where(names != bad)[0]
-		print(inds)
+		print(np.where(names == bad)[0])
 		tab = tab.iloc[inds]
 		names = split_names(tab['name'])
 		print(tab)
