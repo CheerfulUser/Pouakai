@@ -130,6 +130,7 @@ def cut_bad_reductions(table):
 		print('Dropping ' + bad_names[i])
 		inds = names == bad_names[i]
 		tab = tab.iloc[~inds]
+		print(tab)
 	return tab
 
 
