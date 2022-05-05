@@ -6,6 +6,7 @@ from astroquery.astrometry_net import AstrometryNet
 from astropy.coordinates import SkyCoord
 import astropy.units as u
 from scipy.stats import iqr
+from aperture_photom import ap_photom
 
 class pouakai():
 
@@ -253,7 +254,7 @@ class pouakai():
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
 
 	def calculate_zp(self,threshold=100,model='ckmodel'):
-		self.cal = aperture_photom(data=self.data,wcs=self.wcs, header=self.header,
+		self.cal = ap_photom(data=self.data,wcs=self.wcs, header=self.header,
 									threshold=threshold,cal_model=model)
 		self.header['ZP'] = (self.cal.zp, 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (self.cal.zp_std, 'Calibrimbore zeropoint error')

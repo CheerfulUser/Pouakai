@@ -16,7 +16,7 @@ from copy import deepcopy
 import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 
-class aperture_photom():
+class ap_photom():
 
 	def __init__(self,file=None,data=None,wcs=None,header=None,
 				 fwhm=5.0,threshold=5.0,run=True,cal_model='ckmodel'):

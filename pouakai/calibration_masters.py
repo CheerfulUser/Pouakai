@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from glob import glob
 import os
+from copy import deepcopy
 
 
 def split_names(files):
@@ -120,8 +121,15 @@ def cut_bad_reductions(table):
 	"""
 	remove all reductions with no good dark frames to see if anything better can be done
 	"""
-	ind = table['time_diff'].values != -999
-	return table.iloc[ind]
+	ind = table['time_diff'].values == -999
+	bad_names = set(split_names(table['name'].iloc[ind]))
+	names = split_names(table['name'])
+	bad_names = list(bad_names)
+	tab = deepcopy(table)
+	for i in range(len(bad_names)):
+		inds = names == bad_names[i]
+		tab = tab.iloc[~inds]
+	return tab
 
 
 def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',redo_bad=False, verbose=False):
@@ -213,10 +221,22 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			entry['dark_file'] = fname 
 			entry['time_diff'] = tdiff
 			entry['nimages'] = len(master)
+
+			field = header['FIELD']
+			if 'flat_round' in field:
+				flat_type = 'dome'
+			else:
+				flat_type = 'sky'
+			entry['field'] = field
+			entry['flat_type'] = flat_type
+
 			if (np.nanmedian(m) < 15000):
 				note = 'bad'
 			else:
-				note = 'good'
+				if (nimages <= 2) & (flat_type == 'dome'):
+					note = 'bad'
+				else:
+					note = 'good'
 			entry['note'] = note
 			
 			field = header['FIELD']
