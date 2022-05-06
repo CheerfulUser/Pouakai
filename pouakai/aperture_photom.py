@@ -250,7 +250,7 @@ class ap_photom():
 		ax.text(15.4,5,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
 	 	
 		ax.set_ylim(0,10)
-	   	ax.set_xlim(12,23)
+		ax.set_xlim(12,23)
 
 
 	def fitted_line(self, sn):
