@@ -109,6 +109,8 @@ def get_master_dark(jd,exptime,chip,strict=True,tol=10):
 		t_diff = diff[min_ind]
 		dark = darks.iloc[min_ind]
 		fname = dark['filename']
+		print('exp:{}, chip:{}'.format(exptime,chip))
+		print(fname)
 		if abs(t_diff) < tol:
 			return fname, t_diff
 		else:
