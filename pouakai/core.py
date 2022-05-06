@@ -17,6 +17,7 @@ class pouakai():
 				 local_astrom=True,verbose=True):
 		self.verbose = verbose
 		self._start_record()
+		self._check_dirs()
 		self.file = file 
 		self.savepath = savepath
 		self._local_astrom = local_astrom
