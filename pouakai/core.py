@@ -11,7 +11,7 @@ from aperture_photom import ap_photom
 
 class pouakai():
 
-	def __init__(self,file,reduction='full',time_tolerence=1,dark_tolerence=1,savepath='',local_astrom=True):
+	def __init__(self,file,reduction='full',time_tolerence=100,dark_tolerence=10,savepath='',local_astrom=True):
 		self._start_record()
 		self.file = file 
 		self.savepath = savepath
