@@ -183,8 +183,8 @@ class pouakai():
 		Update the fits header to the format needed for photpipe
 		"""
 		mean, med, std = sigma_clipped_stats(self.image, sigma=3.0)
-		self.header['SKYADU'] = (med, 'median sky')
-		self.header['SKYSIG'] = (std, 'median sky noise')
+		self.header['SKYADU'] = (str(np.round(med)), 'median sky')
+		self.header['SKYSIG'] = (str(np.round(std)), 'median sky noise')
 			
 	def _update_header_dark(self):
 		self.header['DARKCORR'] = (True,self.dark_file)
@@ -193,7 +193,7 @@ class pouakai():
 		self.header['FLATCORR'] = (True,self.flat_file)
 		
 	def _update_header_zeropoint(self):
-		self.header['ZP'] = (self.zp,'Calibrimbore ' + self.system)
+		self.header['ZP'] = (str(np.round(self.zp)),'Calibrimbore ' + self.system)
 		
 		
 
@@ -351,10 +351,10 @@ class pouakai():
 
 		self.cal = ap_photom(data=self.data,wcs=self.wcs, header=self.header,
 									threshold=threshold,cal_model=model)
-		self.header['ZP'] = (self.cal.zp, 'Calibrimbore zeropoint')
-		self.header['ZPERR'] = (self.cal.zp_std, 'Calibrimbore zeropoint error')
-		self.header['MAGLIM5'] = (self.cal.maglim5, '5 sig mag lim')
-		self.header['MAGLIM3'] = (self.cal.maglim3, '3 sig mag lim')
+		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
+		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
+		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
+		self.header['MAGLIM3'] = (str(np.round(self.cal.maglim3)), '3 sig mag lim')
 		self.log['zp'] = self.cal.zp
 		self.log['zperr'] = self.cal.zp_std
 		self.log['maglim5'] = self.cal.maglim5
