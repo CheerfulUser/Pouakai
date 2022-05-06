@@ -123,7 +123,7 @@ class pouakai():
 			raise ValueError('Only flat and dark are valid options!!')
 		file, tdiff = self._find_master(masters)
 		if file.split('.')[-1] != 'gz':
-			file += .gz
+			file += '.gz'
 		self.log[cal_type] = file
 		self.log['tdiff_' + cal_type] = tdiff
 		hdu = fits.open(file)
