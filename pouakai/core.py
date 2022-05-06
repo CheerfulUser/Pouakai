@@ -228,6 +228,10 @@ class pouakai():
 		self._check_vars()
 		
 		image = (self.raw_image - self.dark) / self.flat
+		print('raw ', np.nanmean(self.raw_image))
+		print('dark ', np.nanmean(self.dark))
+		print('flat ', np.nanmean(self.flat))
+		print('image ', np.nanmean(image))
 
 		self.image = image
 
