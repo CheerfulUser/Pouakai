@@ -65,7 +65,7 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			compress = 'gzip -f ' + save_name
 			os.system(compress)
 			print('saved')
-			entry['name'] = base_name + '.gz'
+			entry['name'] = base_name
 
 			entry['chip'] = header['CHIP']
 			entry['exptime'] = header['EXPTIME']
@@ -213,14 +213,14 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			compress = 'gzip -f ' + save_name
 			os.system(compress)
 			print('saved')
-			entry['name'] = base_name + '.gz'
+			entry['name'] = base_name
 
 			entry['band'] = header['COLOUR']
 			entry['chip'] = header['CHIP']
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = time
 			entry['date'] = header['DATE-OBS']
-			entry['filename'] = save_name
+			entry['filename'] = save_name + '.gz'
 			entry['dark_file'] = fname 
 			entry['time_diff'] = tdiff
 			entry['nimages'] = len(master)
