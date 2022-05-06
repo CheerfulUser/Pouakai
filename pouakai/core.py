@@ -218,7 +218,7 @@ class pouakai():
 		"""
 		dirlist = ['wcs','wcs_tmp','red','cal','fig']
 		for d in dirlist:
-			if ~os.path.isdir(self.savepath + d):
+			if not os.path.isdir(self.savepath + d):
 				os.mkdir(self.savepath + d)
 
 	def reduce_image(self):
