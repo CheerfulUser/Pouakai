@@ -1,6 +1,7 @@
 from astropy.io import fits
 from glob import glob
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from astroquery.astrometry_net import AstrometryNet
 from astropy.coordinates import SkyCoord
