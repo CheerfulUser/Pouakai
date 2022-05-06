@@ -107,6 +107,8 @@ class pouakai():
 		"""
 		if cal_type.lower() == 'flat':
 			masters = pd.read_csv('cal_lists/master_flat_list.csv')
+			ind = masters['band'].values == self.filter
+			masters = masters.iloc[ind]
 
 		elif cal_type.lower() == 'dark':
 			masters = pd.read_csv('cal_lists/master_dark_list.csv')
@@ -120,6 +122,8 @@ class pouakai():
 		else:
 			raise ValueError('Only flat and dark are valid options!!')
 		file, tdiff = self._find_master(masters)
+		if file.split('.')[-1] != 'gz':
+			file += .gz
 		self.log[cal_type] = file
 		self.log['tdiff_' + cal_type] = tdiff
 		hdu = fits.open(file)
