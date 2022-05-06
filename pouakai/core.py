@@ -5,9 +5,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from astroquery.astrometry_net import AstrometryNet
 from astropy.coordinates import SkyCoord
+from astropy.stats import sigma_clipped_stats
 import astropy.units as u
 from scipy.stats import iqr
 from aperture_photom import ap_photom
+
 
 class pouakai():
 
