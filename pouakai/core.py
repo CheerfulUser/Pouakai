@@ -403,7 +403,7 @@ class pouakai():
 		Set up the large diagnostic plot figure
 		"""
 		self.fig = plt.figure(figsize=(8.27,11.69),constrained_layout=True)
-		self.fig_axis = fig.subplot_mosaic(
+		self.fig_axis = self.fig.subplot_mosaic(
 											"""
 											AB
 											AB
