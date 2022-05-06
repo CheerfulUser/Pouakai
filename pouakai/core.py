@@ -63,7 +63,7 @@ class pouakai():
 		"""
 		Read in the science image to be calibrated.
 		"""
-		hdu = fits.open(file)[0]
+		hdu = fits.open(self.file)[0]
 		self.header = hdu.header
 		self.raw_image = hdu.data
 		self.jd = hdu.header['JDSTART']
