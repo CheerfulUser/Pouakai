@@ -205,7 +205,7 @@ class ap_photom():
 		self.zp = zp
 		self.zp_std = zp_std
 
-	def calculate_zp(self,fwhm,threshold):
+	def calculate_zp(self,fwhm,threshold=10):
 		self._load_image()
 		self._image_stats()
 		self.find_sources(fwhm=fwhm,threshold=threshold)
@@ -215,3 +215,44 @@ class ap_photom():
 		self._load_sauron()
 		self.predict_mags()
 		self.calc_zp()
+
+	def magnitude_limit(self):
+		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
+		sig_noise = (self.ap_photom['aper_sum_bkgsub'] / self.ap_photom['aperture_std']).values
+		mag = (self.ap_photom['mag'] + self.zps).values
+
+		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
+		self.snr_model =  np.polyfit(np.log10(counts_to_noise)[ind], mag[ind], 1)
+		sigclip = ~sigma_clip(mag[ind] - self.fitted_line(sig_noise[ind])).mask
+		fitted_model, cov = np.polyfit(np.log10(sig_noise)[ind][sigclip], mag[ind][sigclip], 1, cov=True)
+		
+		self.snr_model = fitted_model
+		self.maglim5 = self.fitted_line(5)
+		self.maglim3 = fitted_line(3)
+		#chi_squared = np.sum((np.polyval(pfit, mag[ind][sigclip]) - np.log10(sig_noise[ind][sigclip])) ** 2)
+
+		
+	def mag_limit_fig(self,ax):
+		sig_noise = (self.ap_photom['aper_sum_bkgsub'] / self.ap_photom['aperture_std']).values
+		mag = (self.ap_photom['mag'] + self.zps).values
+		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
+		yz = np.linspace(1,10**5,295)
+
+		ax.plot(mag[ind],np.log10(sig_noise[ind]),'.',alpha=0.5)
+		ax.plot(self.fitted_line(yz),np.log10(yz),'-')
+
+		ax.axhline(np.log10(3),ls='-.')
+		ax.axhline(np.log10(5),ls='--')
+		ax.set_ylabel('log10(SNR)')
+		ax.set_xlabel('Magnitude Limit')
+
+		ax.text(15.4,3,r'$3\sigma=$ {:.2f}'.format(self.fitted_line(3)))
+		ax.text(15.4,5,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
+	 	
+		ax.set_ylim(0,10)
+	   	ax.set_xlim(12,23)
+
+
+	def fitted_line(self, sn):
+		return self.snr_model[1] + self.snr_model[0] * np.log10(sn)
+	
