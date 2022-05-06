@@ -143,6 +143,7 @@ class pouakai():
 			self.flat_file = file 
 			self.flat = data
 			self.flat_err = err
+			print('flat',file)
 		elif cal_type.lower() == 'dark':
 			self.dark_file = file 
 			self.dark = data
@@ -227,7 +228,7 @@ class pouakai():
 		"""
 		self._check_vars()
 		
-		image = (self.raw_image - self.dark) / self.flat
+		image = (self.raw_image - self.dark) / (self.flat/np.nanmedian(self.flat))
 		print('raw ', np.nanmean(self.raw_image))
 		print('dark ', np.nanmean(self.dark))
 		print('flat ', np.nanmean(self.flat))
