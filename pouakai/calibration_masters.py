@@ -86,7 +86,7 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			masters.to_csv('cal_lists/master_dark_list.csv',index=False)
 
 
-def get_master_dark(jd,exptime,chip,strict=True,tol=100):
+def get_master_dark(jd,exptime,chip,strict=True,tol=10):
 	"""
 	ytdhgvj
 	"""
@@ -95,12 +95,12 @@ def get_master_dark(jd,exptime,chip,strict=True,tol=100):
 		ind = darks['note'].values == 'good'
 		darks = darks.iloc[ind]
 	dchips = darks['chip'].values
-	dexptime = darks['exptime'].values
 	chip_ind = dchips == chip
-
+	darks = darks.iloc[chip_ind]
+	
+	dexptime = darks['exptime'].values
 	exp_ind = dexptime == exptime
-	ind = chip_ind & exp_ind
-	good = darks.iloc[ind]
+	good = darks.iloc[exp_ind]
 
 	if len(good) > 0:
 		djd = good['jd'].values
@@ -153,6 +153,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 		n = new[i]
 		ind = np.array(names) == n
 		all_chips = flat_list.iloc[ind]
+
 		dark_get = True
 		for j in range(10):
 			j += 1

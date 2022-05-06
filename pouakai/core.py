@@ -115,11 +115,13 @@ class pouakai():
 		"""
 		if cal_type.lower() == 'flat':
 			masters = pd.read_csv('cal_lists/master_flat_list.csv')
-			ind = masters['band'].values == self.filter
+			ind = (masters['band'].values == self.filter) & (masters['chip'].values == self.chip)
 			masters = masters.iloc[ind]
 
 		elif cal_type.lower() == 'dark':
 			masters = pd.read_csv('cal_lists/master_dark_list.csv')
+			ind = masters['chip'].values == self.chip
+			masters = masters.iloc[ind]
 			exptimes = masters['exptime'].values
 			ind = np.where(abs(self.exp_time - exptimes)<self.dark_tolerence)[0]
 			if len(ind) == 0:
