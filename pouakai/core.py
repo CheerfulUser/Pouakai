@@ -17,14 +17,16 @@ class pouakai():
 	def __init__(self,file,reduction='full',time_tolerence=100,dark_tolerence=10,savepath='',
 				 local_astrom=True,verbose=True):
 		self.verbose = verbose
-		self._start_record()
-		self._check_dirs()
 		self.file = file 
 		self.savepath = savepath
 		self._local_astrom = local_astrom
-		self._set_base_name()
 		self.time_tolerence = time_tolerence
 		self.dark_tolerence = dark_tolerence
+
+		self._start_record()
+		self._check_dirs()
+		self._set_base_name()
+		
 		self._read_science_image()
 
 		self._get_master('dark')
