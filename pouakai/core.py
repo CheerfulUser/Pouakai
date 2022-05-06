@@ -161,7 +161,7 @@ class pouakai():
 
 		file = masters['filename'].iloc[t_ind]
 
-		return file, tdiff
+		return file, t_diff
 
 
 
