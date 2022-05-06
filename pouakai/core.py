@@ -1,3 +1,4 @@
+import os
 from astropy.io import fits
 from glob import glob
 import numpy as np
