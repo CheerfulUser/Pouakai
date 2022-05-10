@@ -18,7 +18,7 @@ package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 class ap_photom():
 
-	def __init__(self,file=None,data=None,wcs=None,header=None,ax=None
+	def __init__(self,file=None,data=None,wcs=None,header=None,ax=None,
 				 fwhm=5.0,threshold=5.0,run=True,cal_model='ckmodel'):
 		self.file = file
 		self.data = data
