@@ -316,7 +316,9 @@ class pouakai():
 		save_path = self.savepath + 'wcs_tmp/' + self.base_name + '/'
 		os.mkdir(save_path)
 		name = save_path + self.base_name + '_wcs'
-
+		print('!!!',name)
+		print(save_path)
+		print(self.base_name)
 		solver = astrom_call.format(savename = name, ra = self.field_coord.ra.deg,
 									dec = self.field_coord.dec.deg, file = self.red_name)
 		os.system(solver)
