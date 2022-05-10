@@ -237,7 +237,7 @@ class ap_photom():
 		
 		self.snr_model = fitted_model
 		self.maglim5 = self.fitted_line(5)
-		self.maglim3 = fitted_line(3)
+		self.maglim3 = self.fitted_line(3)
 		#chi_squared = np.sum((np.polyval(pfit, mag[ind][sigclip]) - np.log10(sig_noise[ind][sigclip])) ** 2)
 
 		
