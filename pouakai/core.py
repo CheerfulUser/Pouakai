@@ -386,6 +386,7 @@ class pouakai():
 		Create a histogram of the zeropoint distribution
 		"""
 		zps = self.cal.zps
+		zps = zps[np.isfinite(zps)]
 		b = int(np.nanmax(zps) - np.nanmin(zps) /(2*iqr(zps)*len(zps)**(-1/3)))
 		self.fig_axis['E'].hist(zps,bins=b,alpha=0.5)		
 		med = self.cal.zp
