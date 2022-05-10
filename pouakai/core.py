@@ -315,7 +315,7 @@ class pouakai():
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		try:
-			os.mkdir(save_path)
+			os.mkdir(self.savepath + save_path)
 		except:
 			pass
 		name = save_path + self.base_name + '_wcs'
