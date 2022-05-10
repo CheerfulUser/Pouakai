@@ -374,7 +374,7 @@ class pouakai():
 		self.log['maglim5'] = self.cal.maglim5
 		self.log['maglim3'] = self.cal.maglim3
 
-		self.fig_axis['D'].plot(self.cal.source_x,source_y,'r.')
+		self.fig_axis['D'].plot(self.cal.source_x,self.cal.source_y,'r.')
 		self._zp_hist()
 		#self._zp_color()
 		self.cal.mag_limit_fig(self.fig_axis['F'])
