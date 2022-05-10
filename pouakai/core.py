@@ -118,7 +118,7 @@ class pouakai():
 			ind = (masters['band'].values == self.filter) & (masters['chip'].values == self.chip)
 			masters = masters.iloc[ind]
 
-			ind = (masters['note'] == 'good') & (masters['flat_type'] == 'dome')
+			ind = (masters['note'].values == 'good') & (masters['flat_type'].values == 'dome')
 			masters = masters.iloc[ind]
 
 		elif cal_type.lower() == 'dark':
