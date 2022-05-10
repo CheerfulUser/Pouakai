@@ -364,7 +364,7 @@ class pouakai():
 			print('Calculating zeropoint')
 
 		self.cal = ap_photom(data=self.image,wcs=self.wcs, header=self.header,
-									threshold=threshold,cal_model=model)
+									threshold=threshold,cal_model=model,ax=self.fig_axis['F'])
 		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
 		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
