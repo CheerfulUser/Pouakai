@@ -387,8 +387,8 @@ class pouakai():
 		"""
 		zps = self.cal.zps
 		zps = zps[np.isfinite(zps)]
-		b = int(abs(np.nanmax(zps) - np.nanmin(zps) /(2*iqr(zps)*len(zps)**(-1/3))))
-		self.fig_axis['E'].hist(zps,bins=b,alpha=0.5)		
+		#b = int(abs(np.nanmax(zps) - np.nanmin(zps) /(2*iqr(zps)*len(zps)**(-1/3))))
+		self.fig_axis['E'].hist(zps,alpha=0.5)		
 		med = self.cal.zp
 		high = self.cal.zp+self.cal.zp_std
 		low = self.cal.zp-self.cal.zp_std
@@ -398,7 +398,7 @@ class pouakai():
 		s = ('$zp='+str((np.round(med,2)))+'^{+' + 
 			str(np.round(high-med,2))+'}_{'+
 			str(np.round(low-med,2))+'}$')
-		self.fig_axis['E'].annotate(s,(.75,.8),fontsize=10,xycoords='axes fraction')
+		self.fig_axis['E'].annotate(s,(.7,.8),fontsize=10,xycoords='axes fraction')
 		self.fig_axis['E'].set_xlabel('zeropoint',fontsize=15)
 		self.fig_axis['E'].set_ylabel('Occurrence',fontsize=15)
 

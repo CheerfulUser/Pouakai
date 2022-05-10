@@ -228,12 +228,13 @@ class ap_photom():
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
 		print(self.ap_photom)
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
-		mag = (self.ap_photom['sysmag'] + self.zps).values
+		mag = (self.ap_photom['sysmag'] + self.zp).values
 
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		self.snr_model =  np.polyfit(np.log10(sig_noise)[ind], mag[ind], 1)
 		sigclip = ~sigma_clip(mag[ind] - self.fitted_line(sig_noise[ind])).mask
-		fitted_model, cov = np.polyfit(np.log10(sig_noise)[ind][sigclip], mag[ind][sigclip], 1, cov=True)
+		#fitted_model, cov = np.polyfit(np.log10(sig_noise)[ind][sigclip], mag[ind][sigclip], 1, cov=True)
+		fitted_model, cov = np.polyfit(np.log10(sig_noise)[ind], mag[ind], 1, cov=True)
 		
 		self.snr_model = fitted_model
 		self.maglim5 = self.fitted_line(5)
@@ -250,16 +251,16 @@ class ap_photom():
 		ax.plot(mag[ind],np.log10(sig_noise[ind]),'.',alpha=0.5)
 		ax.plot(self.fitted_line(yz),np.log10(yz),'-')
 
-		ax.axhline(np.log10(3),ls='-.')
-		ax.axhline(np.log10(5),ls='--')
+		ax.axhline(np.log10(3),ls='-.',color='k')
+		ax.axhline(np.log10(5),ls='--',color='k')
 		ax.set_ylabel('log10(SNR)')
 		ax.set_xlabel('Magnitude Limit')
 
 		ax.text(15.4,3,r'$3\sigma=$ {:.2f}'.format(self.fitted_line(3)))
-		ax.text(15.4,5,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
+		ax.text(15.4,4,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
 	 	
-		ax.set_ylim(0,10)
-		ax.set_xlim(12,23)
+		ax.set_ylim(0,5)
+		ax.set_xlim(13,23)
 
 
 	def fitted_line(self, sn):
