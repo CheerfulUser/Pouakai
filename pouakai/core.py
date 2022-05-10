@@ -363,7 +363,7 @@ class pouakai():
 		if self.verbose:
 			print('Calculating zeropoint')
 
-		self.cal = ap_photom(data=self.data,wcs=self.wcs, header=self.header,
+		self.cal = ap_photom(data=self.image,wcs=self.wcs, header=self.header,
 									threshold=threshold,cal_model=model)
 		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
