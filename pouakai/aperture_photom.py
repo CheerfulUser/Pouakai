@@ -18,7 +18,7 @@ package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 class ap_photom():
 
-	def __init__(self,file=None,data=None,wcs=None,header=None,
+	def __init__(self,file=None,data=None,wcs=None,header=None,ax=None
 				 fwhm=5.0,threshold=5.0,run=True,cal_model='ckmodel'):
 		self.file = file
 		self.data = data
@@ -49,6 +49,7 @@ class ap_photom():
 		if run:
 			self._load_image()
 			self.calculate_zp(fwhm,threshold)
+			self.mag_limit_fig(ax)
 
 
 
@@ -219,6 +220,9 @@ class ap_photom():
 		self._load_sauron()
 		self.predict_mags()
 		self.calc_zp()
+
+		self.magnitude_limit()
+
 
 	def magnitude_limit(self):
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
