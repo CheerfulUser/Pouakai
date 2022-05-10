@@ -118,6 +118,9 @@ class pouakai():
 			ind = (masters['band'].values == self.filter) & (masters['chip'].values == self.chip)
 			masters = masters.iloc[ind]
 
+			ind = (masters['note'] == 'good') & (masters['flat_type'] == 'dome')
+			masters = masters.iloc[ind]
+
 		elif cal_type.lower() == 'dark':
 			masters = pd.read_csv('cal_lists/master_dark_list.csv')
 			ind = masters['chip'].values == self.chip

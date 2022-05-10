@@ -191,17 +191,18 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			try:
 				dark = fits.open(fname)[0].data
 				master = master - dark
+
 			except:
 				m = '!!! Warning: No dark found !!!'
 				print(m)
 				tdiff = -999
 			
-			m = np.nanmedian(master,axis=0)
+			mas = np.nanmedian(master,axis=0)
 			std = np.nanstd(master,axis=0)
 			time = np.nanmean(chip['jd'])
 			header['JDSTART'] = time 
 			header['MASTER'] = True
-			phdu = fits.PrimaryHDU(data = m, header = header)
+			phdu = fits.PrimaryHDU(data = mas, header = header)
 			ehdu = fits.ImageHDU(data = std, header = header)
 			hdul = fits.HDUList([phdu, ehdu])
 
@@ -234,7 +235,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			entry['field'] = field
 			entry['flat_type'] = flat_type
 
-			if (np.nanmedian(m) < 15000):
+			if (np.nanmedian(mas) < 15000):
 				note = 'bad'
 			else:
 				if (len(master) < 2) & (flat_type == 'dome'):
