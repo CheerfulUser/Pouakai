@@ -227,7 +227,7 @@ class ap_photom():
 	def magnitude_limit(self):
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
 		print(self.ap_photom)
-		sig_noise = (self.ap_photom['aper_sum_bkgsub'] / self.ap_photom['aperture_std']).values
+		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
 		mag = (self.ap_photom['mag'] + self.zps).values
 
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
@@ -242,7 +242,7 @@ class ap_photom():
 
 		
 	def mag_limit_fig(self,ax):
-		sig_noise = (self.ap_photom['aper_sum_bkgsub'] / self.ap_photom['aperture_std']).values
+		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
 		mag = (self.ap_photom['mag'] + self.zps).values
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		yz = np.linspace(1,10**5,295)
