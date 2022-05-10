@@ -23,8 +23,11 @@ class ap_photom():
 		self.file = file
 		self.data = data
 		self.wcs = wcs
+		self.header = header
 		self.hdu = None
 		self.band = None
+
+		
 
 		self.data_median = None 
 		self.data_std = None
@@ -44,6 +47,7 @@ class ap_photom():
 		self.zps = None
 
 		if run:
+			self._load_image()
 			self.calculate_zp(fwhm,threshold)
 
 
