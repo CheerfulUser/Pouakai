@@ -50,7 +50,7 @@ class pouakai():
 			self.wcs_astrometrynet()
 
 		self.calculate_zp()
-		self.savefig()
+		self.save_fig()
 		self.save_image()
 			
 	#def _check_reduction(self,reduction):
