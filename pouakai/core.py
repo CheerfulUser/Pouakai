@@ -314,10 +314,11 @@ class pouakai():
 		astrom_call = "solve-field -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
-		print(self.savepath + 'red/' + save_path)
-		os.mkdir(self.savepath + 'red/' + save_path)
+		real_save_path = self.savepath + 'red/' + save_path
+		os.mkdir(real_save_path)
 	
 		name = save_path + self.base_name + '_wcs'
+		real_name = real_save_path + self.base_name + '_wcs'
 		print('!!!',name)
 		print(save_path)
 		print(self.base_name)
@@ -325,7 +326,7 @@ class pouakai():
 									dec = self.field_coord.dec.deg, file = self.red_name)
 		os.system(solver)
 
-		wcs_header = fits.open(name + '.new')[0].header
+		wcs_header = fits.open(real_name + '.new')[0].header
 		# get rid of all the astrometry.net junk in the header 
 		del wcs_head['COMMENT']
 		del wcs_head['HISTORY']
@@ -335,7 +336,7 @@ class pouakai():
 		if self.verbose:
 			print('Solved WCS')
 		
-		clear = 'rm -r ' + save_path
+		clear = 'rm -r ' + real_save_path
 		os.system(clear)
 
 		if self.verbose:
