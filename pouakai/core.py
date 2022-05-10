@@ -315,7 +315,7 @@ class pouakai():
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		print(self.savepath + 'red/' + save_path)
-		os.mkdir(self.savepath + save_path)
+		os.mkdir(self.savepath + 'red/' + save_path)
 	
 		name = save_path + self.base_name + '_wcs'
 		print('!!!',name)
