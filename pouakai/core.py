@@ -314,10 +314,9 @@ class pouakai():
 		astrom_call = "solve-field -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
-		try:
-			os.mkdir(self.savepath + save_path)
-		except:
-			pass
+		print(self.savepath + 'red/' + save_path)
+		os.mkdir(self.savepath + save_path)
+	
 		name = save_path + self.base_name + '_wcs'
 		print('!!!',name)
 		print(save_path)
