@@ -419,6 +419,7 @@ class pouakai():
 		Save a diagnostic figure
 		"""
 		name = self.savepath + 'fig/' + self.base_name + '_diag.pdf'
+		self.fig.set_tight_layout(True)
 		self.fig.savefig(name)
 
 	def _setup_fig(self):

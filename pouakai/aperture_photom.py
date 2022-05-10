@@ -197,9 +197,10 @@ class ap_photom():
 		if self.sauron is not None:
 			self.pred_mag = self.sauron.estimate_mag(ra=ra,dec=dec)
 
-	def calc_zp(self,maglim=17,brightlim=14):
+	def calc_zp(self,snr_lim=10,brightlim=14):
 		zps = self.pred_mag - self.ap_photom['sysmag'].values
-		ind = (self.pred_mag > brightlim) & (self.pred_mag < maglim)
+		snr = cal.ap_photom['counts'].values / cal.ap_photom['e_counts'].values
+		ind = (self.pred_mag > brightlim) & (snr > snr_lim)
 		# cut out saturated and faint sources
 		zps[~ind] = np.nan
 		ind = sigma_clip(zps).mask
@@ -226,14 +227,13 @@ class ap_photom():
 
 	def magnitude_limit(self):
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
-		print(self.ap_photom)
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
 		mag = (self.ap_photom['sysmag'] + self.zp).values
 
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		self.snr_model =  np.polyfit(np.log10(sig_noise)[ind], mag[ind], 1)
 		sigclip = ~sigma_clip(mag[ind] - self.fitted_line(sig_noise[ind])).mask
-		#fitted_model, cov = np.polyfit(np.log10(sig_noise)[ind][sigclip], mag[ind][sigclip], 1, cov=True)
+		fitted_model, cov = np.polyfit(np.log10(sig_noise)[ind][sigclip], mag[ind][sigclip], 1, cov=True)
 		fitted_model, cov = np.polyfit(np.log10(sig_noise)[ind], mag[ind], 1, cov=True)
 		
 		self.snr_model = fitted_model
@@ -244,7 +244,7 @@ class ap_photom():
 		
 	def mag_limit_fig(self,ax):
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
-		mag = (self.ap_photom['sysmag'] + self.zps).values
+		mag = (self.ap_photom['sysmag'] + self.zp).values
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		yz = np.linspace(1,10**5,295)
 
