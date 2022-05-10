@@ -222,7 +222,7 @@ class pouakai():
 		"""
 		Check that all reduction directories are constructed
 		"""
-		dirlist = ['wcs','wcs_tmp','red','cal','fig']
+		dirlist = ['wcs','red','red/wcs_tmp','cal','fig']
 		for d in dirlist:
 			if not os.path.isdir(self.savepath + d):
 				os.mkdir(self.savepath + d)
@@ -313,8 +313,11 @@ class pouakai():
 		# a reasonable search radius is already selected (2deg)
 		astrom_call = "solve-field -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
 
-		save_path = self.savepath + 'wcs_tmp/' + self.base_name + '/'
-		os.mkdir(save_path)
+		save_path = '/wcs_tmp/' + self.base_name + '/'
+		try:
+			os.mkdir(save_path)
+		except:
+			pass
 		name = save_path + self.base_name + '_wcs'
 		print('!!!',name)
 		print(save_path)
@@ -338,9 +341,6 @@ class pouakai():
 
 		if self.verbose:
 			print('WCS tmp files cleared')
-
-		
-	
 
 
 	def save_intermediate_wcs(self):
