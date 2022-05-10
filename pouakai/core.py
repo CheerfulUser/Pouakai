@@ -328,8 +328,8 @@ class pouakai():
 
 		wcs_header = fits.open(real_name + '.new')[0].header
 		# get rid of all the astrometry.net junk in the header 
-		del wcs_head['COMMENT']
-		del wcs_head['HISTORY']
+		del wcs_header['COMMENT']
+		del wcs_header['HISTORY']
 		self.header = wcs_header
 		self.wcs = WCS(self.header)
 
