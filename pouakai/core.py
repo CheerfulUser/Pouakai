@@ -313,7 +313,7 @@ class pouakai():
 		# a reasonable search radius is already selected (2deg)
 		astrom_call = "solve-field -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
 
-		save_path = '/wcs_tmp/' + self.base_name + '/'
+		save_path = 'wcs_tmp/' + self.base_name + '/'
 		try:
 			os.mkdir(save_path)
 		except:
