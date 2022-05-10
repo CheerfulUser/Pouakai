@@ -228,7 +228,7 @@ class ap_photom():
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
 		print(self.ap_photom)
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
-		mag = (self.ap_photom['mag'] + self.zps).values
+		mag = (self.ap_photom['sysmag'] + self.zps).values
 
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		self.snr_model =  np.polyfit(np.log10(counts_to_noise)[ind], mag[ind], 1)
@@ -243,7 +243,7 @@ class ap_photom():
 		
 	def mag_limit_fig(self,ax):
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
-		mag = (self.ap_photom['mag'] + self.zps).values
+		mag = (self.ap_photom['sysmag'] + self.zps).values
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		yz = np.linspace(1,10**5,295)
 
