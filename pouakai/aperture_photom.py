@@ -231,7 +231,7 @@ class ap_photom():
 		mag = (self.ap_photom['sysmag'] + self.zps).values
 
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
-		self.snr_model =  np.polyfit(np.log10(counts_to_noise)[ind], mag[ind], 1)
+		self.snr_model =  np.polyfit(np.log10(sig_noise)[ind], mag[ind], 1)
 		sigclip = ~sigma_clip(mag[ind] - self.fitted_line(sig_noise[ind])).mask
 		fitted_model, cov = np.polyfit(np.log10(sig_noise)[ind][sigclip], mag[ind][sigclip], 1, cov=True)
 		
