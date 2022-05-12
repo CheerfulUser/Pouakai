@@ -230,7 +230,10 @@ class ap_photom():
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
 		mag = (self.ap_photom['sysmag'] + self.zps).values
 
-		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
+		ind1 = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
+		ind2 = (self.pred_mag > brightlim) & (sig_noise > snr_lim)
+		ind = ind1 & ind2
+		print(len(mag[ind]))
 		self.snr_model =  np.polyfit(np.log10(sig_noise)[ind], mag[ind], 1)
 		sigclip = ~sigma_clip(mag[ind] - self.fitted_line(sig_noise[ind])).mask
 		fitted_model, cov = np.polyfit(np.log10(sig_noise)[ind][sigclip], mag[ind][sigclip], 1, cov=True)
