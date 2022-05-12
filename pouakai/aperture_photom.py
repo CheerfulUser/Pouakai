@@ -225,7 +225,7 @@ class ap_photom():
 		self.magnitude_limit()
 
 
-	def magnitude_limit(self):
+	def magnitude_limit(self,snr_lim=10,brightlim=15):
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
 		mag = (self.ap_photom['sysmag'] + self.zps).values
