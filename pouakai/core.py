@@ -356,7 +356,7 @@ class pouakai():
 			print('Saving intermediated wcs file')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
 
-	def calculate_zp(self,threshold=100,model='ckmodel'):
+	def calculate_zp(self,threshold=10,model='ckmodel'):
 		"""
 		Use calibrimbore to calculate the zeropoint for the image and the magnitude limits.
 		"""
