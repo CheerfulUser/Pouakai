@@ -52,7 +52,7 @@ class pouakai():
 		self.calculate_zp()
 		self.save_fig()
 		self.save_image()
-			
+		self._record_reduction()
 	#def _check_reduction(self,reduction):
 
 

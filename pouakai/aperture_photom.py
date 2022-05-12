@@ -197,7 +197,7 @@ class ap_photom():
 		if self.sauron is not None:
 			self.pred_mag = self.sauron.estimate_mag(ra=ra,dec=dec)
 
-	def calc_zp(self,snr_lim=10,brightlim=14):
+	def calc_zp(self,snr_lim=10,brightlim=15):
 		zps = self.pred_mag - self.ap_photom['sysmag'].values
 		snr = self.ap_photom['counts'].values / self.ap_photom['e_counts'].values
 		ind = (self.pred_mag > brightlim) & (snr > snr_lim)
@@ -228,7 +228,7 @@ class ap_photom():
 	def magnitude_limit(self):
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
-		mag = (self.ap_photom['sysmag'] + self.zp).values
+		mag = (self.ap_photom['sysmag'] + self.zps).values
 
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		self.snr_model =  np.polyfit(np.log10(sig_noise)[ind], mag[ind], 1)
@@ -244,7 +244,7 @@ class ap_photom():
 		
 	def mag_limit_fig(self,ax):
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
-		mag = (self.ap_photom['sysmag'] + self.zp).values
+		mag = (self.ap_photom['sysmag'] + self.zps).values
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		yz = np.linspace(1,10**5,295)
 
@@ -256,11 +256,11 @@ class ap_photom():
 		ax.set_ylabel('log10(SNR)')
 		ax.set_xlabel('Magnitude Limit')
 
-		ax.text(15.4,3,r'$3\sigma=$ {:.2f}'.format(self.fitted_line(3)))
-		ax.text(15.4,4,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
+		ax.text(15.4,2,r'$3\sigma=$ {:.2f}'.format(self.fitted_line(3)))
+		ax.text(15.4,2.5,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
 	 	
-		ax.set_ylim(0,5)
-		ax.set_xlim(13,23)
+		ax.set_ylim(0,3)
+		ax.set_xlim(13,21)
 
 
 	def fitted_line(self, sn):
