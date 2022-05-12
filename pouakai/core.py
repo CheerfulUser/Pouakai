@@ -84,6 +84,7 @@ class pouakai():
 		self._field_coords()
 
 		self.log['band'] = self.filter
+		self.log['raw_filename'] = self.file
 		self.log['jd'] = self.jd
 		self.log['chip'] = self.chip
 		self.log['exptime'] = self.exp_time
@@ -141,6 +142,7 @@ class pouakai():
 			file += '.gz'
 		self.log[cal_type] = file
 		self.log['tdiff_' + cal_type] = tdiff
+		print('tdiff for ' + cal_type + '=' + str(tdiff))
 		hdu = fits.open(file)
 		data = hdu[0].data
 		err =  hdu[1].data
@@ -181,7 +183,7 @@ class pouakai():
 
 		file = masters['filename'].iloc[t_ind]
 
-		return file, t_diff
+		return file, t_diff[t_ind]
 
 
 
