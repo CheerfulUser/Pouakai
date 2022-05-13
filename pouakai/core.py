@@ -259,12 +259,15 @@ class pouakai():
 		self._update_header_dark()
 		self._update_header_flat()
 		name = self.savepath + 'red/' + self.base_name + '_red.fits'
-		self.red_name = name
+
+		self.red_name = name + '.gz'
 
 
 		if self.verbose:
 			print('Saving intermediated calibrated file')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
+		compress = 'gzip -f ' + name
+		os.system(compress)
 
 
 	def save_image(self):
@@ -275,12 +278,14 @@ class pouakai():
 		self._update_header_dark()
 		self._update_header_flat()
 		name = self.savepath + 'cal/' + self.base_name + '_cal.fits'
-		self.cal_name = name
+		self.cal_name = name + '.gz'
 
 		if self.verbose:
 			print('Saving final calibrated image')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
-		self.log['savename'] = name
+		compress = 'gzip -f ' + name
+		os.system(compress)
+		self.log['savename'] = self.cal_name
 
 	def wcs_astrometrynet(self,timeout=120):
 		"""
