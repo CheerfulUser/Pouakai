@@ -18,14 +18,16 @@ package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 class ap_photom():
 
-	def __init__(self,file=None,data=None,wcs=None,header=None,ax=None,
+	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
 				 fwhm=5.0,threshold=5.0,run=True,cal_model='ckmodel'):
 		self.file = file
 		self.data = data
 		self.wcs = wcs
 		self.header = header
+		self.mask = mask
 		self.hdu = None
 		self.band = None
+
 
 		
 
@@ -200,7 +202,8 @@ class ap_photom():
 	def calc_zp(self,snr_lim=10,brightlim=15):
 		zps = self.pred_mag - self.ap_photom['sysmag'].values
 		snr = self.ap_photom['counts'].values / self.ap_photom['e_counts'].values
-		ind = (self.pred_mag > brightlim) & (snr > snr_lim)
+		near_mask = self._check_mask()
+		ind = (self.pred_mag > brightlim) & (snr > snr_lim) & (near_mask==0)
 		# cut out saturated and faint sources
 		zps[~ind] = np.nan
 		ind = sigma_clip(zps).mask
@@ -268,4 +271,24 @@ class ap_photom():
 
 	def fitted_line(self, sn):
 		return self.snr_model[1] + self.snr_model[0] * np.log10(sn)
-	
+
+	def _check_mask(self):
+		if mask is not None:
+			flags = np.where(self.mask > 0)
+			bx = flags[1]
+			by = flags[0]
+
+			sx = self.ap_photom['xcenter']
+			sy = self.ap_photom['ycenter']
+			r = self.radii 
+
+			x = (sx[:,np.newaxis] - bx[np.newaxis,:])
+			y = (sy[:,np.newaxis] - by[np.newaxis,:])
+
+			d2 = x**2 + y**2
+
+			near = d2 < r[:,np.newaxis]
+			near = np.nansum(near,axis=1)
+		else:
+			near = self.radii * 0
+		return near.astype(int)

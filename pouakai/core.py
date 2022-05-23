@@ -13,6 +13,8 @@ from astropy.wcs import WCS
 from scipy.stats import iqr
 from aperture_photom import ap_photom
 
+from scipy.ndimage.filters import convolve
+
 
 class pouakai():
 
@@ -49,6 +51,7 @@ class pouakai():
 		else:
 			self.wcs_astrometrynet()
 
+		self.Make_mask()
 		self.calculate_zp()
 		self.save_fig()
 		self.save_image()
@@ -280,9 +283,13 @@ class pouakai():
 		name = self.savepath + 'cal/' + self.base_name + '_cal.fits'
 		self.cal_name = name + '.gz'
 
+		phdu = fits.PrimaryHDU(data = self.image, header = self.header)
+		mhdu = fits.ImageHDU(data = self.mask, header = self.header)
+		hdul = fits.HDUList([phdu, mhdu])
+
 		if self.verbose:
 			print('Saving final calibrated image')
-		fits.writeto(name,self.image,header=self.header,overwrite=True)
+		hdul.writeto(name,self.image,header=self.header,overwrite=True)
 		compress = 'gzip -f ' + name
 		os.system(compress)
 		self.log['savename'] = self.cal_name
@@ -370,7 +377,7 @@ class pouakai():
 		if self.verbose:
 			print('Calculating zeropoint')
 
-		self.cal = ap_photom(data=self.image,wcs=self.wcs, header=self.header,
+		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=self.mask, header=self.header,
 									threshold=threshold,cal_model=model,ax=self.fig_axis['F'])
 		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
@@ -470,6 +477,37 @@ class pouakai():
 
 
 
+	def _flat_mask(self,lowlim=0.8,highlim=1.2,buffer=3):
+		mask = deepcopy(self.flat) / np.nanmedian(deepcopy(self.flat))
+		mask = (mask < lowlim) | (mask > highlim)
+		mask = convolve(mask,np.ones((buffer,buffer)))
+		mask = mask.astype(int)
+		return mask
+
+	def _saturaton_mask(self,satlimit=6e4,buffer=3):
+		mask = deepcopy(self.image)
+		mask = mask > satlimit
+		mask = convolve(mask,np.ones((buffer,buffer)))
+		mask = mask.astype(int)
+		return mask
+
+
+	def Make_mask(self):
+		flat_mask = self._flat_mask() * 4
+		sat_mask = self._saturaton_mask() * 2
+
+		self.mask = flat_mask | sat_mask
+
+		self._update_header_mask_bits()
+
+
+	def _update_header_mask_bits(self):
+	    #head['STARBIT']  = (1, 'bit value for normal sources')
+	    self.header['SATBIT']   = (2, 'bit value for saturated sources')
+	    self.header['FLATBIT'] = (4, 'bit value for bad flat')
+	    #head['STRAPBIT'] = (8, 'bit value for bad pixels')
+	    #head['USERBIT']  = (16, 'bit value for USER list')
+	    #head['SNBIT']    = (32, 'bit value for SN list')
 
 
 
