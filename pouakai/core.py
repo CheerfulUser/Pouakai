@@ -9,6 +9,7 @@ from astropy.coordinates import SkyCoord
 from astropy.stats import sigma_clipped_stats
 import astropy.units as u
 from astropy.wcs import WCS
+from copy import deepcopy
 
 from scipy.stats import iqr
 from aperture_photom import ap_photom
