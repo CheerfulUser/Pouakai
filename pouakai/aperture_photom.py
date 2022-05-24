@@ -186,6 +186,7 @@ class ap_photom():
 		near_source = self._check_distance()
 		ind =  (near_mask==0) & (near_source==0)
 		self.ap_photom = self.ap_photom.iloc[ind]
+		print(len(self.ap_photom))
 
 
 	def _load_sauron(self):
@@ -296,7 +297,7 @@ class ap_photom():
 			near = self.radii * 0
 		return near.astype(int)
 
-	def _check_distance(self,limit=100):
+	def _check_distance(self,limit=20):
 
 		sx = self.ap_photom['xcenter'].values
 		sy = self.ap_photom['ycenter'].values
