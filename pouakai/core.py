@@ -290,7 +290,7 @@ class pouakai():
 
 		if self.verbose:
 			print('Saving final calibrated image')
-		hdul.writeto(name,self.image,overwrite=True)
+		hdul.writeto(name,overwrite=True)
 		compress = 'gzip -f ' + name
 		os.system(compress)
 		self.log['savename'] = self.cal_name
