@@ -182,6 +182,10 @@ class ap_photom():
 			table = table.append(phot, ignore_index=True)
 
 		self.ap_photom = table
+		near_mask = self._check_mask()
+		near_source = self._check_distance()
+		ind =  (near_mask==0) & (near_source==0)
+		self.ap_photom = self.ap_photom.iloc[ind]
 
 
 	def _load_sauron(self):
@@ -202,9 +206,7 @@ class ap_photom():
 	def calc_zp(self,snr_lim=10,brightlim=14):
 		zps = self.pred_mag - self.ap_photom['sysmag'].values
 		snr = self.ap_photom['counts'].values / self.ap_photom['e_counts'].values
-		near_mask = self._check_mask()
-		near_source = self._check_distance()
-		ind = (self.pred_mag > brightlim) & (snr > snr_lim) & (near_mask==0) & (near_source==0)
+		ind = (self.pred_mag > brightlim) & (snr > snr_lim)
 		# cut out saturated and faint sources
 		zps[~ind] = np.nan
 		ind = sigma_clip(zps).mask
