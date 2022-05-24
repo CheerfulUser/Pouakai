@@ -107,9 +107,9 @@ class ap_photom():
 			try:
 				fwhm = np.where(normal < 0.5)[0][0]
 			except:
-				fwhm = 5 # dummy number 
+				fwhm = 3 # dummy number 
 			radii += [fwhm]
-		self.radii = np.array(radii)
+		self.radii = np.array(radii) * 3
 
 
 	def _get_apertures(self):
@@ -124,9 +124,9 @@ class ap_photom():
 
 		for radius in self.radii:
 			position = [xcoords[pos_index],ycoords[pos_index]]
-			aperture = CircularAperture(position, r=radius*1.5)
+			aperture = CircularAperture(position, r=radius)
 			apertures.append(aperture)
-			annulus_aperture = CircularAnnulus(position, r_in=radius*3.5, r_out=radius*5)
+			annulus_aperture = CircularAnnulus(position, r_in=radius*4, r_out=radius*10)
 			annuli.append(annulus_aperture)
 			pos_index += 1
 
@@ -199,11 +199,12 @@ class ap_photom():
 		if self.sauron is not None:
 			self.pred_mag = self.sauron.estimate_mag(ra=ra,dec=dec)
 
-	def calc_zp(self,snr_lim=10,brightlim=15):
+	def calc_zp(self,snr_lim=10,brightlim=14):
 		zps = self.pred_mag - self.ap_photom['sysmag'].values
 		snr = self.ap_photom['counts'].values / self.ap_photom['e_counts'].values
 		near_mask = self._check_mask()
-		ind = (self.pred_mag > brightlim) & (snr > snr_lim) & (near_mask==0)
+		near_source = self._check_distance()
+		ind = (self.pred_mag > brightlim) & (snr > snr_lim) & (near_mask==0) & (near_source==0)
 		# cut out saturated and faint sources
 		zps[~ind] = np.nan
 		ind = sigma_clip(zps).mask
@@ -223,12 +224,12 @@ class ap_photom():
 		self.ap_photometry()
 		self._load_sauron()
 		self.predict_mags()
-		self.calc_zp()
+		self.calc_zp(snr_lim=threshold)
 
-		self.magnitude_limit()
+		self.magnitude_limit(snr_lim=threshold)
 
 
-	def magnitude_limit(self,snr_lim=10,brightlim=15):
+	def magnitude_limit(self,snr_lim=10,brightlim=14):
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
 		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
 		mag = (self.ap_photom['sysmag'] + self.zps).values
@@ -259,7 +260,7 @@ class ap_photom():
 
 		ax.axhline(np.log10(3),ls='-.',color='k')
 		ax.axhline(np.log10(5),ls='--',color='k')
-		ax.set_ylabel('log10(SNR)')
+		ax.set_ylabel(r'log$_{10}$(SNR)')
 		ax.set_xlabel('Magnitude Limit')
 
 		ax.text(15.4,2,r'$3\sigma=$ {:.2f}'.format(self.fitted_line(3)))
@@ -292,3 +293,20 @@ class ap_photom():
 		else:
 			near = self.radii * 0
 		return near.astype(int)
+
+	def _check_distance(self,limit=100):
+
+		sx = self.ap_photom['xcenter'].values
+		sy = self.ap_photom['ycenter'].values
+
+		x = sx[:,np.newaxis] - sx[np.newaxis,:]
+		y = sy[:,np.newaxis] - sy[np.newaxis,:]
+
+		d2 = x**2 + y**2
+		d2[d2==0] = np.nan
+
+		mins = np.nanmin(d2,axis=1)
+		mins = mins < limit**2
+
+		return mins
+
