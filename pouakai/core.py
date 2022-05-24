@@ -286,6 +286,8 @@ class pouakai():
 
 		phdu = fits.PrimaryHDU(data = self.image, header = self.header)
 		mhdu = fits.ImageHDU(data = self.mask, header = self.header)
+		print(phdu)
+		print(mhdu)
 		hdul = fits.HDUList([phdu, mhdu])
 
 		if self.verbose:
