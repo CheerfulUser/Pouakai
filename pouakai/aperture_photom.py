@@ -278,8 +278,8 @@ class ap_photom():
 			bx = flags[1]
 			by = flags[0]
 
-			sx = self.ap_photom['xcenter']
-			sy = self.ap_photom['ycenter']
+			sx = self.ap_photom['xcenter'].values
+			sy = self.ap_photom['ycenter'].values
 			r = self.radii 
 
 			x = (sx[:,np.newaxis] - bx[np.newaxis,:])
