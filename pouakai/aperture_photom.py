@@ -273,7 +273,7 @@ class ap_photom():
 		return self.snr_model[1] + self.snr_model[0] * np.log10(sn)
 
 	def _check_mask(self):
-		if mask is not None:
+		if self.mask is not None:
 			flags = np.where(self.mask > 0)
 			bx = flags[1]
 			by = flags[0]
