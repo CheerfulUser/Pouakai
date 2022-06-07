@@ -147,7 +147,8 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 	#print(all_names)
 	new = all_names ^ master_names
 	new = list(new)
-	#print(new)
+	print(new)
+	print(len(new))
 	new.sort(reverse=True)
 	for i in range(len(new)):
 		entry = {}

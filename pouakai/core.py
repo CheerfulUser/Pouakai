@@ -288,7 +288,7 @@ class pouakai():
 		mhdu = fits.ImageHDU(data = self.mask, header = self.header)
 		hdul = fits.HDUList([phdu, mhdu])
 		print(hdul)
-		
+
 
 		if self.verbose:
 			print('Saving final calibrated image')
@@ -380,8 +380,14 @@ class pouakai():
 		if self.verbose:
 			print('Calculating zeropoint')
 
+		if self.log['exptime'] < (2.5 * 60):
+			brightlim = 13
+		else:
+			brightlim = 15
+
 		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=self.mask, header=self.header,
-									threshold=threshold,cal_model=model,ax=self.fig_axis['F'])
+							 threshold=threshold,cal_model=model,ax=self.fig_axis['F'],
+							 brightlim=brightlim)
 		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
 		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
