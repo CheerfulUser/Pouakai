@@ -7,8 +7,8 @@ from astropy.coordinates import SkyCoord
 from astropy.visualization import SqrtStretch, simple_norm, ImageNormalize
 from astropy.wcs import WCS
 from photutils import DAOStarFinder, aperture_photometry
-from photutils.aperture import SkyCircularAperture, CircularAperture, CircularAnnulus, aperture_photometry
-from photutils.aperture import ApertureStats
+from photutils.aperture import SkyCircularAperture, CircularAperture, CircularAnnulus, aperture_photometry, ApertureStats
+
 
 from scipy.optimize import minimize
 
