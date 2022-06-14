@@ -113,7 +113,7 @@ class ap_photom():
 			except:
 				fwhm = np.nan # dummy number 
 			radii += [fwhm]
-		self.radii = np.array(radii) * 1.5
+		self.radii = np.array(radii) * 1.2
 		self.radius = np.nanmedian(self.radii)
 
 
@@ -126,7 +126,7 @@ class ap_photom():
 			positions += [[xcoords[i],ycoords[i]]]
 		positions = np.array(positions)
 		self.aperture = CircularAperture(positions, r=self.radius)
-		self.sky_ap = CircularAnnulus(positions, r_in=self.radius*3.5, r_out=self.radius*6)
+		self.sky_ap = CircularAnnulus(positions, r_in=self.radius*2, r_out=self.radius*10)
 		
 
 
@@ -139,11 +139,12 @@ class ap_photom():
 		bkg_std = aperstats.std
 		area = self.aperture.area_overlap(self.data)
 		phot_table['bkg_median'] = bkg_median
-		phot_table['bkg_std'] = bkg_std
+		phot_table['bkg_std'] = bkg_std * 0 + 40
 		phot_table['area'] = area
 		phot_table['aper_bkg'] = area * bkg_median
 		phot_table['counts'] = phot_table['aperture_sum'] - phot_table['aper_bkg']
-		phot_table['e_counts'] = bkg_std * area
+		phot_table['e_counts'] = phot_table['bkg_std'] * area
+		phot_table['snr'] = phot_table['counts'] / phot_table['e_counts']
 		phot_table['sysmag'] = -2.5*np.log10(phot_table['counts'])
 
 
@@ -181,8 +182,8 @@ class ap_photom():
 
 	def calc_zp(self,snr_lim=10):
 		zps = self.pred_mag - self.ap_photom['sysmag'].values
-		snr = self.ap_photom['counts'].values / self.ap_photom['e_counts'].values
-		ind = (self.pred_mag > self.brightlim) & (snr > snr_lim) & (self.pred_mag < 19)
+		snr = self.ap_photom['snr'].values
+		ind = (self.pred_mag > self.brightlim) & (snr > snr_lim) #& (self.pred_mag < 19)
 		# cut out saturated and faint sources
 		zps[~ind] = np.nan
 		ind = sigma_clip(zps).mask
@@ -211,8 +212,8 @@ class ap_photom():
 
 	def magnitude_limit(self,snr_lim=10):
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
-		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
-		mag = (self.ap_photom['sysmag'] + self.zp).values
+		sig_noise = self.ap_photom['snr'].values
+		mag = (self.ap_photom['sysmag'] + self.zps).values
 
 		ind1 = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		ind2 = (self.pred_mag > self.brightlim) & (sig_noise > snr_lim)
@@ -230,12 +231,13 @@ class ap_photom():
 
 		
 	def mag_limit_fig(self,ax):
-		sig_noise = (self.ap_photom['counts'] / self.ap_photom['e_counts']).values
-		mag = (self.ap_photom['sysmag'] + self.zp).values
+		sig_noise = self.ap_photom['snr'].values
+		mag = (self.ap_photom['sysmag'] + self.zps).values
 		ind = np.isfinite(mag) & np.isfinite(np.log10(sig_noise))
 		sigclip = ~sigma_clip(mag[ind] - self.fitted_line(sig_noise[ind])).mask
 		yz = np.linspace(1,10**5,295)
 
+		#ax.plot(mag[ind],np.log10(sig_noise[ind]),'.',alpha=0.5)
 		ax.plot(mag[ind][sigclip],np.log10(sig_noise[ind][sigclip]),'.',alpha=0.5)
 		ax.plot(self.fitted_line(yz),np.log10(yz),'-')
 
