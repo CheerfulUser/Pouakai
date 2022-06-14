@@ -24,7 +24,7 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 	new.sort(reverse=True)
 	print('sorted')
 	for i in range(len(new)):
-		print(str(i) of str(len(new)))
+		print(str(i) + ' of ' + str(len(new)))
 		entry = {}
 		n = new[i]
 		ind = np.array(names) == n
@@ -152,7 +152,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 	print(len(new))
 	new.sort(reverse=True)
 	for i in range(len(new)):
-		print(str(i) of str(len(new)))
+		print(str(i) + ' of ' + str(len(new)))
 		entry = {}
 		n = new[i]
 		ind = np.array(names) == n
