@@ -403,7 +403,7 @@ class pouakai():
 		self.fig_axis['D'].plot(self.cal.source_x[self.cal.good],self.cal.source_y[self.cal.good],'r.')
 		self._zp_hist()
 		#self._zp_color()
-		self.cal.mag_limit_fig(self.fig_axis['F'])
+		self.cal.mag_limit_fig(self.fig_axis['I'])
 		if self.verbose:
 			print('Zeropoint found to be ' + str(np.round(self.cal.zp,2)))
 
