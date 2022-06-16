@@ -386,8 +386,10 @@ class pouakai():
 			brightlim = 15
 
 		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=self.mask, header=self.header,
-							 threshold=threshold,cal_model=model,ax=self.fig_axis['F'],
+							 threshold=threshold,cal_model=model,ax=self.fig_axis['I'],
 							 brightlim=brightlim)
+		self._add_image(self.cal.zp_surface,'E',colorbar=True)
+		self._add_image(self.cal.data,'F')
 		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
 		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
@@ -397,7 +399,7 @@ class pouakai():
 		self.log['maglim5'] = self.cal.maglim5
 		self.log['maglim3'] = self.cal.maglim3
 
-		self.fig_axis['D'].plot(self.cal.source_x,self.cal.source_y,'r.')
+		self.fig_axis['D'].plot(self.cal.source_x[self.cal.good],self.cal.source_y[self.cal.good],'r.')
 		self._zp_hist()
 		#self._zp_color()
 		self.cal.mag_limit_fig(self.fig_axis['F'])
@@ -411,30 +413,36 @@ class pouakai():
 		zps = self.cal.zps
 		zps = zps[np.isfinite(zps)]
 		#b = int(abs(np.nanmax(zps) - np.nanmin(zps) /(2*iqr(zps)*len(zps)**(-1/3))))
-		self.fig_axis['E'].hist(zps,alpha=0.5)		
+		self.fig_axis['G'].hist(zps,alpha=0.5)		
 		med = self.cal.zp
 		high = self.cal.zp+self.cal.zp_std
 		low = self.cal.zp-self.cal.zp_std
-		self.fig_axis['E'].axvline(med,color='k',ls='--')
-		self.fig_axis['E'].axvline(low,color='k',ls=':')
-		self.fig_axis['E'].axvline(high,color='k',ls=':')
+		self.fig_axis['G'].axvline(med,color='k',ls='--')
+		self.fig_axis['G'].axvline(low,color='k',ls=':')
+		self.fig_axis['G'].axvline(high,color='k',ls=':')
 		s = ('$zp='+str((np.round(med,2)))+'^{+' + 
 			str(np.round(high-med,2))+'}_{'+
 			str(np.round(low-med,2))+'}$')
-		self.fig_axis['E'].annotate(s,(.7,.8),fontsize=10,xycoords='axes fraction')
-		self.fig_axis['E'].set_xlabel('zeropoint',fontsize=15)
-		self.fig_axis['E'].set_ylabel('Occurrence',fontsize=15)
+		self.fig_axis['G'].annotate(s,(.7,.8),fontsize=10,xycoords='axes fraction')
+		self.fig_axis['G'].set_xlabel('zeropoint',fontsize=15)
+		self.fig_axis['G'].set_ylabel('Occurrence',fontsize=15)
 
 	def _zp_color(self):
 		"""
 		Create a figure showing the zeropoint evolving with color.
 		"""
-		zps = self.cal.zps
-		gr = self.cal.cat_mags['g'] - self.cal.cat_mags['r']
+		zps = self.cal.zps[self.cal.good]
+		gr = (self.cal.cat_mags['g'] - self.cal.cat_mags['r']).values[self.cal.good]
 
-		self.fig_axis['F'].plot(gr,zps,'.')
-		self.fig_axis['F'].set_ylabel('zeropoint',fontsize=15)
-		self.fig_axis['F'].set_xlabel('$g-r$',fontsize=15)	
+		self.fig_axis['H'].plot(gr,zps,'.')
+		self.fig_axis['H'].set_ylabel('zeropoint',fontsize=15)
+		self.fig_axis['H'].set_xlabel('$g-r$',fontsize=15)	
+		med = self.cal.zp
+		high = self.cal.zp+self.cal.zp_std
+		low = self.cal.zp-self.cal.zp_std
+		self.fig_axis['H'].axhline(med,color='k',ls='--')
+		self.fig_axis['H'].axhline(low,color='k',ls=':')
+		self.fig_axis['H'].axhline(high,color='k',ls=':')
 
 
 	def save_fig(self):
@@ -452,21 +460,24 @@ class pouakai():
 		self.fig = plt.figure(figsize=(8.27,11.69),constrained_layout=True)
 		self.fig_axis = self.fig.subplot_mosaic(
 											"""
-											AB
-											AB
-											CD
-											CD
-											EF
+											ABC
+											ABC
+											DEF
+											DEF
+											GHI
 											"""
 										  )
 		self.fig_axis['A'].set_title('Raw image',fontsize=15)
 		self.fig_axis['B'].set_title('Flat image',fontsize=15)
 		self.fig_axis['C'].set_title('Reduced image',fontsize=15)
 		self.fig_axis['D'].set_title('Calibration sources',fontsize=15)
-		self.fig_axis['E'].set_title('Zeropoint',fontsize=15)
-		self.fig_axis['F'].set_title('Signal-Noise Limit',fontsize=15)
+		self.fig_axis['E'].set_title('Zeropoint correction',fontsize=15)
+		self.fig_axis['F'].set_title('Rescaled image',fontsize=15)
+		self.fig_axis['G'].set_title('Zeropoint distribution',fontsize=15)
+		self.fig_axis['H'].set_title('Zeropoint colour',fontsize=15)
+		self.fig_axis['I'].set_title('Signal-Noise Limit',fontsize=15)
 
-	def _add_image(self,image,ax_ind):
+	def _add_image(self,image,ax_ind,colorbar=False):
 		"""
 		Add the provided image to the provided axis.
 		"""
@@ -474,6 +485,8 @@ class pouakai():
 		vmax = np.percentile(image,84)
 		self.fig_axis[ax_ind].imshow(image,origin='lower',
 									 vmin=vmin,vmax=vmax)
+		if colorbar:
+			self.fig_axis[ax_ind].colorbar()
 
 	def _record_reduction(self):
 		"""
