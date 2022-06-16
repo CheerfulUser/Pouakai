@@ -390,6 +390,7 @@ class pouakai():
 							 brightlim=brightlim)
 		self._add_image(self.cal.zp_surface,'E',colorbar=True)
 		self._add_image(self.cal.data,'F')
+		self.image = self.cal.data
 		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
 		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
