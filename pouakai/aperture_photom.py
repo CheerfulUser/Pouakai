@@ -207,6 +207,7 @@ class ap_photom():
 		self.zps = zps
 		self.zp = zp
 		self.zp_std = zp_std
+		self.good = ind
 
 	def calculate_zp(self,threshold=10):
 		self._load_image()
