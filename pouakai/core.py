@@ -484,10 +484,11 @@ class pouakai():
 		"""
 		vmin = np.percentile(image,16)
 		vmax = np.percentile(image,84)
-		self.fig_axis[ax_ind].imshow(image,origin='lower',
+		im = self.fig_axis[ax_ind].imshow(image,origin='lower',
 									 vmin=vmin,vmax=vmax)
 		if colorbar:
-			self.fig_axis[ax_ind].colorbar()
+			self.fig.colorbar(im,ax=self.fig_axis[ax_ind])
+			
 
 	def _record_reduction(self):
 		"""
