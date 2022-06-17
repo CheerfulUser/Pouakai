@@ -62,8 +62,8 @@ class ap_photom():
 			self._basic_source_mask()
 			self.calculate_zp(threshold)
 			self.ZP_correction()
-			self.Recast_image_scale()
-			self.calculate_zp(threshold)
+			#self.Recast_image_scale()
+			#self.calculate_zp(threshold)
 			self.mag_limit_fig(ax)
 
 

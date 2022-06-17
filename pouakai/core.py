@@ -487,7 +487,7 @@ class pouakai():
 		im = self.fig_axis[ax_ind].imshow(image,origin='lower',
 									 vmin=vmin,vmax=vmax)
 		if colorbar:
-			self.fig.colorbar(im,ax=self.fig_axis[ax_ind])
+			self.fig.colorbar(im,ax=self.fig_axis[ax_ind],fraction=0.046, pad=0.04)
 			
 
 	def _record_reduction(self):
