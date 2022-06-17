@@ -246,6 +246,8 @@ class pouakai():
 		print('dark ', np.nanmean(self.dark))
 		print('flat ', np.nanmean(self.flat))
 		print('image ', np.nanmean(image))
+		if np.nansum(image) == 0:
+			raise ValueError('Image is all NaNs')
 
 		self.image = image
 
@@ -321,7 +323,7 @@ class pouakai():
 
 		if self.verbose:
 			print('Solved WCS, saving file')
-		self.header = header
+		self.header = new_head
 		self.wcs = WCS(self.header)
 
 
@@ -369,7 +371,7 @@ class pouakai():
 		name = self.savepath + 'wcs/' + self.base_name + '_wcs.fits'
 		self.wcs_name = name
 
-		if verbose:
+		if self.verbose:
 			print('Saving intermediated wcs file')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
 
@@ -526,16 +528,9 @@ class pouakai():
 
 
 	def _update_header_mask_bits(self):
-	    #head['STARBIT']  = (1, 'bit value for normal sources')
-	    self.header['SATBIT']   = (2, 'bit value for saturated sources')
-	    self.header['FLATBIT'] = (4, 'bit value for bad flat')
-	    #head['STRAPBIT'] = (8, 'bit value for bad pixels')
-	    #head['USERBIT']  = (16, 'bit value for USER list')
-	    #head['SNBIT']    = (32, 'bit value for SN list')
-
-
-
-
-
-
-
+		#head['STARBIT']  = (1, 'bit value for normal sources')
+		self.header['SATBIT']   = (2, 'bit value for saturated sources')
+		self.header['FLATBIT'] = (4, 'bit value for bad flat')
+		#head['STRAPBIT'] = (8, 'bit value for bad pixels')
+		#head['USERBIT']  = (16, 'bit value for USER list')
+		#head['SNBIT']    = (32, 'bit value for SN list')
