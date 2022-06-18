@@ -170,9 +170,10 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 				header = hdu.header
 				data = hdu.data.astype(float)
 
-				saturations = (data > 40000).flatten()
+				saturations = (data > 50000).flatten()
 				# if more than 10% of pixels are saturated, set array to nan
-				if sum(saturations) > len(saturations)*0.1:
+				if sum(saturations) > len(saturations) * 0.1:
+					print('image ', file, ' is saturated')
 					data = data * np.nan
 
 				master += [data]
@@ -238,7 +239,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			entry['field'] = field
 			entry['flat_type'] = flat_type
 
-			if (np.nanmedian(mas) < 15000):
+			if (np.nanmedian(mas) < 15000) | (np.nansum(mas) <= 0):
 				note = 'bad'
 			else:
 				if (len(master) < 2) & (flat_type == 'dome'):
