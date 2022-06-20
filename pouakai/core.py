@@ -27,6 +27,7 @@ class pouakai():
 		self._local_astrom = local_astrom
 		self.time_tolerence = time_tolerence
 		self.dark_tolerence = dark_tolerence
+		self.offset = 500
 
 		self._start_record()
 		self._check_dirs()
@@ -249,7 +250,10 @@ class pouakai():
 		if np.nansum(image) == 0:
 			raise ValueError('Image is all NaNs')
 
-		self.image = image
+		bkg = np.nanmedian(image)
+		sub = image - bkg + self.offset
+
+		self.image = sub
 
 		self._add_image(self.raw_image,'A')
 		self._add_image(self.flat,'B')
