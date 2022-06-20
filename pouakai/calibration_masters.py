@@ -187,7 +187,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 				d_tdiff = tdiff
 				dark_get = False
 			else:
-				if dark_name is not 'none':
+				if dark_name != 'none':
 					fname = dark_name + str(j) + '.fits.gz'
 					tdiff = d_tdiff
 			if verbose:

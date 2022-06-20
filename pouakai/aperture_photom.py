@@ -27,7 +27,8 @@ package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 class ap_photom():
 
 	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
-				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=14,rescale=True):
+				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=14,rescale=True,
+				 plot=True):
 		self.file = file
 		self.data = data
 		self.wcs = wcs
@@ -65,7 +66,8 @@ class ap_photom():
 				self.ZP_correction()
 				self.Recast_image_scale()
 				self.calculate_zp(threshold)
-			self.mag_limit_fig(ax)
+			if plot:
+				self.mag_limit_fig(ax)
 
 
 
@@ -377,7 +379,7 @@ class ap_photom():
 		y_data = (self.ap_photom['ycenter'].values + 0.5).astype(int)
 		diff = (self.zps - tmp[y_data.astype(int),x_data.astype(int)])
 		cut = ~sigma_clip(diff,sigma=sigma).mask
-		estimate,bitmask = self.Fit_surface(mask=cut,smoother=25)
+		estimate,bitmask = self.Fit_surface(mask=cut,smoother=30)
 		self.zp_surface = estimate
 		
 
