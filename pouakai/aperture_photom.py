@@ -27,7 +27,7 @@ package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 class ap_photom():
 
 	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
-				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=14):
+				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=14,rescale=True):
 		self.file = file
 		self.data = data
 		self.wcs = wcs
@@ -61,9 +61,10 @@ class ap_photom():
 			self._load_image()
 			self._basic_source_mask()
 			self.calculate_zp(threshold)
-			self.ZP_correction()
-			self.Recast_image_scale()
-			self.calculate_zp(threshold)
+			if rescale:
+				self.ZP_correction()
+				self.Recast_image_scale()
+				self.calculate_zp(threshold)
 			self.mag_limit_fig(ax)
 
 
@@ -144,14 +145,13 @@ class ap_photom():
 		phot_table = aperture_photometry(self.data,self.aperture)
 		masked = deepcopy(self.data)
 		masked[self.source_mask==0] = np.nan
-		med = np.nanmedian(masked)
-		std = np.nanstd(masked)
 		aperstats = ApertureStats(masked, self.sky_ap)
+		unmasked = ApertureStats(self.data, self.sky_ap)
 		bkg_median = aperstats.median
 		bkg_std = aperstats.std
 		ind = np.isnan(bkg_median)
-		bkg_median[ind] = med
-		bkg_std[ind] = std
+		bkg_median[ind] = unmasked.median[ind]
+		bkg_std[ind] = unmasked.std[ind]
 		area = self.aperture.area_overlap(self.data)
 		phot_table['bkg_median'] = bkg_median
 		phot_table['bkg_std'] = bkg_std 
@@ -364,7 +364,7 @@ class ap_photom():
 		"""
 		Recast the image scale to a new zeropoint.
 		"""
-		new_image = self.data * 10**((self.zp_surface - newzp) / -2.5)
+		new_image = ((self.data - np.nanmedian(self.data)) * 10**((self.zp_surface - newzp) / -2.5)) + np.nanmedian(self.data)
 		self.data = new_image
 
 
@@ -377,7 +377,7 @@ class ap_photom():
 		y_data = (self.ap_photom['ycenter'].values + 0.5).astype(int)
 		diff = (self.zps - tmp[y_data.astype(int),x_data.astype(int)])
 		cut = ~sigma_clip(diff,sigma=sigma).mask
-		estimate,bitmask = self.Fit_surface(mask=cut,smoother=50)
+		estimate,bitmask = self.Fit_surface(mask=cut,smoother=25)
 		self.zp_surface = estimate
 		
 
