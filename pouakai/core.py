@@ -16,6 +16,9 @@ from aperture_photom import ap_photom
 
 from scipy.ndimage.filters import convolve
 
+import warnings
+warnings.filterwarnings("ignore")
+
 
 class pouakai():
 
