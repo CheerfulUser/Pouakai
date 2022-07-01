@@ -20,10 +20,16 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
+#class Consume_moa():
+	
+#	def __init__(self,images,):
+		
 class pouakai():
 
 	def __init__(self,file,reduction='full',time_tolerence=100,dark_tolerence=10,savepath='',
-				 local_astrom=True,verbose=True):
+				 local_astrom=True,verbose=True,update_cals=False):
+
+		self._update_cals(update_cals)
 		self.verbose = verbose
 		self.file = file 
 		self.savepath = savepath
@@ -46,6 +52,7 @@ class pouakai():
 		
 
 		self.reduce(reduction)
+
 
 	def reduce(self,reduction):
 		#self._check_reduction(reduction)
@@ -365,7 +372,7 @@ class pouakai():
 			print('Solved WCS')
 		
 		clear = 'rm -r ' + real_save_path
-		os.system(clear)
+		#os.system(clear)
 
 		if self.verbose:
 			print('WCS tmp files cleared')
@@ -541,3 +548,5 @@ class pouakai():
 		#head['STRAPBIT'] = (8, 'bit value for bad pixels')
 		#head['USERBIT']  = (16, 'bit value for USER list')
 		#head['SNBIT']    = (32, 'bit value for SN list')
+
+	
