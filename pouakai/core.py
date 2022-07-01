@@ -29,7 +29,7 @@ class pouakai():
 	def __init__(self,file,reduction='full',time_tolerence=100,dark_tolerence=10,savepath='',
 				 local_astrom=True,verbose=True,update_cals=False):
 
-		self._update_cals(update_cals)
+		#self._update_cals(update_cals)
 		self.verbose = verbose
 		self.file = file 
 		self.savepath = savepath
@@ -40,7 +40,7 @@ class pouakai():
 
 		self._start_record()
 		self._check_dirs()
-		self._set_base_name()
+		self._set_base_name() 
 		
 		self._read_science_image()
 
