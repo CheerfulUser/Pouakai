@@ -350,7 +350,10 @@ class pouakai():
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		real_save_path = self.savepath + 'red/' + save_path
-		os.mkdir(real_save_path)
+		try:
+			os.mkdir(real_save_path)
+		except:
+			print('file exists')
 	
 		name = save_path + self.base_name + '_wcs'
 		real_name = real_save_path + self.base_name + '_wcs'
