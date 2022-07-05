@@ -28,7 +28,7 @@ class ap_photom():
 
 	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
 				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=14,rescale=True,
-				 plot=True):
+				 plot=True,floor=None):
 		self.file = file
 		self.data = data
 		self.wcs = wcs
@@ -37,6 +37,7 @@ class ap_photom():
 		self.hdu = None
 		self.band = None
 		self.brightlim = brightlim
+		self.image_floor = floor
 
 
 		
@@ -366,7 +367,10 @@ class ap_photom():
 		"""
 		Recast the image scale to a new zeropoint.
 		"""
-		new_image = ((self.data - np.nanmedian(self.data)) * 10**((self.zp_surface - newzp) / -2.5)) + np.nanmedian(self.data)
+		if self.image_floor is not None:
+			new_image = ((self.data - np.nanmedian(self.image_floor)) * 10**((self.zp_surface - newzp) / -2.5)) + np.nanmedian(self.image_floor)
+		else:
+			new_image = ((self.data - np.nanmedian(self.data)) * 10**((self.zp_surface - newzp) / -2.5)) + np.nanmedian(self.data)
 		self.data = new_image
 
 
