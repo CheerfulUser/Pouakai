@@ -172,10 +172,10 @@ class ap_photom():
 			table = phot_table.to_pandas()
 
 		self.ap_photom = table
-		near_mask = self._check_mask()
+		#near_mask = self._check_mask()
 		#near_source = self._check_distance()
-		ind =  (near_mask<100) #& (near_source==0)
-		self.ap_photom['flag'] = ind * 0
+		#ind =  (near_mask<100) #& (near_source==0)
+		self.ap_photom['flag'] = 0 #ind
 
 
 	def _load_sauron(self):
