@@ -28,7 +28,7 @@ class ap_photom():
 
 	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
 				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=14,rescale=True,
-				 plot=True,floor=None):
+				 plot=True,floor=None,radius_override=None):
 		self.file = file
 		self.data = data
 		self.wcs = wcs
@@ -38,6 +38,7 @@ class ap_photom():
 		self.band = None
 		self.brightlim = brightlim
 		self.image_floor = floor
+		self.radius_override = radius_override
 
 
 		
@@ -67,6 +68,8 @@ class ap_photom():
 				self.ZP_correction()
 				self.Recast_image_scale()
 				self.calculate_zp(threshold)
+			self.ap_photom['mag'] = self.ap_photom['sysmag'] + self.zp
+			self.ap_photom['e_mag'] = 2.5/np.log(10)*(self.ap_photom['e_counts']/self.ap_photom['counts'])
 			if plot:
 				self.mag_limit_fig(ax)
 
@@ -125,7 +128,7 @@ class ap_photom():
 			except:
 				fwhm = np.nan # dummy number 
 			radii += [fwhm]
-		self.radii = np.array(radii) * 1.2
+		self.radii = np.array(radii) * 1.4
 		self.radius = np.nanmedian(self.radii)
 
 
@@ -137,7 +140,10 @@ class ap_photom():
 		for i in range(len(xcoords)):
 			positions += [[xcoords[i],ycoords[i]]]
 		positions = np.array(positions)
-		self.aperture = CircularAperture(positions, r=self.radius)
+		if self.radius_override is not None:
+			self.aperture = CircularAperture(positions, r=self.radius_override)
+		else:
+			self.aperture = CircularAperture(positions, r=self.radius)
 		self.sky_ap = CircularAnnulus(positions, r_in=self.radius*2, r_out=self.radius*10)
 		
 

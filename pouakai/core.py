@@ -542,6 +542,9 @@ class pouakai():
 
 
 	def _update_header_mask_bits(self):
+		'''
+		Function to update the header mask bits.
+		'''
 		#head['STARBIT']  = (1, 'bit value for normal sources')
 		self.header['SATBIT']   = (2, 'bit value for saturated sources')
 		self.header['FLATBIT'] = (4, 'bit value for bad flat')
@@ -550,3 +553,17 @@ class pouakai():
 		#head['SNBIT']    = (32, 'bit value for SN list')
 
 	
+# function to plot a line
+def plot_line(x,y,ax,color='k',ls='-',lw=1):
+	ax.plot(x,y,color=color,ls=ls,lw=lw)
+	return ax
+
+# use numpy to convolve two arrays
+def convolve(a,b):
+	return np.convolve(a,b,mode='same')
+
+# with astropy units give speed of light
+def c():
+	return astropy.constants.c.to('km/s')
+c = 299792458
+
