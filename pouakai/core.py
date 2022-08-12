@@ -521,8 +521,6 @@ class pouakai():
 		mask = deepcopy(self.flat) / np.nanmedian(deepcopy(self.flat))
 		mask = (mask < lowlim) | (mask > highlim)
 		kernel = np.ones((buffer,buffer))
-		print("!!!! mask shape!!!!", mask.shape)
-		print('kernel',kernel.shape)
 		mask = convolve(mask,kernel)
 		mask = mask.astype(int)
 		return mask
@@ -555,18 +553,4 @@ class pouakai():
 		#head['USERBIT']  = (16, 'bit value for USER list')
 		#head['SNBIT']    = (32, 'bit value for SN list')
 
-	
-# function to plot a line
-def plot_line(x,y,ax,color='k',ls='-',lw=1):
-	ax.plot(x,y,color=color,ls=ls,lw=lw)
-	return ax
-
-# use numpy to convolve two arrays
-def convolve(a,b):
-	return np.convolve(a,b,mode='same')
-
-# with astropy units give speed of light
-def c():
-	return astropy.constants.c.to('km/s')
-c = 299792458
 
