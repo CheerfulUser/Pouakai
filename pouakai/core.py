@@ -520,6 +520,7 @@ class pouakai():
 	def _flat_mask(self,lowlim=0.8,highlim=1.2,buffer=3):
 		mask = deepcopy(self.flat) / np.nanmedian(deepcopy(self.flat))
 		mask = (mask < lowlim) | (mask > highlim)
+		print("!!!! mask shape!!!!", mask.shape)
 		mask = convolve(mask,np.ones((buffer,buffer)))
 		mask = mask.astype(int)
 		return mask
