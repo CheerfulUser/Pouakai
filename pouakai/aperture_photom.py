@@ -356,7 +356,7 @@ class ap_photom():
 		y1 = yy[~arr.mask]
 		newarr = arr[~arr.mask]
 
-		estimate = griddata((x_data, y_data), newarr.ravel(),
+		estimate = griddata((x1, y1), newarr.ravel(),
 									(xx, yy),method='linear')
 		bitmask = np.zeros_like(zpimage,dtype=int)
 		bitmask[np.isnan(estimate)] = 128 | 4

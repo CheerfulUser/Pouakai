@@ -371,7 +371,7 @@ class pouakai():
 		if self.verbose:
 			print('Solved WCS')
 		
-		clear = 'rm -r ' + real_save_path
+		clear = 'rm -rf ' + real_save_path
 		#os.system(clear)
 
 		if self.verbose:
