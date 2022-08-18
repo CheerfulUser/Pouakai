@@ -39,7 +39,7 @@ def sort_obs(verbose=False):
 		sep = moon.separation(c)
 		entry['ra'] = ra
 		entry['dec'] = dec
-		entry['moon_sep'] = sep
+		entry['moon_sep'] = sep.deg
 		entry['sky'] = np.nanmedian(fits.open(n)[0].data)
 
 		entry['filename'] = n
