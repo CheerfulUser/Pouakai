@@ -22,30 +22,30 @@ def sort_obs(verbose=False):
 		n = new.pop()
 		print(n)
 		name = n.split('/')[-1].split('.')[0]
-		entry['name'] = name
-		try:
-			header = fits.open(n)[0].header
-			entry['field'] = header['FIELD']
-			entry['chip'] = header['CHIP']
-			entry['exptime'] = header['EXPTIME']
-			entry['jd'] = header['JDSTART']
-			entry['date'] = header['DATE-OBS']
-			
-			ra = header['RA'].strip()
-			dec = header['DEC'].strip()
-			c = SkyCoord(ra,dec,units=(u.hourangle,u.deg))
-			t = Time(header['JDSTART'],format='jd')
-			moon = get_moon(t)
-			sep = moon.separation(c)
-			entry['ra'] = ra
-			entry['dec'] = dec
-			entry['moon_sep'] = sep
-			entry['sky'] = np.nanmedian(fits.open(n)[0].data)
+		entry['name'] = name.strip()
+		#try:
+		header = fits.open(n)[0].header
+		entry['field'] = header['FIELD'].strip()
+		entry['chip'] = header['CHIP']
+		entry['exptime'] = header['EXPTIME']
+		entry['jd'] = header['JDSTART']
+		entry['date'] = header['DATE-OBS'].strip()
+		
+		ra = header['RA'].strip()
+		dec = header['DEC'].strip()
+		c = SkyCoord(ra,dec,units=(u.hourangle,u.deg))
+		t = Time(header['JDSTART'],format='jd')
+		moon = get_moon(t)
+		sep = moon.separation(c)
+		entry['ra'] = ra
+		entry['dec'] = dec
+		entry['moon_sep'] = sep
+		entry['sky'] = np.nanmedian(fits.open(n)[0].data)
 
-			entry['filename'] = n
+		entry['filename'] = n
 
-		except:
-			print('bad ',n)
+		#except:
+		#	print('bad ',n)
 		if verbose:
 			print('Done ', n)
 			print('len n ',len(new))
