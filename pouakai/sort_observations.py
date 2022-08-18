@@ -33,7 +33,7 @@ def sort_obs(verbose=False):
 		
 		ra = header['RA'].strip()
 		dec = header['DEC'].strip()
-		c = SkyCoord(ra,dec,units=(u.hourangle,u.deg))
+		c = SkyCoord(ra,dec,unit=(u.hourangle,u.deg))
 		t = Time(header['JDSTART'],format='jd')
 		moon = get_moon(t)
 		sep = moon.separation(c)
