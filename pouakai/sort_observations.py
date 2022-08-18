@@ -25,7 +25,7 @@ def sort_obs(verbose=False):
 		entry['name'] = name
 		try:
 			header = fits.open(n)[0].header
-
+			entry['field'] = header['FIELD']
 			entry['chip'] = header['CHIP']
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = header['JDSTART']
