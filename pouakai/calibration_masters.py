@@ -269,7 +269,7 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	masters = pd.read_csv('cal_lists/master_flat_list.csv')
 
-	ind = (flat_list['field'] == 'flat_round') & (flat_list['note'] is not 'over')
+	ind = (flat_list['field'].values == 'flat_round') & (flat_list['note'].values is not 'over')
 	flat_list = flat_list.iloc[ind]
 	flat_list['band'] = flat_list['band'].str.strip()
 	times = flat_list['jd'].values.astype(int)
@@ -310,7 +310,7 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 			saturations = (data > 50000).flatten()
 			# if more than 10% of pixels are saturated, set array to nan
 			if sum(saturations) > len(saturations) * 0.1:
-				print('image ', file, ' is saturated')
+				print('image ', files[j], ' is saturated')
 				data = data * np.nan
 			master_arr += [data]
 
