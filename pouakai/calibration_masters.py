@@ -11,7 +11,7 @@ def split_names(files):
 	return names
 
 
-def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/master/dark/',num_cores=10,verbose=False):
+def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/master/dark/',num_cores=25,verbose=False):
 	# make save_location an environment variable
 	dark_list = pd.read_csv('cal_lists/dark_list.csv')
 	masters = pd.read_csv('cal_lists/master_dark_list.csv')
@@ -269,7 +269,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			masters = masters.append(entry, ignore_index=True)
 			masters.to_csv('cal_lists/master_flat_list.csv',index=False)
 
-def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',time_frame=30,num_cores=10, verbose=False):
+def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',time_frame=30,num_cores=25, verbose=False):
 	# make save_location an environment variable
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	masters = pd.read_csv('cal_lists/master_flat_list.csv')
