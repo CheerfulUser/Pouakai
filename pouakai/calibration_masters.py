@@ -23,7 +23,7 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 	new = list(new)
 	new.sort(reverse=True)
 	print('sorted')
-	indexer = np.arange(len(new))
+	indexer = np.arange(len(new),dtype=int)
 	entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,names,dark_list,save_location,verbose) for index in indexer)
 	masters = pd.concat([masters,entries], ignore_index=True)
 	masters.to_csv('cal_lists/master_dark_list.csv',index=False)
@@ -82,7 +82,8 @@ def dark_processing(index,new,names,dark_list,save_location,verbose):
 		else:
 			note = 'good'
 		entry['note'] = note
-	
+		print(entry)
+		print(type(entry))
 		if verbose:
 			print('Done ', base_name)
 		if len(entries) == 0:
