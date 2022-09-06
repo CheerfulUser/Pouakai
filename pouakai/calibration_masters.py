@@ -23,8 +23,8 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 	new = list(new)
 	new.sort(reverse=True)
 	print('sorted')
-	
-	entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,names,dark_list,save_location,verbose) for index in len(new))
+	indexer = np.arange(len(new))
+	entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,names,dark_list,save_location,verbose) for index in indexer)
 	masters = pd.concat([masters,entries], ignore_index=True)
 	masters.to_csv('cal_lists/master_dark_list.csv',index=False)
 
@@ -286,7 +286,8 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 	new = list(new)
 	print('Number of new entries: ',len(new))
 	new.sort(reverse=True)
-	entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,flat_list,times,time_frame,save_location,verbose) for index in len(new))
+	indexer = np.arange(len(new))
+	entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,flat_list,times,time_frame,save_location,verbose) for index in indexer)
 	entries = pd.concat(entries,ignore_index=True)	
 	
 	masters = masters.append(entries, ignore_index=True)
