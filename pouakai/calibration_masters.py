@@ -87,10 +87,10 @@ def dark_processing(index,new,names,dark_list,save_location,verbose):
 		if verbose:
 			print('Done ', base_name)
 		if len(entries) == 0:
-			entries = pd.DataFrame(entry)
+			entries = pd.DataFrame([entry])
 		else:
 			entries = entries.append(entry,ignore_index=True)
-		entries.append(entry)			
+		
 	return entries 
 
 def get_master_dark(jd,exptime,chip,strict=True,tol=1):
@@ -388,7 +388,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 
 	if verbose:
 		print('Done ', n)
-	return pd.DataFrame(entry)
+	return pd.DataFrame([entry])
 
 if __name__ == '__main__':
 	make_master_darks(verbose=True)
