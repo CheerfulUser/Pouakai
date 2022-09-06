@@ -82,8 +82,6 @@ def dark_processing(index,new,names,dark_list,save_location,verbose):
 		else:
 			note = 'good'
 		entry['note'] = note
-		print(entry)
-		print(type(entry))
 		if verbose:
 			print('Done ', base_name)
 		if len(entries) == 0:
