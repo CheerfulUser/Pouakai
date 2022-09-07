@@ -283,17 +283,19 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 			 		+ '_' + flat_list['chip'].values.astype(str)[i])]
 
 	all_names = set(names)
+	print(all_names)
 	master_names = set(split_names(masters['name'].values))
 	new = all_names ^ master_names
 	new = list(new)
-	print('Number of new entries: ',len(new))
-	new.sort(reverse=True)
-	indexer = np.arange(len(new))
-	entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,flat_list,times,time_frame,save_location,verbose) for index in indexer)
-	entries = pd.concat(entries,ignore_index=True)	
-	
-	masters = masters.append(entries, ignore_index=True)
-	masters.to_csv('cal_lists/master_flat_list.csv',index=False)
+	print('Number of new flat entries: ',len(new))
+	if len(new) > 0:
+		new.sort(reverse=True)
+		indexer = np.arange(len(new))
+		entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,flat_list,times,time_frame,save_location,verbose) for index in indexer)
+		entries = pd.concat(entries,ignore_index=True)	
+		
+		masters = masters.append(entries, ignore_index=True)
+		masters.to_csv('cal_lists/master_flat_list.csv',index=False)
 
 def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 	i = index
