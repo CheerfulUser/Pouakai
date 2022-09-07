@@ -275,6 +275,7 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 
 	ind = (flat_list['field'].values == 'flat_round') & (flat_list['note'].values != 'over')
 	flat_list = flat_list.iloc[ind]
+	print(flat_list)
 	flat_list['band'] = flat_list['band'].str.strip()
 	times = flat_list['jd'].values.astype(int)
 	names = []
