@@ -321,6 +321,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 		hdu = fits.open(files[j])[0]
 		print('test')
 		header = hdu.header
+		print(header)
 		data = hdu.data.astype(float)
 
 		saturations = (data > 50000).flatten()
