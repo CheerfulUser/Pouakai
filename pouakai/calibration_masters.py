@@ -277,8 +277,10 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 	flat_list = flat_list.iloc[ind]
 	flat_list['band'] = flat_list['band'].str.strip()
 	times = flat_list['jd'].values.astype(int)
-	names = ('F' + times.astype(str) + '_' + str(time_frame) + 'd_' + flat_list['band'].values
-			 + '_' + flat_list['chip'].values.astype(str))
+	names = []
+	for i in range(len(times)):
+		names += [('F' + times.astype(str)[i] + '_' + str(time_frame) + 'd_' + flat_list['band'].values[i]
+			 		+ '_' + flat_list['chip'].values.astype(str)[i])]
 
 	all_names = set(names)
 	master_names = set(split_names(masters['name'].values))
