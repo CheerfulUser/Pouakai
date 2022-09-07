@@ -283,7 +283,6 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 			 		+ '_' + flat_list['chip'].values.astype(str)[i])]
 
 	all_names = set(names)
-	print(all_names)
 	master_names = set(split_names(masters['name'].values))
 	new = all_names ^ master_names
 	new = list(new)
