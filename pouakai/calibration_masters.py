@@ -318,7 +318,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 		master_arr = []
 		darks = []
 		for j in range(len(files)):
-			print(files[j])
+			
 			hdu = fits.open(files[j])[0]
 			print('test')
 			header = hdu.header
@@ -395,7 +395,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 			print('Done ', n)
 		return pd.DataFrame([entry])
 	except:
-		print(new[i])
+		print('failed ',new[i])
 
 if __name__ == '__main__':
 	make_master_darks(verbose=True)
