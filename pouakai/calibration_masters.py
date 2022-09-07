@@ -273,7 +273,7 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	masters = pd.read_csv('cal_lists/master_flat_list.csv')
 	flat_list['field'] = flat_list['field'].str.strip()
-	ind = (flat_list['field'].values == 'flat_round') & (flat_list['note'].values == 'good')
+	ind = (flat_list['field'].values == 'flat_round') & (flat_list['note'].values == 'good') & (flat_list['chip'].values != 99) & (flat_list['chip'].values != 0)
 	flat_list = flat_list.iloc[ind]
 	flat_list['band'] = flat_list['band'].str.strip()
 	times = flat_list['jd'].values.astype(int)
