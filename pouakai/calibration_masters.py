@@ -291,7 +291,7 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 	if len(new) > 0:
 		new.sort(reverse=True)
 		indexer = np.arange(len(new))
-		entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,flat_list,times,time_frame,save_location,verbose) for index in indexer)
+		entries = Parallel(n_jobs=num_cores)(delayed(flat_processing)(index,new,flat_list,times,time_frame,save_location,verbose) for index in indexer)
 		entries = pd.concat(entries,ignore_index=True)	
 		
 		masters = masters.append(entries, ignore_index=True)
