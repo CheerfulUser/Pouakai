@@ -304,10 +304,10 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 	c = int(n.split('_')[-1])
 	b = n.split('_')[2]
 
-	tind = (t - times > 0) & (t - times < time_frame)
+	tind = (t - times >= 0) & (t - times <= time_frame)
 	cind = flat_list['chip'].values == c
 	bind = flat_list['band'].values == b
-
+	print(tind.any(),cind.any(),bind.any())
 	ind = tind & cind & bind
 
 	files = flat_list['filename'].values[ind]
