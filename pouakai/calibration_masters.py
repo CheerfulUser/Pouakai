@@ -105,7 +105,7 @@ def get_master_dark(jd,exptime,chip,strict=True,tol=1):
 	darks = darks.iloc[chip_ind]
 	
 	dexptime = darks['exptime'].values
-	exp_ind = dexptime == exptime
+	exp_ind = dexptime.astype(int) == int(exptime)
 	good = darks.iloc[exp_ind]
 
 	if len(good) > 0:
@@ -115,7 +115,7 @@ def get_master_dark(jd,exptime,chip,strict=True,tol=1):
 		t_diff = diff[min_ind]
 		dark = good.iloc[min_ind]
 		fname = dark['filename']
-		print('flat exp:{}, chip:{}'.format(exptime,chip))
+		#print('flat exp:{}, chip:{}'.format(exptime,chip))
 		if abs(t_diff) < tol:
 			return fname, t_diff
 		else:
@@ -268,7 +268,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			masters = masters.append(entry, ignore_index=True)
 			masters.to_csv('cal_lists/master_flat_list.csv',index=False)
 
-def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',time_frame=30,num_cores=2, verbose=False):
+def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/master/flat/',time_frame=60,num_cores=25, verbose=False):
 	# make save_location an environment variable
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')
 	masters = pd.read_csv('cal_lists/master_flat_list.csv')
@@ -307,21 +307,20 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 	tind = (t - times >= 0) & (t - times <= time_frame)
 	cind = flat_list['chip'].values == c
 	bind = flat_list['band'].values == b
-	print(tind.any(),cind.any(),bind.any())
 	ind = tind & cind & bind
 
 	files = flat_list['filename'].values[ind]
 	exptimes = flat_list['exptime'].values[ind]
-	print(len(files))
+	if verbose:
+		print('Num flats: ', len(files))
 
 	master_arr = []
 	darks = []
 	for j in range(len(files)):
 		
 		hdu = fits.open(files[j])[0]
-		print('test')
 		header = hdu.header
-		print(header)
+		#print(header)
 		data = hdu.data.astype(float)
 
 		saturations = (data > 50000).flatten()
@@ -331,7 +330,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 			data = data * np.nan
 		master_arr += [data]
 
-		fname, tdiff = get_master_dark(t, exptimes, c)
+		fname, tdiff = get_master_dark(t, exptimes[j], c)
 		try:
 			darks += [fits.open(fname)[0].data]
 		except:
@@ -343,7 +342,6 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 
 	mas = np.nanmedian(master_arr,axis=0)
 	std = np.nanstd(master_arr,axis=0)
-	print('boop')
 	header['JDSTART'] = t 
 	header['MASTER'] = True
 	phdu = fits.PrimaryHDU(data = mas, header = header)
