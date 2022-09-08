@@ -312,7 +312,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 
 	files = flat_list['filename'].values[ind]
 	exptimes = flat_list['exptime'].values[ind]
-
+	print(len(files))
 
 	master_arr = []
 	darks = []
