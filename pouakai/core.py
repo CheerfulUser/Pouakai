@@ -37,6 +37,7 @@ class pouakai():
 		self.time_tolerence = time_tolerence
 		self.dark_tolerence = dark_tolerence
 		self.offset = 500
+		self.fail_flag = ''
 
 		self._start_record()
 		self._check_dirs()
@@ -50,8 +51,13 @@ class pouakai():
 
 		self._setup_fig()
 		
+		try:
+			self.reduce(reduction)
+		except Exception as e:
+			self.fail_flag = e
 
-		self.reduce(reduction)
+		if len(self.fail_flag) > 0:
+			self._fail_log()
 
 
 	def reduce(self,reduction):
@@ -70,7 +76,12 @@ class pouakai():
 		self._record_reduction()
 	#def _check_reduction(self,reduction):
 
-
+	def _fail_log(self):
+		document = {'fname': self.file,
+					'error':self.fail_flag}
+		error_log = pd.read_csv('cal_lists/error_log.csv')
+		error_log = error_log.append(document)
+		error_log.to_csv('cal_lists/error_log.csv',index=False)
 
 	def _start_record(self):
 		"""
