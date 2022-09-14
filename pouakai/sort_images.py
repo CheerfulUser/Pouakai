@@ -131,7 +131,7 @@ def obs_grab_info(file,verbose=False):
 		name = file.split('/')[-1].split('.')[0]
 		entry['name'] = name.strip()
 		try:
-			header = fits.open(n)[0].header
+			header = fits.open(file)[0].header
 			entry['field'] = header['FIELD'].strip()
 			entry['chip'] = header['CHIP']
 			entry['exptime'] = header['EXPTIME']
