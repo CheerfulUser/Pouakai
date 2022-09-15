@@ -1,1 +1,1 @@
-﻿field,name,chip,exptime,jd,date,ra,dec,moon_sep,sky,filename
+﻿field,name,telescope,band,exptime,jd,date,ra,dec,moon_sep,sky,image_type,filename

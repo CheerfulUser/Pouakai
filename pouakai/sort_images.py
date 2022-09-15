@@ -8,12 +8,13 @@ from astropy.coordinates import SkyCoord, get_moon
 import astropy.units as u
 from astropy.time import Time
 
-moa_darks_dir = '/home/phys/astro8/MJArchive/MOA/DARK/'
-moa_flats_dir = '/home/phys/astro8/MJArchive/MOA/FLAT/'
-moa_obs_dir = '/home/phys/astro8/MJArchive/MOA/ALERT/'
+fli_dir = '/home/phys/astro8/MJArchive/octans/'
 
 def sort_darks(verbose=False,num_core=25):
-	dark_files = set(glob(moa_darks_dir + '*/*.gz')) # first for year sudbdir, second for file
+	darks = glob(fli_dir + '*/dark*.fit') # first for day sudbdir, second for file
+	Darks = glob(fli_dir + '*/Dark*.fit') # first for day sudbdir, second for file
+	d = np.append(darks,Darks)
+	dark_files = set(d) 
 	dark_list = pd.read_csv('cal_lists/dark_list.csv')
 	old = set(dark_list['filename'])
 	new = dark_files ^ old
@@ -36,13 +37,13 @@ def dark_info_grab(file,verbose = True):
 	try:
 		header = fits.open(file)[0].header
 
-		entry['chip'] = header['CHIP']
+		entry['telescope'] = header['TELESCOP']
 		entry['exptime'] = header['EXPTIME']
-		entry['jd'] = header['JDSTART']
+		entry['jd'] = header['JD']
 		entry['date'] = header['DATE-OBS']
 	except:
 		print('!!! bad ',file)
-		entry['chip'] = 'bad'
+		entry['telescope'] = 'bad'
 		entry['exptime'] = 'bad'
 		entry['jd'] = 'bad'
 		entry['date'] = 'bad'
@@ -57,8 +58,10 @@ def dark_info_grab(file,verbose = True):
 
 
 def sort_flats(verbose = False, num_core = 25):
-	flat_files = set(glob(moa_flats_dir + '*.gz'))
-
+	flats = glob(fli_dir + '*/flat*.fit') # first for day sudbdir, second for file
+	Flats = glob(fli_dir + '*/Flat*.fit') # first for day sudbdir, second for file
+	f = np.append(flats,Flats)
+	flat_files = set(f) 
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')	
 	old = set(flat_list['filename'])
 	new = flat_files ^ old
@@ -91,22 +94,43 @@ def flat_info_grab(file,verbose=False):
 
 	entry = {}
 	entry['name'] = name
-	entry['band'] = header['COLOUR']
-	entry['chip'] = header['CHIP']
-	entry['exptime'] = header['EXPTIME']
-	entry['jd'] = header['JDSTART']
-	entry['date'] = header['DATE-OBS']
-	entry['field'] = header['FIELD']
-	entry['filename'] = file
-	entry['note'] = note
+	try:
+		entry['band'] = header['FILTER']
+		entry['telescope'] = header['TELESCOP']
+		entry['exptime'] = header['EXPTIME']
+		entry['jd'] = header['JD']
+		entry['date'] = header['DATE-OBS']
+		entry['filename'] = file
+		entry['note'] = note
+	except:
+		entry['band'] = 'bad'
+		entry['telescope'] = 'bad'
+		entry['exptime'] = -999
+		entry['jd'] = -999
+		entry['date'] = 'bad'
+		entry['filename'] = 'bad'
+		entry['note'] = 'bad'
+	
 	if verbose:
 		print('Done ', name)
 	df = pd.DataFrame([entry])
 	return df
 
 def sort_obs(verbose=False,num_core = 25):
-	obs_files = set(glob(moa_obs_dir + '*.gz'))
-	#try:
+	all_ims = glob(fli_dir + '*/*.fit')
+	a = set(all_ims)
+	flats = glob(fli_dir + '*/flat*.fit') # first for day sudbdir, second for file
+	Flats = glob(fli_dir + '*/Flat*.fit') # first for day sudbdir, second for file
+	f = np.append(flats,Flats)
+
+	darks = glob(fli_dir + '*/dark*.fit') # first for day sudbdir, second for file
+	Darks = glob(fli_dir + '*/Dark*.fit') # first for day sudbdir, second for file
+	d = np.append(darks,Darks)
+	cal = np.append(d,f)
+	cals = set(cal) 
+
+	obs_files = a ^ cals
+
 	obs_list = pd.read_csv('cal_lists/obs_list.csv')
 	old = set(obs_list['filename'].values)
 	new = obs_files ^ old
@@ -132,8 +156,9 @@ def obs_grab_info(file,verbose=False):
 		entry['name'] = name.strip()
 		try:
 			header = fits.open(file)[0].header
-			entry['field'] = header['FIELD'].strip()
-			entry['chip'] = header['CHIP']
+			entry['field'] = header['OBJECT'].strip()
+			entry['telescope'] = header['TELESCOP']
+			entry['band'] = header['FILTER'].strip()
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = header['JDSTART']
 			entry['date'] = header['DATE-OBS'].strip()
@@ -148,6 +173,7 @@ def obs_grab_info(file,verbose=False):
 			entry['dec'] = dec
 			entry['moon_sep'] = sep.deg
 			entry['sky'] = np.nanmedian(fits.open(file)[0].data)
+			entry['image_type'] = header['IMAGETYP']
 
 			entry['filename'] = file
 		except:
@@ -160,7 +186,7 @@ def obs_grab_info(file,verbose=False):
 			entry['dec'] = 'bad'
 			entry['moon_sep'] = 'bad'
 			entry['sky'] = 'bad'
-
+			entry['image_type'] = 'bad'
 			entry['filename'] = file
 		
 		if verbose:
