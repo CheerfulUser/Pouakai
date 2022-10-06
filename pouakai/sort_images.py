@@ -8,13 +8,18 @@ from astropy.coordinates import SkyCoord, get_moon
 import astropy.units as u
 from astropy.time import Time
 
+import os 
+package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
+
+
 moa_darks_dir = '/home/phys/astro8/MJArchive/MOA/DARK/'
 moa_flats_dir = '/home/phys/astro8/MJArchive/MOA/FLAT/'
 moa_obs_dir = '/home/phys/astro8/MJArchive/MOA/ALERT/'
 
 def sort_darks(verbose=False,num_core=25):
-	dark_files = set(glob(moa_darks_dir + '*/*.gz')) # first for year sudbdir, second for file
-	dark_list = pd.read_csv('cal_lists/dark_list.csv')
+	f = np.append(glob(moa_darks_dir + '*/*.gz'),glob(moa_darks_dir + '*.gz')) # first for year sudbdir, second for file
+	dark_files = set(f) 
+	dark_list = pd.read_csv(package_directory + 'cal_lists/dark_list.csv')
 	old = set(dark_list['filename'])
 	new = dark_files ^ old
 	if verbose: 
@@ -24,7 +29,7 @@ def sort_darks(verbose=False,num_core=25):
 		entries = Parallel(num_core)(delayed(dark_info_grab)(file,verbose) for file in files)
 		for entry in entries:
 			dark_list = dark_list.append(entry, ignore_index=True)
-		dark_list.to_csv('cal_lists/dark_list.csv',index=False)
+		dark_list.to_csv(package_directory + 'cal_lists/dark_list.csv',index=False)
 	if verbose:
 		print('Updated darks')
 
@@ -39,7 +44,7 @@ def dark_info_grab(file,verbose = True):
 		entry['chip'] = header['CHIP']
 		entry['exptime'] = header['EXPTIME']
 		entry['jd'] = header['JDSTART']
-		entry['date'] = header['DATE-OBS']
+		entry['date'] = header['DATE-OBS'].strip()
 	except:
 		print('!!! bad ',file)
 		entry['chip'] = 'bad'
@@ -57,9 +62,11 @@ def dark_info_grab(file,verbose = True):
 
 
 def sort_flats(verbose = False, num_core = 25):
-	flat_files = set(glob(moa_flats_dir + '*.gz'))
 
-	flat_list = pd.read_csv('cal_lists/flat_list.csv')	
+	f = np.append(glob(moa_flats_dir + '*/*.gz'),glob(moa_flats_dir + '*.gz')) # first for year sudbdir, second for file
+	flat_files = set(f)
+
+	flat_list = pd.read_csv(package_directory + 'cal_lists/flat_list.csv')	
 	old = set(flat_list['filename'])
 	new = flat_files ^ old
 
@@ -70,7 +77,7 @@ def sort_flats(verbose = False, num_core = 25):
 		entries = Parallel(num_core)(delayed(flat_info_grab)(file,verbose) for file in files)
 		for entry in entries:
 			flat_list = flat_list.append(entry, ignore_index=True)
-		flat_list.to_csv('cal_lists/flat_list.csv',index=False)
+		flat_list.to_csv(package_directory + 'cal_lists/flat_list.csv',index=False)
 	if verbose:
 		print('Updated flats')
 
@@ -91,12 +98,12 @@ def flat_info_grab(file,verbose=False):
 
 	entry = {}
 	entry['name'] = name
-	entry['band'] = header['COLOUR']
+	entry['band'] = header['COLOUR'].strip()
 	entry['chip'] = header['CHIP']
 	entry['exptime'] = header['EXPTIME']
 	entry['jd'] = header['JDSTART']
-	entry['date'] = header['DATE-OBS']
-	entry['field'] = header['FIELD']
+	entry['date'] = header['DATE-OBS'].strip()
+	entry['field'] = header['FIELD'].strip()
 	entry['filename'] = file
 	entry['note'] = note
 	if verbose:
@@ -105,9 +112,10 @@ def flat_info_grab(file,verbose=False):
 	return df
 
 def sort_obs(verbose=False,num_core = 25):
-	obs_files = set(glob(moa_obs_dir + '*.gz'))
+	f = np.append(glob(moa_obs_dir + '*/*.gz'),glob(moa_obs_dir + '*.gz')) # first for year sudbdir, second for file
+	obs_files = set(f)
 	#try:
-	obs_list = pd.read_csv('cal_lists/obs_list.csv')
+	obs_list = pd.read_csv(package_directory + 'cal_lists/obs_list.csv')
 	old = set(obs_list['filename'].values)
 	new = obs_files ^ old
 	if verbose: 
@@ -118,7 +126,7 @@ def sort_obs(verbose=False,num_core = 25):
 		for entry in entries:
 			if len(entry) > 0:
 				obs_list = obs_list.append(entry, ignore_index=True)
-		obs_list.to_csv('cal_lists/obs_list.csv',index=False)
+		obs_list.to_csv(package_directory + 'cal_lists/obs_list.csv',index=False)
 	if verbose:
 		print('Updated obs')
 
@@ -130,27 +138,29 @@ def obs_grab_info(file,verbose=False):
 	if type(file) == str:
 		name = file.split('/')[-1].split('.')[0]
 		entry['name'] = name.strip()
-		try:
-			header = fits.open(file)[0].header
-			entry['field'] = header['FIELD'].strip()
-			entry['chip'] = header['CHIP']
-			entry['exptime'] = header['EXPTIME']
-			entry['jd'] = header['JDSTART']
-			entry['date'] = header['DATE-OBS'].strip()
-			
-			ra = header['RA'].strip()
-			dec = header['DEC'].strip()
-			c = SkyCoord(ra,dec,unit=(u.hourangle,u.deg))
-			t = Time(header['JDSTART'],format='jd')
-			moon = get_moon(t)
-			sep = moon.separation(c)
-			entry['ra'] = ra
-			entry['dec'] = dec
-			entry['moon_sep'] = sep.deg
-			entry['sky'] = np.nanmedian(fits.open(file)[0].data)
+		#try:
+		header = fits.open(file)[0].header
+		print(header['FIELD'])
+		entry['field'] = header['FIELD'].strip()
+		entry['chip'] = header['CHIP']
+		entry['band'] = header['COLOUR']
+		entry['exptime'] = header['EXPTIME']
+		entry['jd'] = header['JDSTART']
+		entry['date'] = header['DATE-OBS'].strip()
+		
+		ra = header['RA'].strip()
+		dec = header['DEC'].strip()
+		c = SkyCoord(ra,dec,unit=(u.hourangle,u.deg))
+		t = Time(header['JDSTART'],format='jd')
+		moon = get_moon(t)
+		sep = moon.separation(c)
+		entry['ra'] = ra
+		entry['dec'] = dec
+		entry['moon_sep'] = sep.deg
+		entry['sky'] = np.nanmedian(fits.open(file)[0].data)
 
-			entry['filename'] = file
-		except:
+		entry['filename'] = file
+		'''except:
 			entry['field'] = 'bad'
 			entry['chip'] = 'bad'
 			entry['exptime'] = 'bad'
@@ -161,7 +171,7 @@ def obs_grab_info(file,verbose=False):
 			entry['moon_sep'] = 'bad'
 			entry['sky'] = 'bad'
 
-			entry['filename'] = file
+			entry['filename'] = file'''
 		
 		if verbose:
 			print('Done ', name)
@@ -169,6 +179,9 @@ def obs_grab_info(file,verbose=False):
 		df = pd.DataFrame([entry])
 		return df
 
+def sort_cals(verbose=True):
+	sort_darks(verbose)
+	sort_flats(verbose)
 
 
 if __name__=='__main__':

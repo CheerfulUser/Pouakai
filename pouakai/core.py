@@ -1,4 +1,5 @@
 import os
+from os import path
 from astropy.io import fits
 from glob import glob
 import numpy as np
@@ -26,10 +27,9 @@ warnings.filterwarnings("ignore")
 		
 class pouakai():
 
-	def __init__(self,file,reduction='full',time_tolerence=100,dark_tolerence=10,savepath='',
-				 local_astrom=True,verbose=True,update_cals=False):
+	def __init__(self,file,time_tolerence=100,dark_tolerence=10,savepath='',
+				 local_astrom=True,verbose=True,rescale=True,output_record=True):
 
-		#self._update_cals(update_cals)
 		self.verbose = verbose
 		self.file = file 
 		self.savepath = savepath
@@ -38,6 +38,7 @@ class pouakai():
 		self.dark_tolerence = dark_tolerence
 		self.offset = 500
 		self.fail_flag = ''
+		self.rescale = rescale
 
 		self._start_record()
 		self._check_dirs()
@@ -52,15 +53,17 @@ class pouakai():
 		self._setup_fig()
 		
 		try:
-			self.reduce(reduction)
+			self.reduce()
 		except Exception as e:
 			self.fail_flag = e
 
-		if len(self.fail_flag) > 0:
+		if self.fail_flag != '':
 			self._fail_log()
+		if output_record:
+			return self.log
 
 
-	def reduce(self,reduction):
+	def reduce(self):
 		#self._check_reduction(reduction)
 		self.reduce_image()
 		self.save_intermediate()
@@ -73,15 +76,15 @@ class pouakai():
 		self.calculate_zp()
 		self.save_fig()
 		self.save_image()
-		self._record_reduction()
+		#self._record_reduction()
 	#def _check_reduction(self,reduction):
 
 	def _fail_log(self):
 		document = {'fname': self.file,
 					'error':self.fail_flag}
-		error_log = pd.read_csv('cal_lists/error_log.csv')
-		error_log = error_log.append(document)
-		error_log.to_csv('cal_lists/error_log.csv',index=False)
+		#error_log = pd.read_csv('cal_lists/error_log.csv')
+		#error_log = error_log.append(document,ignore_index=True)
+		#error_log.to_csv('cal_lists/error_log.csv',index=False)
 
 	def _start_record(self):
 		"""
@@ -264,10 +267,6 @@ class pouakai():
 		self._check_vars()
 		
 		image = (self.raw_image - self.dark) / (self.flat/np.nanmedian(self.flat))
-		print('raw ', np.nanmean(self.raw_image))
-		print('dark ', np.nanmean(self.dark))
-		print('flat ', np.nanmean(self.flat))
-		print('image ', np.nanmean(image))
 		if np.nansum(image) == 0:
 			raise ValueError('Image is all NaNs')
 
@@ -361,6 +360,7 @@ class pouakai():
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		real_save_path = self.savepath + 'red/' + save_path
+		#if not path.exits(real_save_path):
 		os.mkdir(real_save_path)
 	
 		name = save_path + self.base_name + '_wcs'
@@ -383,7 +383,7 @@ class pouakai():
 			print('Solved WCS')
 		
 		clear = 'rm -rf ' + real_save_path
-		#os.system(clear)
+		os.system(clear)
 
 		if self.verbose:
 			print('WCS tmp files cleared')
@@ -414,7 +414,7 @@ class pouakai():
 
 		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=self.mask, header=self.header,
 							 threshold=threshold,cal_model=model,ax=self.fig_axis['I'],
-							 brightlim=brightlim)
+							 brightlim=brightlim,rescale=self.rescale)
 		self._add_image(self.cal.zp_surface,'E',colorbar=True)
 		self._add_image(self.cal.data,'F')
 		self.image = self.cal.data
@@ -524,7 +524,7 @@ class pouakai():
 		log = pd.read_csv('cal_lists/calibrated_image_list.csv')
 		new_entry = pd.DataFrame([self.log])
 		log = pd.concat([log, new_entry], ignore_index=True)
-		log.to_csv('cal_lists/calibrated_image_list.csv',index=False)
+		#log.to_csv('cal_lists/calibrated_image_list.csv',index=False)
 
 
 

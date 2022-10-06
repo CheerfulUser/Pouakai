@@ -394,8 +394,13 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 	return pd.DataFrame([entry])
 	
 
-if __name__ == '__main__':
+def make_masters(verbose=True):
 	make_master_darks(verbose=True)
-	print('!!! Finished darks !!!')
+	if verbose:
+		print('!!! Finished darks !!!')
 	new_make_master_flats(verbose=True)
-	print('!!! Finished flats !!!')
+	if verbose:
+		print('!!! Finished flats !!!')
+
+if __name__ == '__main__':
+	make_masters(verbose=True)
