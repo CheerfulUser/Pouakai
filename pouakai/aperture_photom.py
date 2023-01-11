@@ -68,6 +68,8 @@ class ap_photom():
 				self.ZP_correction()
 				self.Recast_image_scale()
 				self.calculate_zp(threshold)
+			else:
+				self.zp_surface = np.ones_like(self.data)
 			self.ap_photom['mag'] = self.ap_photom['sysmag'] + self.zp
 			self.ap_photom['e_mag'] = 2.5/np.log(10)*(self.ap_photom['e_counts']/self.ap_photom['counts'])
 			if plot:
@@ -391,6 +393,7 @@ class ap_photom():
 		cut = ~sigma_clip(diff,sigma=sigma).mask
 		estimate,bitmask = self.Fit_surface(mask=cut,smoother=30)
 		self.zp_surface = estimate
+
 		
 
 

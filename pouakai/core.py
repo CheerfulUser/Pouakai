@@ -28,7 +28,7 @@ warnings.filterwarnings("ignore")
 class pouakai():
 
 	def __init__(self,file,time_tolerence=100,dark_tolerence=10,savepath='',
-				 local_astrom=True,verbose=True,rescale=True,output_record=True):
+				 local_astrom=True,verbose=True,rescale=True):
 
 		self.verbose = verbose
 		self.file = file 
@@ -59,8 +59,7 @@ class pouakai():
 
 		if self.fail_flag != '':
 			self._fail_log()
-		if output_record:
-			return self.log
+		
 
 
 	def reduce(self):
@@ -83,7 +82,7 @@ class pouakai():
 		document = {'fname': self.file,
 					'error':self.fail_flag}
 		#error_log = pd.read_csv('cal_lists/error_log.csv')
-		#error_log = error_log.append(document,ignore_index=True)
+		self.error_log = document
 		#error_log.to_csv('cal_lists/error_log.csv',index=False)
 
 	def _start_record(self):
@@ -112,13 +111,13 @@ class pouakai():
 		self.exp_time = hdu.header['EXPTIME']
 		self._field_coords()
 
-		self.log['band'] = self.filter
+		self.log['band'] = self.filter.strip()
 		self.log['raw_filename'] = self.file
 		self.log['jd'] = self.jd
 		self.log['chip'] = self.chip
 		self.log['exptime'] = self.exp_time
-		self.log['date'] = hdu.header['DATE-OBS']
-		self.log['field'] = hdu.header['FIELD']
+		self.log['date'] = hdu.header['DATE-OBS'].strip()
+		self.log['field'] = hdu.header['FIELD'].strip()
 
 
 	def _field_coords(self):
@@ -255,7 +254,7 @@ class pouakai():
 		"""
 		Check that all reduction directories are constructed
 		"""
-		dirlist = ['wcs','red','red/wcs_tmp','cal','fig']
+		dirlist = ['red','red/wcs_tmp','cal','fig','zp_surface']
 		for d in dirlist:
 			if not os.path.isdir(self.savepath + d):
 				os.mkdir(self.savepath + d)
@@ -313,9 +312,6 @@ class pouakai():
 		phdu = fits.PrimaryHDU(data = self.image, header = self.header)
 		mhdu = fits.ImageHDU(data = self.mask, header = self.header)
 		hdul = fits.HDUList([phdu, mhdu])
-		print(hdul)
-
-
 		if self.verbose:
 			print('Saving final calibrated image')
 		hdul.writeto(name,overwrite=True)
@@ -356,7 +352,7 @@ class pouakai():
 		Calculate the image wcs using the local libraries for astrometry.net
 		"""
 		# a reasonable search radius is already selected (2deg)
-		astrom_call = "solve-field -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
+		astrom_call = "solve-field --no-plots -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		real_save_path = self.savepath + 'red/' + save_path
@@ -431,8 +427,13 @@ class pouakai():
 		self._zp_hist()
 		#self._zp_color()
 		self.cal.mag_limit_fig(self.fig_axis['I'])
+		self._save_zp_surface()
 		if self.verbose:
 			print('Zeropoint found to be ' + str(np.round(self.cal.zp,2)))
+
+	def _save_zp_surface(self):
+		path = f'{self.savepath}/zp_surface/{self.base_name}_zp_surface'
+		np.save(path,self.cal.zp_surface)
 
 	def _zp_hist(self):
 		"""
