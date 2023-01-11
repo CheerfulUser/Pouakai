@@ -14,6 +14,8 @@ def split_names(files):
 def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/master/dark/',num_cores=25,verbose=False):
 	# make save_location an environment variable
 	dark_list = pd.read_csv('cal_lists/dark_list.csv')
+	ind = dark_list['chip'].values != 'bad'
+	dark_list = dark_list[ind]
 	masters = pd.read_csv('cal_lists/master_dark_list.csv')
 	names = split_names(dark_list['name'].values)
 	all_names = set(names)
@@ -36,59 +38,62 @@ def dark_processing(index,new,names,dark_list,save_location,verbose):
 	all_chips = dark_list.iloc[ind]
 
 	for j in range(10):
-		j += 1
-		entry = {}
-		chip_ind = all_chips['chip'].values == j
-		chip = all_chips.iloc[chip_ind]
-		chip_files = chip['filename'].values
-		master = []
-		for file in chip_files:
-			hdu = fits.open(file)[0]
-			header = hdu.header
-			data = hdu.data
-			master += [data]
-		master = np.array(master)
-		#print('made array')
-		if verbose:
-			print('Used ',len(master),' images in median')
-		m = np.nanmedian(master,axis=0)
-		std = np.nanstd(master,axis=0)
-		time = np.nanmean(chip['jd'])
-		#print('calc mean')
-		header['JDSTART'] = time 
-		header['MASTER'] = True
-		phdu = fits.PrimaryHDU(data = m, header = header)
-		ehdu = fits.ImageHDU(data = std, header = header)
-		hdul = fits.HDUList([phdu, ehdu])
+		try:
+			j += 1
+			entry = {}
+			chip_ind = all_chips['chip'].values == j
+			chip = all_chips.iloc[chip_ind]
+			chip_files = chip['filename'].values
+			master = []
+			for file in chip_files:
+				hdu = fits.open(file)[0]
+				header = hdu.header
+				data = hdu.data
+				master += [data]
+			master = np.array(master)
+			#print('made array')
+			if verbose:
+				print('Used ',len(master),' images in median')
+			m = np.nanmedian(master,axis=0)
+			std = np.nanstd(master,axis=0)
+			time = np.nanmean(chip['jd'])
+			#print('calc mean')
+			header['JDSTART'] = time 
+			header['MASTER'] = True
+			phdu = fits.PrimaryHDU(data = m, header = header)
+			ehdu = fits.ImageHDU(data = std, header = header)
+			hdul = fits.HDUList([phdu, ehdu])
 
 
-		letter = file.split('-')[2]
-		base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
-		save_name = save_location + base_name + '.fits'
-		print('saving')
-		hdul.writeto(save_name,overwrite=True)
-		compress = 'gzip -f ' + save_name
-		os.system(compress)
-		print('saved')
-		entry['name'] = base_name
+			letter = file.split('-')[2]
+			base_name = file.split('/')[-1].split('.')[0].replace(letter,'m')
+			save_name = save_location + base_name + '.fits'
+			print('saving')
+			hdul.writeto(save_name,overwrite=True)
+			compress = 'gzip -f ' + save_name
+			os.system(compress)
+			print('saved')
+			entry['name'] = base_name
 
-		entry['chip'] = header['CHIP']
-		entry['exptime'] = header['EXPTIME']
-		entry['jd'] = time
-		entry['date'] = header['DATE-OBS']
-		entry['nimages'] = len(master)
-		entry['filename'] = save_name + '.gz'
-		if len(master) < 3:
-			note = 'bad'
-		else:
-			note = 'good'
-		entry['note'] = note
-		if verbose:
-			print('Done ', base_name)
-		if len(entries) == 0:
-			entries = pd.DataFrame([entry])
-		else:
-			entries = entries.append(entry,ignore_index=True)
+			entry['chip'] = header['CHIP']
+			entry['exptime'] = header['EXPTIME']
+			entry['jd'] = time
+			entry['date'] = header['DATE-OBS']
+			entry['nimages'] = len(master)
+			entry['filename'] = save_name + '.gz'
+			if len(master) < 3:
+				note = 'bad'
+			else:
+				note = 'good'
+			entry['note'] = note
+			if verbose:
+				print('Done ', base_name)
+			if len(entries) == 0:
+				entries = pd.DataFrame([entry])
+			else:
+				entries = entries.append(entry,ignore_index=True)
+		except:
+			print('bad')
 		
 	return entries 
 
@@ -227,7 +232,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			print('saved')
 			entry['name'] = base_name
 
-			entry['band'] = header['COLOUR']
+			entry['band'] = header['COLOUR'].str.strip()
 			entry['chip'] = header['CHIP']
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = time
@@ -356,7 +361,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 	print('saved')
 	entry['name'] = n
 
-	entry['band'] = header['COLOUR']
+	entry['band'] = header['COLOUR'].str.strip()
 	entry['chip'] = header['CHIP']
 	entry['exptime'] = header['EXPTIME']
 	entry['jd'] = t

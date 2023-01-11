@@ -16,10 +16,24 @@ moa_darks_dir = '/home/phys/astro8/MJArchive/MOA/DARK/'
 moa_flats_dir = '/home/phys/astro8/MJArchive/MOA/FLAT/'
 moa_obs_dir = '/home/phys/astro8/MJArchive/MOA/ALERT/'
 
+def _update_paths(files,csv,cal_type):
+	csv = csv.drop_duplicates(subset=['name'])
+	for file in files:
+		name = file.split('/')[-1].split('.')[0]
+		ind = np.where(name == csv.name.values)
+		if csv.iloc[ind]['filename'].values != file:
+			print('!!!! Changing path ' + name)
+			csv.iloc[ind]['filename'] = file
+	csv.to_csv(package_directory + 'cal_lists/{}_list.csv'.format(cal_type),index=False)
+	return csv
+
+
 def sort_darks(verbose=False,num_core=25):
 	f = np.append(glob(moa_darks_dir + '*/*.gz'),glob(moa_darks_dir + '*.gz')) # first for year sudbdir, second for file
+
 	dark_files = set(f) 
 	dark_list = pd.read_csv(package_directory + 'cal_lists/dark_list.csv')
+	dark_list = _update_paths(f,dark_list,'dark')
 	old = set(dark_list['filename'])
 	new = dark_files ^ old
 	if verbose: 
@@ -67,6 +81,7 @@ def sort_flats(verbose = False, num_core = 25):
 	flat_files = set(f)
 
 	flat_list = pd.read_csv(package_directory + 'cal_lists/flat_list.csv')	
+	flat_list = _update_paths(f,flat_list,'flat')
 	old = set(flat_list['filename'])
 	new = flat_files ^ old
 
