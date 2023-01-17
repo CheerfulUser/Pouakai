@@ -4,22 +4,26 @@ from calibration_masters import make_masters
 from joblib import Parallel, delayed
 import pandas as pd
 import numpy as np
-
+from glob import glob
 import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 class consume_moa():
     def __init__(self,files,savepath,time_tolerence=100,dark_tolerence=10,
-				 local_astrom=True,verbose=True,rescale=True,update_cals=True,cores=10):
+				 local_astrom=True,verbose=True,rescale=True,update_cals=True,
+                 cores=10, overwrite=False):
         
         self.files = list(files)
+        self.savepath = savepath
+        self.verbose = verbose
+        self._overwrite(overwrite=overwrite)
         self._clip_files()
         self.dark_tolerence = dark_tolerence
         self.time_tolerence = time_tolerence
-        self.savepath = savepath
+        
         self.local_astrom = local_astrom
         self.rescale = rescale
-        self.verbose = verbose
+        
         self.cores = cores
 
         #running
@@ -55,6 +59,31 @@ class consume_moa():
             
             #self._log_error(e)
             print('Failed')
+
+    def _overwrite(self,overwrite):
+        if not overwrite:
+            print('!!!!!!!!!!!!!!!!!!!!')
+            #try: 
+            anum = []
+            for file in self.files:
+                anum += [file.split('/')[-1].split('.')[0]]
+            done = glob(self.savepath + 'cal/*.gz')
+            dnum =  []
+            for file in done:
+                dnum += [file.split('/')[-1].split('_')[0]]
+            dnum = set(dnum)
+            todo = []
+            for i in range(len(anum)):
+                if not dnum.intersection({anum[i]}):
+                    todo += [i]
+            todo = np.array(todo)
+
+            if self.verbose:
+                print(f'Droping {len(anum) - len(todo)} files that have already been processed')
+            self.files = list(np.array(self.files)[todo])
+            #except:
+             #   pass
+
 
 
     def _load_calibration_log(self):
