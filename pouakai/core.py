@@ -16,6 +16,7 @@ from scipy.stats import iqr
 from aperture_photom import ap_photom
 
 from scipy.ndimage.filters import convolve
+from satellite_detection import sat_streaks
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -71,6 +72,7 @@ class pouakai():
 		else:
 			self.wcs_astrometrynet()
 
+		self.satellite_search()
 		self.Make_mask()
 		self.calculate_zp()
 		self.save_fig()
@@ -213,7 +215,7 @@ class pouakai():
 
 		return file, t_diff[t_ind]
 
-
+	#def _update_header_obj()
 
 
 	def _update_header_sky(self):
@@ -232,8 +234,10 @@ class pouakai():
 		
 	def _update_header_zeropoint(self):
 		self.header['ZP'] = (str(np.round(self.zp)),'Calibrimbore ' + self.system)
-		
-		
+
+	def _update_header_satellites(self):
+		self.header['SAT'] = (self.sat.satellite,'Satellite in image')
+		self.header['SATNUM'] = (self.sat.sat_num,'Number of satellites in image')
 
 	def _check_vars(self):
 		"""
@@ -547,9 +551,10 @@ class pouakai():
 
 	def Make_mask(self):
 		flat_mask = self._flat_mask() * 4
-		sat_mask = self._saturaton_mask() * 2
+		saturation_mask = self._saturaton_mask() * 2
+		satellite_mask = self.sat.total_mask * 8
 
-		self.mask = flat_mask | sat_mask
+		self.mask = flat_mask | saturation_mask | satellite_mask
 
 		self._update_header_mask_bits()
 
@@ -561,8 +566,12 @@ class pouakai():
 		#head['STARBIT']  = (1, 'bit value for normal sources')
 		self.header['SATBIT']   = (2, 'bit value for saturated sources')
 		self.header['FLATBIT'] = (4, 'bit value for bad flat')
-		#head['STRAPBIT'] = (8, 'bit value for bad pixels')
+		self.head['SATBIT'] = (8, 'bit value for satellite pixels')
 		#head['USERBIT']  = (16, 'bit value for USER list')
 		#head['SNBIT']    = (32, 'bit value for SN list')
 
 
+	def satellite_search(self):
+		self.sat = sat_streaks(self.image,run=True)
+		self._update_header_satellites()
+		
