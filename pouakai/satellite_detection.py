@@ -56,19 +56,21 @@ class sat_streaks():
                                 minLineLength=200, # Min allowed length of line
                                 maxLineGap=70 # Max allowed gap between line for joining them
                                 )
-    
-        good = []
-        for i in range(len(lines)):
-            line = lines[i]
-            x1, y1, x2, y2 = line[0]
-            # calculate the angle of the line
-            angle = np.arctan2(y2 - y1, x2 - x1) * 180 / np.pi
-            if abs(angle) < 85:
-                good += [i]
-        good = np.array(good)
 
-        self.lines = lines[good]
+        if line is not None:
+            good = []
+            for i in range(len(lines)):
+                line = lines[i]
+                x1, y1, x2, y2 = line[0]
+                # calculate the angle of the line
+                angle = np.arctan2(y2 - y1, x2 - x1) * 180 / np.pi
+                if abs(angle) < 85:
+                    good += [i]
+            good = np.array(good)
 
+            self.lines = lines[good]
+        else:
+            self.lines = []
 
     def _consolidate_lines(self):
         angle_tolerance = self.angle_tol
