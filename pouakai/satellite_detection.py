@@ -1,12 +1,11 @@
 import numpy as np
 import cv2
 from copy import deepcopy
-
+from astropy.stats import sigma_clipped_stats
 class sat_streaks():
-    def __init__(self,image,thickness=17,percentile=60,angle_tol=5,run=True) -> None:
+    def __init__(self,image,thickness=17,sigma=15,angle_tol=5,run=True) -> None:
         self.image = image - np.nanmedian(image)
-
-        self.threshold = np.percentile(self.image,percentile)
+        self._set_threshold(sigma)
         self.thickness = thickness
         self.angle_tol = angle_tol
 
@@ -17,6 +16,11 @@ class sat_streaks():
             self._consolidate_lines()
             self.make_mask()
             self._detected()
+
+
+    def _set_threshold(self,sigma):
+        mean, med, std = sigma_clipped_stats(self.image)
+        self.threshold = mean + sigma*std
 
     def _detected(self):
         if len(self.consolidated_lines) > 0:
@@ -54,20 +58,22 @@ class sat_streaks():
                                 np.pi/180, # Angle resolution in radians
                                 threshold=100, # Min number of votes for valid line
                                 minLineLength=200, # Min allowed length of line
-                                maxLineGap=70 # Max allowed gap between line for joining them
+                                maxLineGap=50 # Max allowed gap between line for joining them
                                 )
-    
-        good = []
-        for i in range(len(lines)):
-            line = lines[i]
-            x1, y1, x2, y2 = line[0]
-            # calculate the angle of the line
-            angle = np.arctan2(y2 - y1, x2 - x1) * 180 / np.pi
-            if abs(angle) < 85:
-                good += [i]
-        good = np.array(good)
+        if lines is not None:
+            good = []
+            for i in range(len(lines)):
+                line = lines[i]
+                x1, y1, x2, y2 = line[0]
+                # calculate the angle of the line
+                angle = np.arctan2(y2 - y1, x2 - x1) * 180 / np.pi
+                if abs(angle) < 85:
+                    good += [i]
+            good = np.array(good,dtype=int)
 
-        self.lines = lines[good]
+            self.lines = lines[good]
+        else:
+            self.lines = []
 
 
     def _consolidate_lines(self):
@@ -126,8 +132,11 @@ class sat_streaks():
         # The pixels that are covered by the line will have a value of 8 in the mask
         # You can use this mask to extract the pixels that belong to the lines
         sat_mask = np.array(sat_mask).astype(int)
+        if len(sat_mask) == 0:
+            sat_mask = mask
+        
         self.mask = sat_mask
 
         tmp = np.nansum(self.mask,axis=0)
-        tmp[tmp] = 1
+        tmp[tmp > 0] = 1
         self.total_mask = tmp.astype(int)
