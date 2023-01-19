@@ -9,6 +9,8 @@ from astropy.wcs import WCS
 from photutils import DAOStarFinder, aperture_photometry
 from photutils.aperture import SkyCircularAperture, CircularAperture, CircularAnnulus, aperture_photometry, ApertureStats
 
+from scipy.ndimage.filters import convolve
+
 from scipy.ndimage import gaussian_filter
 from scipy.interpolate import griddata
 
@@ -17,7 +19,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 from scipy.optimize import minimize
 
-from calibrimbore import sauron
+from calibrimbore import sauron, get_skymapper_region, get_ps1_region
 
 from copy import deepcopy
 
@@ -28,7 +30,7 @@ class ap_photom():
 
 	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
 				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=14,rescale=True,
-				 plot=True,floor=None,radius_override=None):
+				 plot=True,floor=None,radius_override=None,use_catalogue=True):
 		self.file = file
 		self.data = data
 		self.wcs = wcs
@@ -39,6 +41,7 @@ class ap_photom():
 		self.brightlim = brightlim
 		self.image_floor = floor
 		self.radius_override = radius_override
+		self.use_catalogue = use_catalogue
 
 
 		
@@ -95,7 +98,7 @@ class ap_photom():
 
 
 	def _image_stats(self,sigma=3):
-		mode,median,std = sigma_clipped_stats(self.data, sigma=3.0)
+		mode,median,std = sigma_clipped_stats(self.data, sigma=sigma)
 		self.data_median = median 
 		self.data_std = std
 
@@ -104,27 +107,48 @@ class ap_photom():
 
 		daofind = DAOStarFinder(fwhm=fwhm, threshold= threshold * self.data_std)	
 		sources = daofind(self.data - self.data_median)
+		self.sources = sources.to_pandas()
+		self._mask_killer()
+
+	def catalogue_sources(self):
+		ra,dec = self.wcs.all_pix2world(self.data.shape[1]//2,self.data.shape[0]//2,0)
+		if dec > -25:
+			cat = get_ps1_region([ra],[dec],size=.4*60**2)
+		else:
+			cat = get_skymapper_region([ra],[dec],size=.4*60**2)
+		
+		tab = cat.iloc[np.isfinite(cat.r.values)]
+		x, y = self.wcs.all_world2pix(tab['ra'].values,tab.dec.values,0)
+		tab['x'] = x
+		tab['y'] = y
+
+		ind = (x > 30) & (x < self.data.shape[1]-30) & (y > 30) & (y < self.data.shape[0]-30)
+		tab = tab.iloc[ind]
+		sources = tab[['x','y']]
+		sources.rename(columns={'x': 'xcentroid', 'y': 'ycentroid'}, inplace=True)
 		self.sources = sources
+		self._mask_killer()
 
 
 	def _calc_radii(self):
-		xcoords = self.sources['xcentroid']# + 0.5
-		xcoords = xcoords.astype(int)
+		xcoords = self.sources['xcentroid'].values + 0.5
 		self.source_x = xcoords
-
-		ycoords = self.sources['ycentroid'] #+ 0.5
-		ycoords = ycoords.astype(int)
+		xcoords = xcoords.astype(int)
+		
+		ycoords = self.sources['ycentroid'].values + 0.5
 		self.source_y = ycoords
+		ycoords = ycoords.astype(int)
 		
 		data = deepcopy(self.data) - self.data_median
 
 		data[data < 0] = 0
 
 		radii = []
-		i = 0
-		for index in range(len(xcoords)):
-			data1 = (data)[ycoords[index]][xcoords[index]:xcoords[index]+100]
-			normal = data1 / (data)[ycoords[index]][xcoords[index]]
+
+		for i in range(len(xcoords)):
+			#print(xcoords[i],ycoords[i])
+			data1 = data[ycoords[i],xcoords[i]:xcoords[i]+30]
+			normal = data1 / data[ycoords[i], xcoords[i]]
 			try:
 				fwhm = np.where(normal < 0.5)[0][0]
 			except:
@@ -136,8 +160,8 @@ class ap_photom():
 
 	def _get_apertures(self):
 		
-		xcoords = self.sources['xcentroid'] #+ 0.5
-		ycoords = self.sources['ycentroid'] #+ 0.5
+		xcoords = self.sources['xcentroid'].values
+		ycoords = self.sources['ycentroid'].values
 		positions = []
 		for i in range(len(xcoords)):
 			positions += [[xcoords[i],ycoords[i]]]
@@ -188,7 +212,7 @@ class ap_photom():
 
 	def _load_sauron(self):
 		ra, dec = self.wcs.all_pix2world(self.ap_photom['xcenter'],self.ap_photom['ycenter'],0)
-		if (dec<-35).any():
+		if (dec < -25).any():
 			self.cal_sys = 'skymapper'
 		else:
 			self.cal_sys = 'ps1'
@@ -223,10 +247,16 @@ class ap_photom():
 	def calculate_zp(self,threshold=10):
 		self._load_image()
 		self._image_stats()
-		self.radius = 3*1.2
-		for i in range(2):
-			self.find_sources(fwhm=self.radius/1.2,threshold=threshold)
+		
+		if self.use_catalogue:
+			self.catalogue_sources()
 			self._calc_radii()
+		else:
+			self.radius = 3*1.2
+			for i in range(2):
+				self.find_sources(fwhm=self.radius/1.2,threshold=threshold)
+				self._calc_radii()
+
 		self._get_apertures()
 		self.ap_photometry()
 		self._load_sauron()
@@ -286,6 +316,21 @@ class ap_photom():
 
 	def fitted_line(self, sn):
 		return self.snr_model[1] + self.snr_model[0] * np.log10(sn)
+
+	def _mask_killer(self,buffer=5):
+		if self.mask is not None:
+			mask = convolve(self.mask,np.ones((buffer,buffer)))
+			x,y = np.where(mask > 0)
+			sx = self.sources['xcentroid'].values
+			sy = self.sources['ycentroid'].values
+			d = np.sqrt((sx[:,np.newaxis] - x[np.newaxis,])**2 + (sy[:,np.newaxis] - y[np.newaxis,])**2)
+			mind = np.nanmin(d,axis=1)
+			ind = mind > 1
+			print(f'Killed {len(sx) - np.sum(ind*1)} sources')
+			self.sources = self.sources.iloc[ind]
+			
+			self.source_x = self.sources['xcentroid'].values
+			self.source_y = self.sources['ycentroid'].values
 
 	def _check_mask(self):
 		if self.mask is not None:

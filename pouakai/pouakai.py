@@ -56,9 +56,9 @@ class consume_moa():
                             local_astrom=self.local_astrom,rescale=self.rescale,verbose=self.verbose)
             return p.log
         except Exception as e:
-            
-            #self._log_error(e)
+            self._log_error(e)
             print('Failed')
+            print(e)
 
     def _overwrite(self,overwrite):
         if not overwrite:

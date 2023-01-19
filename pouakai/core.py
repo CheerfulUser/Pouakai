@@ -53,10 +53,10 @@ class pouakai():
 
 		self._setup_fig()
 		
-		try:
-			self.reduce()
-		except Exception as e:
-			self.fail_flag = e
+		#try:
+		self.reduce()
+		#except Exception as e:
+		#	self.fail_flag = e
 
 		if self.fail_flag != '':
 			self._fail_log()
@@ -411,13 +411,16 @@ class pouakai():
 			brightlim = 13
 		else:
 			brightlim = 15
-
-		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=self.mask, header=self.header,
+		mask = ((self.mask & 2) + (self.mask & 4) + (self.mask & 8) + (self.mask & 16))
+		mask[mask > 0] = 1
+		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
 							 threshold=threshold,cal_model=model,ax=self.fig_axis['I'],
 							 brightlim=brightlim,rescale=self.rescale)
 		self._add_image(self.cal.zp_surface,'E',colorbar=True)
 		self._add_image(self.cal.data,'F')
+		self._add_satellite_trail('F')
 		self.image = self.cal.data
+
 		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
 		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
@@ -429,7 +432,7 @@ class pouakai():
 
 		self.fig_axis['D'].plot(self.cal.source_x[self.cal.good],self.cal.source_y[self.cal.good],'r.')
 		self._zp_hist()
-		#self._zp_color()
+		self._zp_color()
 		self.cal.mag_limit_fig(self.fig_axis['I'])
 		self._save_zp_surface()
 		if self.verbose:
@@ -464,10 +467,11 @@ class pouakai():
 		"""
 		Create a figure showing the zeropoint evolving with color.
 		"""
-		zps = self.cal.zps[self.cal.good]
-		gr = (self.cal.cat_mags['g'] - self.cal.cat_mags['r']).values[self.cal.good]
+		zps = self.cal.zps
+		ind = np.isfinite(zps)
+		gr = (self.cal.sauron.cat_mags['g'] - self.cal.sauron.cat_mags['r']).values[ind]
 
-		self.fig_axis['H'].plot(gr,zps,'.')
+		self.fig_axis['H'].plot(gr,zps[ind],'.')
 		self.fig_axis['H'].set_ylabel('zeropoint',fontsize=15)
 		self.fig_axis['H'].set_xlabel('$g-r$',fontsize=15)	
 		med = self.cal.zp
@@ -520,7 +524,28 @@ class pouakai():
 									 vmin=vmin,vmax=vmax)
 		if colorbar:
 			self.fig.colorbar(im,ax=self.fig_axis[ax_ind],fraction=0.046, pad=0.04)
-			
+	
+	def _add_satellite_trail(self,ax_ind):
+		for consolidated_line in self.sat.consolidated_lines:
+			angle = consolidated_line[0]
+			points = np.array(consolidated_line[1])
+			x = points[:,0]
+			y = points[:,1]
+			coefs = np.polyfit(x, y, 1)
+			slope = coefs[0]
+			intercept = coefs[1]
+			x1 = np.min(x)
+			y1 = int(slope * x1 + intercept)
+			x2 = np.max(x)
+			y2 = int(slope * x2 + intercept)
+			# create the x and y points for the consolidated line
+			x_points = [x1, x2]
+			y_points = [y1, y2]
+
+			# plot the consolidated line
+			self.fig_axis[ax_ind].plot(x_points, y_points, '--r', label='Satellite',alpha = .5)
+			self.fig_axis[ax_ind].legend(loc='upper left')
+
 
 	def _record_reduction(self):
 		"""
@@ -541,20 +566,28 @@ class pouakai():
 		mask = mask.astype(int)
 		return mask
 
-	def _saturaton_mask(self,satlimit=6e4,buffer=3):
-		mask = deepcopy(self.image)
+	def _saturaton_mask(self,satlimit=3.5e4,buffer=3):
+		"""
+		An agressive limit is set here to catch overflow pixels.
+		"""
+		mask = deepcopy(self.raw_image)
 		mask = mask > satlimit
 		mask = convolve(mask,np.ones((buffer,buffer)))
 		mask = mask.astype(int)
 		return mask
 
+	def _load_bad_pix_mask(self):
+		bpix = np.load(f'badpix/chip{self.chip}_bpix.npy')
+		return bpix.astype(int)
 
 	def Make_mask(self):
-		flat_mask = self._flat_mask() * 4
+		
 		saturation_mask = self._saturaton_mask() * 2
+		flat_mask = self._flat_mask() * 4
 		satellite_mask = self.sat.total_mask * 8
+		bpix = self._load_bad_pix_mask() * 16
 
-		self.mask = flat_mask | saturation_mask | satellite_mask
+		self.mask = flat_mask | saturation_mask | satellite_mask | bpix
 
 		self._update_header_mask_bits()
 
@@ -566,8 +599,8 @@ class pouakai():
 		#head['STARBIT']  = (1, 'bit value for normal sources')
 		self.header['SATBIT']   = (2, 'bit value for saturated sources')
 		self.header['FLATBIT'] = (4, 'bit value for bad flat')
-		self.head['SATBIT'] = (8, 'bit value for satellite pixels')
-		#head['USERBIT']  = (16, 'bit value for USER list')
+		self.header['SATBIT'] = (8, 'bit value for satellite pixels')
+		self.header['USERBIT']  = (16, 'Bad pixels')
 		#head['SNBIT']    = (32, 'bit value for SN list')
 
 

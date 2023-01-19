@@ -75,7 +75,6 @@ class sat_streaks():
         else:
             self.lines = []
 
-
     def _consolidate_lines(self):
         angle_tolerance = self.angle_tol
         # create an empty list to store the consolidated lines
