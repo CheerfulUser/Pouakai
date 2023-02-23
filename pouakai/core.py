@@ -87,7 +87,7 @@ class pouakai():
 		"""
 		Set up a log to keep track of key steps and parameters.
 		"""
-		document = {'name':None,'band':None,'chip':None,
+		document = {'name':None,'band':None,'telescope':None,
 					'exptime':None,'jd':None,'date':None,
 					'field':None,'filename':None,'flat':None,
 					'dark':None,'tdiff_flat':None,
@@ -103,16 +103,14 @@ class pouakai():
 		hdu = fits.open(self.file)[0]
 		self.header = hdu.header
 		self.raw_image = hdu.data
-		self.jd = hdu.header['JDSTART']
-		self.filter = hdu.header['COLOUR']
-		self.chip = hdu.header['CHIP']
+		self.jd = hdu.header['JD']
+		self.filter = hdu.header['FILTER']
 		self.exp_time = hdu.header['EXPTIME']
 		self._field_coords()
-
+		self.log['telescope'] = hdu.header['TELESCOP']
 		self.log['band'] = self.filter
 		self.log['raw_filename'] = self.file
 		self.log['jd'] = self.jd
-		self.log['chip'] = self.chip
 		self.log['exptime'] = self.exp_time
 		self.log['date'] = hdu.header['DATE-OBS']
 		self.log['field'] = hdu.header['FIELD']

@@ -11,8 +11,8 @@ from astropy.time import Time
 fli_dir = '/home/phys/astro8/MJArchive/octans/'
 
 def sort_darks(verbose=False,num_core=25):
-	darks = glob(fli_dir + '*/dark*.fit') # first for day sudbdir, second for file
-	Darks = glob(fli_dir + '*/Dark*.fit') # first for day sudbdir, second for file
+	darks = glob(fli_dir + '*/*dark*.fit') 
+	Darks = np.append(glob(fli_dir + '*/*Dark*.fit'), glob(fli_dir + '*/*DARK*.fit'))
 	d = np.append(darks,Darks)
 	dark_files = set(d) 
 	dark_list = pd.read_csv('cal_lists/dark_list.csv')
@@ -36,11 +36,14 @@ def dark_info_grab(file,verbose = True):
 	entry['name'] = name
 	try:
 		header = fits.open(file)[0].header
-
-		entry['telescope'] = header['TELESCOP']
+		t = header['TELESCOP']
+		if len(t) > 0:
+			entry['telescope'] = header['TELESCOP'].strip()
+		else:
+			entry['telescope'] = 'B&C'
 		entry['exptime'] = header['EXPTIME']
 		entry['jd'] = header['JD']
-		entry['date'] = header['DATE-OBS']
+		entry['date'] = header['DATE-OBS'].strip()
 	except:
 		print('!!! bad ',file)
 		entry['telescope'] = 'bad'
@@ -58,8 +61,8 @@ def dark_info_grab(file,verbose = True):
 
 
 def sort_flats(verbose = False, num_core = 25):
-	flats = glob(fli_dir + '*/flat*.fit') # first for day sudbdir, second for file
-	Flats = glob(fli_dir + '*/Flat*.fit') # first for day sudbdir, second for file
+	flats = glob(fli_dir + '*/*flat*.fit') # first for day sudbdir, second for file
+	Flats = glob(fli_dir + '*/*Flat*.fit') # first for day sudbdir, second for file
 	f = np.append(flats,Flats)
 	flat_files = set(f) 
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')	
@@ -81,25 +84,31 @@ def sort_flats(verbose = False, num_core = 25):
 def flat_info_grab(file,verbose=False):
 
 	name = file.split('/')[-1].split('.')[0]
-	hdu = fits.open(file)[0]
-	header = hdu.header
-	data = hdu.data
-	average = np.nanmedian(data)
-	if average < 18000:
-		note = 'lower'
-	elif average > 45000:
-		note = 'over'
-	else:
-		note = 'good'
-
 	entry = {}
 	entry['name'] = name
 	try:
-		entry['band'] = header['FILTER']
-		entry['telescope'] = header['TELESCOP']
+		hdu = fits.open(file)[0]
+		header = hdu.header
+		data = hdu.data
+		average = np.nanmedian(data)
+		if average < 18000:
+			note = 'lower'
+		elif average > 45000:
+			note = 'over'
+		else:
+			note = 'good'
+
+		
+	
+		entry['band'] = header['FILTER'].strip()
+		t = header['TELESCOP']
+		if len(t) > 0:
+			entry['telescope'] = header['TELESCOP'].strip()
+		else:
+			entry['telescope'] = 'B&C'
 		entry['exptime'] = header['EXPTIME']
 		entry['jd'] = header['JD']
-		entry['date'] = header['DATE-OBS']
+		entry['date'] = header['DATE-OBS'].strip()
 		entry['filename'] = file
 		entry['note'] = note
 	except:
@@ -116,15 +125,23 @@ def flat_info_grab(file,verbose=False):
 	df = pd.DataFrame([entry])
 	return df
 
+def bias_scrubber(files):
+	good = []
+	for file in files:
+		if 'bias' not in file.lower():
+			good += [file]
+	return good
+
+
 def sort_obs(verbose=False,num_core = 25):
 	all_ims = glob(fli_dir + '*/*.fit')
 	a = set(all_ims)
-	flats = glob(fli_dir + '*/flat*.fit') # first for day sudbdir, second for file
-	Flats = glob(fli_dir + '*/Flat*.fit') # first for day sudbdir, second for file
+	flats = glob(fli_dir + '*/*flat*.fit')
+	Flats = glob(fli_dir + '*/*Flat*.fit')
 	f = np.append(flats,Flats)
 
-	darks = glob(fli_dir + '*/dark*.fit') # first for day sudbdir, second for file
-	Darks = glob(fli_dir + '*/Dark*.fit') # first for day sudbdir, second for file
+	darks = glob(fli_dir + '*/*dark*.fit')
+	Darks = np.append(glob(fli_dir + '*/*Dark*.fit'), glob(fli_dir + '*/*DARK*.fit'))
 	d = np.append(darks,Darks)
 	cal = np.append(d,f)
 	cals = set(cal) 
@@ -134,9 +151,11 @@ def sort_obs(verbose=False,num_core = 25):
 	obs_list = pd.read_csv('cal_lists/obs_list.csv')
 	old = set(obs_list['filename'].values)
 	new = obs_files ^ old
-	if verbose: 
-		print('Number of new obs: ',len(new))
 	files = list(new)
+	files = bias_scrubber(files)
+	if verbose: 
+		print('Number of new obs: ',len(files))
+
 	if len(files) > 0:
 		entries = Parallel(num_core)(delayed(dark_info_grab)(file,verbose) for file in files)
 		for entry in entries:
@@ -156,13 +175,17 @@ def obs_grab_info(file,verbose=False):
 		entry['name'] = name.strip()
 		try:
 			header = fits.open(file)[0].header
-			entry['field'] = header['OBJECT'].strip()
-			entry['telescope'] = header['TELESCOP']
+			entry['object'] = header['OBJECT'].strip()
+			t = header['TELESCOP']
+			if len(t) > 0:
+				entry['telescope'] = header['TELESCOP'].strip()
+			else:
+				entry['telescope'] = 'B&C'
 			entry['band'] = header['FILTER'].strip()
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = header['JDSTART']
 			entry['date'] = header['DATE-OBS'].strip()
-			
+			'''
 			ra = header['RA'].strip()
 			dec = header['DEC'].strip()
 			c = SkyCoord(ra,dec,unit=(u.hourangle,u.deg))
@@ -172,6 +195,7 @@ def obs_grab_info(file,verbose=False):
 			entry['ra'] = ra
 			entry['dec'] = dec
 			entry['moon_sep'] = sep.deg
+			'''
 			entry['sky'] = np.nanmedian(fits.open(file)[0].data)
 			entry['image_type'] = header['IMAGETYP']
 
