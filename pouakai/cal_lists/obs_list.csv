@@ -433,7 +433,6 @@ AUmic,AUmic-1740r,B&C,r,2.0,2459686.1863923613,2022-04-16T16:28:24.30,,,,902.0,L
 Jupiter,Jupiter-0031_z,B&C,z,0.05,2459089.020810185,2020-08-27T12:29:58,,,,105.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0031_z.fit
 jupiter_11_sept_UT1245_0.02S,jupiter_11_sept_UT1245_0,B&C,V,0.02,2459469.031916088,2021-09-11T12:45:57.55,,,,840.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210911/jupiter_11_sept_UT1245_0.02S-0001_V.fit
 Autosave Image,Autosave Image -1103g,B&C,g,4.0,2459687.2367019677,2022-04-17T17:40:51.05,,,,898.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1103g.fit
-bad,AUmic-2539r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2539r.fit
 M6_v2_20220829,M6_v2_20220829-0003g30,B&C,g,30.0,2459820.8913399307,2022-08-29T09:23:31.77,,,,883.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220829/M6_v2_20220829-0003g30.fit
 TOI173,TOI173-0266V,B&C,V,5.0,2458725.931261574,2019-08-30T10:21:01,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0266V.fit
 AUmic,AUmic-0510r,B&C,r,1.5,2459687.107922338,2022-04-17T14:35:24.49,,,,868.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0510r.fit
@@ -737,7 +736,6 @@ AUmic,AUmic-2411r,B&C,r,2.0,2459686.232334028,2022-04-16T17:34:33.66,,,,865.0,Li
 NGC2516,NGC2516-0071g_2,B&C,g,2.0,2459683.8694841433,2022-04-14T08:52:03.43,,,,887.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0071g_2.fit
 AUmic,AUmic-1154r,B&C,r,2.0,2459686.14610544,2022-04-16T15:30:23.51,,,,924.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1154r.fit
 HIP_65Ab,HIP_65Ab-0133_I,B&C,I,20.0,2459094.148587963,2020-09-01T15:33:58,,,,1893.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0133_I.fit
-bad,Oiii2x,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/2022121/Oiii2x.fit
 NGC2516,NGC2516-0989g_5,B&C,g,5.0,2459682.9693256943,2022-04-13T11:15:49.74,,,,883.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0989g_5.fit
 TOI319,TOI319-0075NoFilter,B&C,Clear,60.0,2459095.119259259,2020-09-02T14:51:44,,,,4196.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/TOI319-0075NoFilter.fit
 C2019F1-300,C2019F1-300-0002-z,B&C,z,300.0,2459397.2736614584,2021-07-01T18:34:04.35,,,,1823.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210701/C2019F1-300-0002-z.fit
@@ -758,7 +756,6 @@ AUmic,AUmic-0228r,B&C,r,2.0,2459686.081509259,2022-04-16T13:57:22.40,,,,908.0,Li
 Autosave Image,Autosave Image -001430_g,B&C,g,30.0,2459681.850335417,2022-04-12T08:24:28.98,,,,995.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/Autosave Image -001430_g.fit
 NGC7293,NGC7293-0002_SII,B&C,SII,300.0,2459468.0085408567,2021-09-10T12:12:17.93,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210910/NGC7293-0002_SII.fit
 SN2022nah_20220908,SN2022nah_20220908-0002_g300,B&C,g,300.0,2459831.0175826387,2022-09-08T12:25:19.14,,,,6427.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220908/SN2022nah_20220908-0002_g300.fit
-bad,AUmic-2555r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2555r.fit
 NGC2516,NGC2516-0764g_2,B&C,g,2.0,2459683.935590625,2022-04-14T10:27:15.03,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0764g_2.fit
 NGC2516,NGC2516-0886g_5,B&C,g,5.0,2459682.9375377316,2022-04-13T10:30:03.26,,,,884.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0886g_5.fit
 NGC2516,NGC2516-0823g_5,B&C,g,5.0,2459682.9295502314,2022-04-13T10:18:33.14,,,,885.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0823g_5.fit
@@ -886,11 +883,9 @@ Jupiter,Jupiter-0025_z,B&C,z,0.05,2459088.0812615743,2020-08-26T13:57:01,,,,838.
 AUmic,AUmic -0008g,B&C,g,3.0,2459687.1255596066,2022-04-17T15:00:48.35,,,,905.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0008g.fit
 Autosave Image,Autosave Image -0809g,B&C,g,4.0,2459687.2098819446,2022-04-17T17:02:13.80,,,,896.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0809g.fit
 eta_carinae,eta_carinae-0004_r,B&C,r,300.0,2459696.843361343,2022-04-27T08:14:26.42,,,,2319.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220427/eta_carinae-0004_r.fit
-bad,calib-0003_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/calib-0003_300.fit
 AUmic,AUmic-2207r,B&C,r,2.0,2459686.2184300926,2022-04-16T17:14:32.36,,,,876.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2207r.fit
 AUmic,AUmic-1687r,B&C,r,2.0,2459686.1827524304,2022-04-16T16:23:09.81,,,,907.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1687r.fit
 AUmic,AUmic-1174g,B&C,g,5.0,2459688.2177858795,2022-04-18T17:13:36.70,,,,1015.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1174g.fit
-bad,AUmic-2543r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2543r.fit
 Jupiter,Jupiter-0028_g,B&C,g,0.05,2459088.083483796,2020-08-26T14:00:13,,,,844.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200826/Jupiter-0028_g.fit
 AUmic,AUmic-1572r,B&C,r,2.0,2459686.174848727,2022-04-16T16:11:46.93,,,,936.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1572r.fit
 AUmic,AUmic-0290r,B&C,r,2.0,2459686.085829977,2022-04-16T14:03:35.71,,,,907.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0290r.fit
@@ -953,7 +948,6 @@ SN2022rjg_20220829,SN2022rjg_20220829-0001g300,B&C,g,300.0,2459821.1535436343,20
 Jupiter,Jupiter-0026_z,B&C,z,0.05,2459088.0818171296,2020-08-26T13:57:49,,,,838.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200826/Jupiter-0026_z.fit
 au_mic,au_mic-0409_g,B&C,g,5.0,2459698.175616204,2022-04-28T16:12:53.24,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0409_g.fit
 TOI173,TOI173-0009V,B&C,V,5.0,2458725.879039352,2019-08-30T09:05:49,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0009V.fit
-bad,AUmic-2541r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2541r.fit
 AUmic,AUmic-1336g,B&C,g,5.0,2459688.2343265046,2022-04-18T17:37:25.81,,,,1146.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1336g.fit
 Jupiter,Jupiter-0001_i,B&C,i,0.02,2459084.0265972223,2020-08-22T12:38:18,,,,850.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/Jupiter-0001_i.fit
 Autosave Image,Autosave Image -0486g,B&C,g,4.0,2459687.1804086803,2022-04-17T16:19:47.31,,,,909.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0486g.fit
@@ -1172,7 +1166,6 @@ AUmic,AUmic-0653r,B&C,r,2.0,2459686.110944907,2022-04-16T14:39:45.64,,,,931.0,Li
 TOI173,TOI173-0066V,B&C,V,5.0,2458725.890474537,2019-08-30T09:22:17,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0066V.fit
 NGC2516,NGC2516-0606g_2,B&C,g,2.0,2459683.921471065,2022-04-14T10:06:55.10,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0606g_2.fit
 NGC2516,NGC2516-0609g_2,B&C,g,2.0,2459683.9216729165,2022-04-14T10:07:12.54,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0609g_2.fit
-bad,calib-0002_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/calib-0002_300.fit
 AUmic,AUmic-1125r,B&C,r,2.0,2459686.1441153935,2022-04-16T15:27:31.57,,,,922.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1125r.fit
 Jupiter,Jupiter-0016_g,B&C,g,0.05,2459088.9331828705,2020-08-27T10:23:47,,,,846.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0016_g.fit
 20210630_C2020O2-B,20210630_C2020O2-B-0002u,B&C,u,300.0,2459396.1171849538,2021-06-30T14:48:44.78,,,,872.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210630/20210630_C2020O2-B-0002u.fit
@@ -1229,7 +1222,6 @@ NGC6405_1S,NGC6405_1S-0008_V,B&C,V,1.0,2459468.918211227,2021-09-11T10:02:13.45,
 c2022-e2,c2022-e2-0001_g,B&C,g,300.0,2459695.8978363425,2022-04-26T09:32:53.06,,,,1020.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220426/c2022-e2-0001_g.fit
 AUmic,AUmic-1503g,B&C,g,5.0,2459688.251379398,2022-04-18T18:01:59.18,,,,1141.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1503g.fit
 AUmic,AUmic-0127g,B&C,g,4.0,2459688.100801852,2022-04-18T14:25:09.28,,,,948.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0127g.fit
-bad,C2021E3-000360,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-000360.fit
 NGC4833,NGC4833-0026R_60,B&C,R,60.0,2459618.168175463,2022-02-07T16:02:10.36,,,,939.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220207/NGC4833-0026R_60.fit
 AUmic,AUmic-0371r,B&C,r,2.0,2459686.0913950233,2022-04-16T14:11:36.53,,,,916.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0371r.fit
 AUmic,AUmic-0698r,B&C,r,2.0,2459686.114035185,2022-04-16T14:44:12.64,,,,905.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0698r.fit
@@ -1409,13 +1401,11 @@ C2022F2,C2022F2-0002r,B&C,r,300.0,2459682.148496181,2022-04-12T15:33:50.07,,,,12
 NGC2516,NGC2516-0617r_2,B&C,r,2.0,2459683.935946528,2022-04-14T10:27:45.78,,,,886.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0617r_2.fit
 Jupiter,Jupiter-0084_z,B&C,z,0.02,2459089.046238426,2020-08-27T13:06:35,,,,98.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0084_z.fit
 NGC4372,NGC4372-0005I,B&C,I,60.0,2458726.8312731483,2019-08-31T07:57:02,,,,1296.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/NGC4372-0005I.fit
-bad,C2021E3-000860,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-000860.fit
 c2020-r7,c2020-r7-0001_r,B&C,r,300.0,2459695.1866277778,2022-04-25T16:28:44.64,,,,1451.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220425/c2020-r7-0001_r.fit
 NGC1232,NGC1232-0004OIII,B&C,OIII,300.0,2459095.2018402778,2020-09-02T16:50:39,,,,916.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/NGC1232-0004OIII.fit
 HIP_65Ab,HIP_65Ab-0249_I,B&C,I,20.0,2459094.1805439815,2020-09-01T16:19:59,,,,2712.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0249_I.fit
 NGC1360,NGC1360-0002_V,B&C,V,180.0,2459084.145173611,2020-08-22T15:29:03,,,,922.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/NGC1360-0002_V.fit
 W-gru,W-gru-0006_B,B&C,B,20.0,2459094.062523148,2020-09-01T13:30:02,,,,956.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/W-gru-0006_B.fit
-bad,C2021E3-001060,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-001060.fit
 NGC2516,NGC2516-010330_g,B&C,g,30.0,2459682.0995256943,2022-04-12T14:23:19.02,,,,901.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/NGC2516-010330_g.fit
 AUmic,AUmic-2254r,B&C,r,2.0,2459686.2216274305,2022-04-16T17:19:08.61,,,,873.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2254r.fit
 NGC2516,NGC2516-0211g_2,B&C,g,2.0,2459683.882544792,2022-04-14T09:10:51.87,,,,892.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0211g_2.fit
@@ -1566,7 +1556,6 @@ NGC2516,NGC2516-0679g_2,B&C,g,2.0,2459683.928008912,2022-04-14T10:16:19.97,,,,89
 Autosave Image,Autosave Image -0921g,B&C,g,4.0,2459687.220093866,2022-04-17T17:16:56.11,,,,894.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0921g.fit
 Jupiter,Jupiter-0002_z,B&C,z,0.05,2459089.9044675925,2020-08-28T09:42:26,,,,851.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200828/Jupiter-0002_z.fit
 NGC2516,NGC2516-0338g_2,B&C,g,2.0,2459683.894115162,2022-04-14T09:27:31.55,,,,892.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0338g_2.fit
-bad,c2020-r7-0009_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220425/c2020-r7-0009_300.fit
 Jupiter,Jupiter-0047_z,B&C,z,0.02,2459089.0280671297,2020-08-27T12:40:25,,,,101.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0047_z.fit
 NGC2014_20220830,NGC2014_20220830-0001SII300,B&C,SII,300.0,2459822.1669393517,2022-08-30T16:00:23.56,,,,856.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220830/NGC2014_20220830-0001SII300.fit
 NGC2516,NGC2516-0206g_2,B&C,g,2.0,2459683.882207639,2022-04-14T09:10:22.74,,,,892.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0206g_2.fit
@@ -1885,7 +1874,6 @@ AUmic,AUmic-1961r,B&C,r,2.0,2459686.2016744213,2022-04-16T16:50:24.67,,,,885.0,L
 AUmic,AUmic-0474g,B&C,g,5.0,2459688.136756597,2022-04-18T15:16:55.77,,,,969.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0474g.fit
 Jupiter,Jupiter-0115_SII,B&C,SII,0.6,2459089.058888889,2020-08-27T13:24:48,,,,103.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0115_SII.fit
 NGC2516,NGC2516-0944g_5,B&C,g,5.0,2459682.9634751156,2022-04-13T11:07:24.25,,,,882.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0944g_5.fit
-bad,AUmic -0004,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0004.fit
 Autosave Image,Autosave Image -1213g,B&C,g,4.0,2459687.246734375,2022-04-17T17:55:17.85,,,,893.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1213g.fit
 NGC2516,NGC2516-0675g_2,B&C,g,2.0,2459683.9277399303,2022-04-14T10:15:56.73,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0675g_2.fit
 AUmic,AUmic-1959r,B&C,r,2.0,2459686.2015377316,2022-04-16T16:50:12.86,,,,886.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1959r.fit
@@ -2191,7 +2179,6 @@ C2020O2,C2020O2-0001-i,B&C,i,300.0,2459399.806474537,2021-07-04T07:21:19.40,,,,1
 au_mic,au_mic-0437_g,B&C,g,5.0,2459698.178487963,2022-04-28T16:17:01.36,,,,856.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0437_g.fit
 Jupiter,Jupiter-0010_z,B&C,z,0.05,2459095.005358796,2020-09-02T12:07:43,,,,825.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/Jupiter-0010_z.fit
 AUmic,AUmic-0545r,B&C,r,1.5,2459687.110098148,2022-04-17T14:38:32.48,,,,868.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0545r.fit
-bad,C2021E3-000960,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-000960.fit
 AUmic,AUmic-1387g,B&C,g,5.0,2459688.2395341434,2022-04-18T17:44:55.75,,,,1114.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1387g.fit
 NGC2516,NGC2516-008930_i,B&C,i,30.0,2459682.0799336806,2022-04-12T13:55:06.27,,,,972.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/NGC2516-008930_i.fit
 AUmic,AUmic-1344r,B&C,r,2.0,2459686.1591572915,2022-04-16T15:49:11.19,,,,966.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1344r.fit
@@ -2620,7 +2607,6 @@ Jupiter,Jupiter-0021_i,B&C,i,0.05,2459087.044398148,2020-08-25T13:03:56,,,,819.0
 C2019E3,C2019E3-0004g,B&C,g,300.0,2459606.9309765045,2022-01-27T10:20:36.37,,,,1075.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220127/C2019E3-0004g.fit
 KS36C047893,KS36C047893-0076V,B&C,V,10.0,2458728.859039352,2019-09-02T08:37:01,,,,1016.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/KS36C047893-0076V.fit
 AUmic,AUmic-0293r,B&C,r,2.0,2459686.086036111,2022-04-16T14:03:53.52,,,,907.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0293r.fit
-bad,AUmic-2559r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2559r.fit
 AUmic,AUmic-0095r,B&C,r,2.0,2459688.084002778,2022-04-18T14:00:57.84,,,,897.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0095r.fit
 ETA_CAR,ETA_CAR-0001_Ha,B&C,Halpha,150.0,2459468.2033760417,2021-09-10T16:52:51.69,,,,1167.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210910/ETA_CAR-0001_Ha.fit
 AUmic,AUmic-1300g,B&C,g,5.0,2459688.230650347,2022-04-18T17:32:08.19,,,,1120.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1300g.fit
@@ -2830,7 +2816,6 @@ AUmic,AUmic-2573r,B&C,r,2.0,2459686.2529975693,2022-04-16T18:04:18.99,,,,886.0,L
 KS36C047893,KS36C047893-0016V,B&C,V,10.0,2458728.843402778,2019-09-02T08:14:30,,,,1016.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/KS36C047893-0016V.fit
 WASP75b,WASP75b-0338V,B&C,V,20.0,2458729.0613078703,2019-09-02T13:28:17,,,,1023.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/WASP75b-0338V.fit
 Autosave Image,Autosave Image -001730_r,B&C,r,30.0,2459681.854804861,2022-04-12T08:30:55.14,,,,989.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/Autosave Image -001730_r.fit
-bad,AUmic-2557r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2557r.fit
 HIP_65Ab,HIP_65Ab-0477_I,B&C,I,20.0,2459094.2433912037,2020-09-01T17:50:29,,,,979.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0477_I.fit
 Tarantula,Tarantula-0001B,B&C,B,60.0,2459530.985935648,2021-11-12T11:39:44.84,,,,1137.0,Light Frame,/home/phys/astro8/MJArchive/octans/20211112/Tarantula-0001B.fit
 AUmic,AUmic-0039g,B&C,g,10.0,2459688.065613773,2022-04-18T13:34:29.03,,,,1166.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0039g.fit
@@ -3161,7 +3146,6 @@ SN2022rjg_20220908,SN2022rjg_20220908-0001_g300,B&C,g,300.0,2459831.04164919,202
 HIP_65Ab,HIP_65Ab-0340_I,B&C,I,20.0,2459094.205625,2020-09-01T16:56:06,,,,3101.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0340_I.fit
 Autosave Image,Autosave Image -0775g,B&C,g,4.0,2459687.206776505,2022-04-17T16:57:45.49,,,,896.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0775g.fit
 NGC2516,NGC2516-0735g_2,B&C,g,2.0,2459683.932940972,2022-04-14T10:23:26.10,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0735g_2.fit
-bad,AUmic-2547r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2547r.fit
 Autosave Image,Autosave Image -0400g,B&C,g,4.0,2459687.172571759,2022-04-17T16:08:30.20,,,,908.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0400g.fit
 AUmic,AUmic-2713r,B&C,r,2.0,2459686.2626247685,2022-04-16T18:18:10.78,,,,971.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2713r.fit
 AUmic,AUmic-0246r,B&C,r,2.0,2459687.090253125,2022-04-17T14:09:57.87,,,,880.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0246r.fit
@@ -3367,7 +3351,6 @@ M6_20220908,M6_20220908-0001_r300,B&C,r,300.0,2459830.894503704,2022-09-08T09:28
 AUmic,AUmic-2724r,B&C,r,2.0,2459686.263382176,2022-04-16T18:19:16.22,,,,985.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2724r.fit
 AUmic,AUmic-1159r,B&C,r,2.0,2459686.146449074,2022-04-16T15:30:53.20,,,,934.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1159r.fit
 C2019F1,C2019F1-0009-g,B&C,g,300.0,2459399.155749074,2021-07-03T15:44:16.72,,,,1120.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210703/C2019F1-0009-g.fit
-bad,calib-0004_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/calib-0004_300.fit
 NGC2516,NGC2516-0214g_5,B&C,g,5.0,2459682.827901852,2022-04-13T07:52:10.72,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0214g_5.fit
 AUmic,AUmic-0606r,B&C,r,2.0,2459686.1077136574,2022-04-16T14:35:06.46,,,,930.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0606r.fit
 SN2022nah_20220906,SN2022nah_20220906-0002_i300,B&C,i,300.0,2459829.0457980325,2022-09-06T13:05:56.95,,,,2116.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220906/SN2022nah_20220906-0002_i300.fit
@@ -3418,7 +3401,6 @@ TOI173,TOI173-0049V,B&C,V,5.0,2458725.887048611,2019-08-30T09:17:21,,,,1006.0,Li
 DOMEFLAT,DOMEFLAT-0003_OIII,B&C,OIII,200.0,2459468.8349310183,2021-09-11T08:02:18.04,,,,8374.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210910/DOMEFLAT-0003_OIII.fit
 20210630_C2019F1,20210630_C2019F1-0002u,B&C,u,300.0,2459395.9613480326,2021-06-30T11:04:20.47,,,,839.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210630/20210630_C2019F1-0002u.fit
 NGC2516,NGC2516-0083g_5,B&C,g,5.0,2459682.808987037,2022-04-13T07:24:56.48,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0083g_5.fit
-bad,AUmic-2551r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2551r.fit
 HIP_65Ab,HIP_65Ab-0209_I,B&C,I,20.0,2459094.169525463,2020-09-01T16:04:07,,,,2993.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0209_I.fit
 au_mic,au_mic-0334_g,B&C,g,5.0,2459698.1679396993,2022-04-28T16:01:49.99,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0334_g.fit
 AUmic,AUmic-0756r,B&C,r,2.0,2459686.118015162,2022-04-16T14:49:56.51,,,,924.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0756r.fit
@@ -3631,7 +3613,6 @@ KS36C047893,KS36C047893-0200V,B&C,V,10.0,2458728.8914930555,2019-09-02T09:23:45,
 HE 0218-4447_20220829,HE 0218-4447_20220829-0028B30,B&C,B,30.0,2459821.1160163195,2022-08-29T14:47:03.81,,,,845.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220829/HE 0218-4447_20220829-0028B30.fit
 NGC253,NGC253-0005_OIII,B&C,OIII,300.0,2459084.1000925926,2020-08-22T14:24:08,,,,852.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/NGC253-0005_OIII.fit
 AUmic,AUmic-0498r,B&C,r,1.5,2459687.1071778936,2022-04-17T14:34:20.17,,,,868.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0498r.fit
-bad,AUmic -0003,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0003.fit
 NGC4833,NGC4833-0018R_300,B&C,R,300.0,2459618.0845403937,2022-02-07T14:01:44.29,,,,1342.0,Flat Field,/home/phys/astro8/MJArchive/octans/20220207/NGC4833-0018R_300.fit
 AUmic,AUmic-0424g,B&C,g,5.0,2459688.1316119214,2022-04-18T15:09:31.27,,,,949.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0424g.fit
 7P,7P-0006-g,B&C,g,300.0,2459398.098749421,2021-07-02T14:22:11.95,,,,1442.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210702/7P-0006-g.fit
@@ -3669,7 +3650,6 @@ Ic-418,Ic-418-0004OIII,B&C,OIII,60.0,2459094.256550926,2020-09-01T18:09:26,,,,84
 NGC4833,NGC4833-0010R_60,B&C,R,60.0,2459618.0008663195,2022-02-07T12:01:14.85,,,,994.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220207/NGC4833-0010R_60.fit
 AUmic,AUmic-0261r,B&C,r,2.0,2459687.09126875,2022-04-17T14:11:25.62,,,,880.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0261r.fit
 c2021-a1,c2021-a1-0003_r,B&C,r,300.0,2459696.146686227,2022-04-26T15:31:13.69,,,,1284.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220426/c2021-a1-0003_r.fit
-bad,AUmic-2553r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2553r.fit
 C2019E3,C2019E3-0008g,B&C,g,300.0,2459609.04424375,2022-01-29T13:03:42.66,,,,1108.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220129/C2019E3-0008g.fit
 Jupiter_calibration_field,Jupiter_calibration_field-0002_SII,B&C,SII,10.0,2459084.0589699075,2020-08-22T13:24:55,,,,844.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/Jupiter_calibration_field-0002_SII.fit
 au_mic,au_mic-0197_g,B&C,g,5.0,2459698.1530884258,2022-04-28T15:40:26.84,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0197_g.fit
@@ -3910,7 +3890,6 @@ NGC2516,NGC2516-0147g_2,B&C,g,2.0,2459683.876228125,2022-04-14T09:01:46.11,,,,88
 NGC2516,NGC2516-0928g_5,B&C,g,5.0,2459682.9615422455,2022-04-13T11:04:37.25,,,,881.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0928g_5.fit
 Autosave Image,Autosave Image -0619g,B&C,g,4.0,2459687.19254919,2022-04-17T16:37:16.25,,,,905.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0619g.fit
 C2019K1,C2019K1-0006-g,B&C,g,300.0,2459397.8880878473,2021-07-02T09:18:50.79,,,,1011.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210702/C2019K1-0006-g.fit
-bad,c2020-r7-0006_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220425/c2020-r7-0006_300.fit
 AUmic,AUmic-1244g,B&C,g,5.0,2459688.22493206,2022-04-18T17:23:54.13,,,,1053.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1244g.fit
 20210630_C2020O2-A,20210630_C2020O2-A-0002u,B&C,u,300.0,2459396.0860506943,2021-06-30T14:03:54.78,,,,865.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210630/20210630_C2020O2-A-0002u.fit
 C2022F2,C2022F2-0001r,B&C,r,300.0,2459682.141374537,2022-04-12T15:23:34.76,,,,1294.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/C2022F2-0001r.fit
@@ -4050,7 +4029,6 @@ Jupiter,Jupiter-0020_SII,B&C,SII,0.5,2459088.936134259,2020-08-27T10:28:02,,,,83
 AUmic,AUmic-0164r,B&C,r,2.0,2459687.083850579,2022-04-17T14:00:44.69,,,,882.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0164r.fit
 Jupiter_calibration_field,Jupiter_calibration_field-0001_g,B&C,g,10.0,2459084.056770833,2020-08-22T13:21:45,,,,850.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/Jupiter_calibration_field-0001_g.fit
 NGC2516,NGC2516-0298g_5,B&C,g,5.0,2459682.8384849536,2022-04-13T08:07:25.10,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0298g_5.fit
-bad,AUmic-2536r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2536r.fit
 Jupiter,Jupiter-0030_z,B&C,z,0.05,2459089.0202546297,2020-08-27T12:29:10,,,,105.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0030_z.fit
 Jupiter,Jupiter-0006_SII,B&C,SII,0.5,2459087.958483796,2020-08-26T11:00:13,,,,837.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200826/Jupiter-0006_SII.fit
 NGC7009,NGC7009-0009OIII,B&C,OIII,60.0,2458726.018078704,2019-08-30T12:26:02,,,,1005.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/NGC7009-0009OIII.fit
@@ -4310,7 +4288,6 @@ C2021E3,C2021E3-0012i_60,B&C,i,60.0,2459684.2205732637,2022-04-14T17:17:37.53,,,
 TOI319,TOI319-0078_NoFilter,B&C,Clear,60.0,2459094.8610416665,2020-09-02T08:39:54,,,,6407.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/TOI319-0078_NoFilter.fit
 NGC4833,NGC4833-0026V_60,B&C,V,60.0,2459618.1624152777,2022-02-07T15:53:52.68,,,,909.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220207/NGC4833-0026V_60.fit
 NGC2516,NGC2516-0959g_5,B&C,g,5.0,2459682.965305208,2022-04-13T11:10:02.37,,,,882.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0959g_5.fit
-bad,-0001_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0001_60.fit
 au_mic,au_mic-0097_g,B&C,g,6.0,2459698.1421501157,2022-04-28T15:24:41.77,,,,858.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0097_g.fit
 NGC2516,NGC2516-0546g_5,B&C,g,5.0,2459682.879246528,2022-04-13T09:06:06.90,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0546g_5.fit
 AUmic,AUmic-0499r,B&C,r,1.5,2459687.107239352,2022-04-17T14:34:25.48,,,,868.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0499r.fit
@@ -4459,7 +4436,6 @@ HE 0218-4447_20220829,HE 0218-4447_20220829-0034V30,B&C,V,30.0,2459821.130851273
 HIP65Ab_20220904,HIP65Ab_20220904-0104_R30,B&C,R,30.0,2459827.0130655095,2022-09-04T12:18:48.86,,,,919.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220904/HIP65Ab_20220904-0104_R30.fit
 NGC6302,NGC6302-0008Ha,B&C,Halpha,60.0,2458725.968599537,2019-08-30T11:14:47,,,,1008.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/NGC6302-0008Ha.fit
 M26,M26-0001V,B&C,V,30.0,2458728.801574074,2019-09-02T07:14:16,,,,1117.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/M26-0001V.fit
-bad,AUmic-2556r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2556r.fit
 C2021G2,C2021G2-0001r,B&C,r,300.0,2459611.0572734955,2022-01-31T13:22:28.43,,,,1346.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220131/C2021G2-0001r.fit
 NGC1399_20220903,NGC1399_20220903-0002g,B&C,g,120.0,2459825.232673727,2022-09-02T17:35:03.01,,,,922.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220902/NGC1399_20220903-0002g.fit
 NGC2516,NGC2516-006930_r,B&C,r,30.0,2459682.0439224537,2022-04-12T13:03:14.90,,,,974.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/NGC2516-006930_r.fit
@@ -4499,7 +4475,6 @@ NGC2516,NGC2516-0219r_2,B&C,r,2.0,2459683.8985625,2022-04-14T09:33:55.80,,,,889.
 Autosave Image,Autosave Image -0550g,B&C,g,4.0,2459687.1862457176,2022-04-17T16:28:11.63,,,,904.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0550g.fit
 Autosave Image,Autosave Image -0490g,B&C,g,4.0,2459687.1807733797,2022-04-17T16:20:18.82,,,,909.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0490g.fit
 NGC2017_,NGC2070_-0005_SII,B&C,SII,300.0,2459087.1422337964,2020-08-25T15:24:49,,,,835.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/NGC2070_-0005_SII.fit
-bad,-0001_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0001_300.fit
 Autosave Image,Autosave Image -1212g,B&C,g,4.0,2459687.246643287,2022-04-17T17:55:09.98,,,,893.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1212g.fit
 AUmic,AUmic-1480g,B&C,g,5.0,2459688.2490319447,2022-04-18T17:58:36.36,,,,1123.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1480g.fit
 NGC2516,NGC2516-009830_r,B&C,r,30.0,2459682.0934789353,2022-04-12T14:14:36.58,,,,933.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/NGC2516-009830_r.fit
@@ -5177,7 +5152,6 @@ Autosave Image,Autosave Image -0665g,B&C,g,4.0,2459687.1967439814,2022-04-17T16:
 AUmic,AUmic-0714r,B&C,r,1.5,2459687.120618866,2022-04-17T14:53:41.47,,,,866.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0714r.fit
 AUmic,AUmic-0800r,B&C,r,2.0,2459686.1210384257,2022-04-16T14:54:17.72,,,,930.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0800r.fit
 Jupiter,Jupiter-0005_OIII,B&C,OIII,0.7,2459086.8583217594,2020-08-25T08:35:59,,,,820.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/Jupiter-0005_OIII.fit
-bad,Autosave Image -0004,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0004.fit
 NGC4833,NGC4833-0005V_60,B&C,V,60.0,2459610.939675,2022-01-31T10:33:07.92,,,,1018.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220131/NGC4833-0005V_60.fit
 c2022-f1,c2022-f1-0017_r,B&C,r,300.0,2459695.132925,2022-04-25T15:11:24.72,,,,1315.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220425/c2022-f1-0017_r.fit
 AUmic,AUmic-0685r,B&C,r,1.5,2459687.1188141205,2022-04-17T14:51:05.54,,,,866.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0685r.fit
@@ -5602,7 +5576,6 @@ AUmic,AUmic-0539g,B&C,g,5.0,2459688.143446412,2022-04-18T15:26:33.77,,,,1006.0,L
 Autosave Image,Autosave Image -0782g,B&C,g,4.0,2459687.2074159724,2022-04-17T16:58:40.74,,,,896.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0782g.fit
 Autosave Image,Autosave Image -0398g,B&C,g,4.0,2459687.1723894677,2022-04-17T16:08:14.45,,,,908.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0398g.fit
 NGC7009_,NGC7009_-0002V,B&C,V,180.0,2459084.014837963,2020-08-22T12:21:22,,,,940.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/NGC7009_-0002V.fit
-bad,AUmic-2561r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2561r.fit
 WASP75b,WASP75b-0163V,B&C,V,20.0,2458728.988136574,2019-09-02T11:42:55,,,,1020.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/WASP75b-0163V.fit
 HIP65Ab_20220904,HIP65Ab_20220904-0003_R30,B&C,R,30.0,2459826.9734076387,2022-09-04T11:21:42.42,,,,927.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220904/HIP65Ab_20220904-0003_R30.fit
 CD_37_15492_20220908,CD_37_15492_20220908-0006_r10,B&C,r,10.0,2459830.958681366,2022-09-08T11:00:30.07,,,,992.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220908/CD_37_15492_20220908-0006_r10.fit
@@ -5723,7 +5696,6 @@ AUmic,AUmic-0992r,B&C,r,2.0,2459686.134233449,2022-04-16T15:13:17.77,,,,932.0,Li
 AUmic,AUmic-0142r,B&C,r,2.0,2459687.082369213,2022-04-17T13:58:36.70,,,,883.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0142r.fit
 AUmic,AUmic-2623r,B&C,r,2.0,2459686.256432523,2022-04-16T18:09:15.77,,,,899.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2623r.fit
 NGC2516,NGC2516-0450g_5,B&C,g,5.0,2459682.8664369215,2022-04-13T08:47:40.15,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0450g_5.fit
-bad,AUmic-2540r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2540r.fit
 AUmic,AUmic-0240r,B&C,r,2.0,2459687.08982419,2022-04-17T14:09:20.81,,,,880.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0240r.fit
 NGC7492,NGC7492-0027ii,B&C,i,60.0,2458728.1245138887,2019-09-01T14:59:18,,,,1182.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/NGC7492-0027ii.fit
 NGC2516,NGC2516-0278g_5,B&C,g,5.0,2459682.836143403,2022-04-13T08:04:02.79,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0278g_5.fit
@@ -5847,7 +5819,6 @@ C2022F1_20220906,C2022F1_20220906-0008_r300,B&C,r,300.0,2459829.0161966435,2022-
 Jupiter,Jupiter-0001_g,B&C,g,0.05,2459088.791111111,2020-08-27T06:59:12,,,,854.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0001_g.fit
 AUmic,AUmic-1934r,B&C,r,2.0,2459686.199833449,2022-04-16T16:47:45.61,,,,891.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1934r.fit
 Jupiter,Jupiter-0018_OIII,B&C,OIII,0.7,2459088.9345833333,2020-08-27T10:25:48,,,,835.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0018_OIII.fit
-bad,AUmic-2544r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2544r.fit
 KS36C047893,KS36C047893-0027V,B&C,V,10.0,2458728.846261574,2019-09-02T08:18:37,,,,1016.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/KS36C047893-0027V.fit
 NGC2516,NGC2516-003330_r,B&C,r,30.0,2459681.9827125,2022-04-12T11:35:06.36,,,,968.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/NGC2516-003330_r.fit
 NGC2516,NGC2516-0710g_2,B&C,g,2.0,2459683.930794676,2022-04-14T10:20:20.66,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0710g_2.fit
@@ -6156,7 +6127,6 @@ HIP_65Ab,HIP_65Ab-0287_I,B&C,I,20.0,2459094.1910185185,2020-09-01T16:35:04,,,,35
 Autosave Image,Autosave Image -1071g,B&C,g,4.0,2459687.2337787035,2022-04-17T17:36:38.48,,,,895.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1071g.fit
 AUmic,AUmic-0934r,B&C,r,2.0,2459686.1302895835,2022-04-16T15:07:37.02,,,,928.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0934r.fit
 NGC4833,NGC4833-0002V_120,B&C,V,120.0,2459606.1699011573,2022-01-26T16:04:39.46,,,,1204.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220126/NGC4833-0002V_120.fit
-bad,Autosave Image -0009,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0009.fit
 NGC7492,NGC7492-0006ii,B&C,i,60.0,2458728.106898148,2019-09-01T14:33:56,,,,1147.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/NGC7492-0006ii.fit
 AUmic,AUmic-1280r,B&C,r,2.0,2459686.154765625,2022-04-16T15:42:51.75,,,,906.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1280r.fit
 Autosave Image,Autosave Image -1232g,B&C,g,4.0,2459687.2484677085,2022-04-17T17:57:47.61,,,,895.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1232g.fit
@@ -7152,7 +7122,6 @@ NGC1232_,NGC1232_-0003SII,B&C,SII,300.0,2459087.209826389,2020-08-25T17:02:09,,,
 NGC5189_,NGC5189_-0002OIII,B&C,OIII,300.0,2459086.8849421297,2020-08-25T09:14:19,,,,835.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/NGC5189_-0002OIII.fit
 NGC2516,NGC2516-0812r_2,B&C,r,2.0,2459683.9585166667,2022-04-14T11:00:15.84,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0812r_2.fit
 AUmic,AUmic-0618g,B&C,g,5.0,2459688.1604028936,2022-04-18T15:50:58.81,,,,972.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0618g.fit
-bad,Autosave Image -0012,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0012.fit
 Jupiter,Jupiter-0014_OIII,B&C,OIII,0.7,2459086.980185185,2020-08-25T11:31:28,,,,818.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/Jupiter-0014_OIII.fit
 47Tuc_20220904,47Tuc_20220904-0004_i120,B&C,i,120.0,2459826.877787037,2022-09-04T09:04:00.80,,,,1455.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220904/47Tuc_20220904-0004_i120.fit
 Jupiter,Jupiter-0175_OIII,B&C,OIII,0.7,2459089.101550926,2020-08-27T14:26:14,,,,834.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0175_OIII.fit
@@ -7331,7 +7300,6 @@ au_mic,au_mic-0681_g,B&C,g,5.0,2459698.2034914354,2022-04-28T16:53:01.66,,,,854.
 TOI173,TOI173-0300V,B&C,V,5.0,2458725.938136574,2019-08-30T10:30:55,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0300V.fit
 AUmic,AUmic-2052r,B&C,r,2.0,2459686.2078738427,2022-04-16T16:59:20.30,,,,884.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2052r.fit
 WASP144b,WASP144b-0161V,B&C,V,30.0,2458727.043090278,2019-08-31T13:02:03,,,,1025.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/WASP144b-0161V.fit
-bad,AUmic-2554r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2554r.fit
 AUmic,AUmic-0747r,B&C,r,2.0,2459686.117395949,2022-04-16T14:49:03.01,,,,922.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0747r.fit
 C2020O2,C2020O2-0003-i,B&C,i,300.0,2459398.86143125,2021-07-03T08:40:27.66,,,,2423.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210703/C2020O2-0003-i.fit
 AUmic,AUmic-2498r,B&C,r,2.0,2459686.2382563655,2022-04-16T17:43:05.35,,,,860.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2498r.fit
@@ -7347,7 +7315,6 @@ Autosave Image,Autosave Image -0525g,B&C,g,4.0,2459687.183967014,2022-04-17T16:2
 M26,M26-0149V,B&C,V,30.0,2458727.9164583334,2019-09-01T09:59:42,,,,1039.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/M26-0149V.fit
 AUmic,AUmic-2291r,B&C,r,2.0,2459686.224162153,2022-04-16T17:22:47.61,,,,872.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2291r.fit
 m83,m83-0006_O_300,B&C,OIII,300.0,2459698.0711585646,2022-04-28T13:42:28.10,,,,866.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/m83-0006_O_300.fit
-bad,C2021E3-000660,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-000660.fit
 Jupiter,Jupiter-0013_z,B&C,z,0.05,2459086.979965278,2020-08-25T11:31:09,,,,818.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/Jupiter-0013_z.fit
 AUmic,AUmic-0086r,B&C,r,4.0,2459686.067633333,2022-04-16T13:37:23.52,,,,973.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0086r.fit
 AUmic,AUmic-0771r,B&C,r,2.0,2459686.119045486,2022-04-16T14:51:25.53,,,,935.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0771r.fit
@@ -7812,7 +7779,6 @@ C2021C5,C2021C5-0004g,B&C,g,300.0,2459611.0380113428,2022-01-31T12:54:44.18,,,,1
 au_mic,au_mic-0146_g,B&C,g,5.0,2459698.1478452547,2022-04-28T15:32:53.83,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0146_g.fit
 TOI173,TOI173-0298V,B&C,V,5.0,2458725.9377314816,2019-08-30T10:30:20,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0298V.fit
 NGC7492,NGC7492-0101ii,B&C,i,60.0,2458728.189016204,2019-09-01T16:32:11,,,,1216.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/NGC7492-0101ii.fit
-bad,AUmic -0008,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0008.fit
 Autosave Image,Autosave Image -0644g,B&C,g,4.0,2459687.194827778,2022-04-17T16:40:33.12,,,,902.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0644g.fit
 AUmic,AUmic-0652r,B&C,r,1.5,2459687.116761111,2022-04-17T14:48:08.16,,,,867.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0652r.fit
 AUmic,AUmic-0633r,B&C,r,1.5,2459687.1155755785,2022-04-17T14:46:25.73,,,,867.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0633r.fit
@@ -7835,7 +7801,6 @@ NGC2516,NGC2516-0928g_2,B&C,g,2.0,2459683.959704398,2022-04-14T11:01:58.46,,,,89
 AUmic,AUmic-0207r,B&C,r,2.0,2459687.0867483797,2022-04-17T14:04:55.06,,,,881.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0207r.fit
 Jupiter,Jupiter-0046_SII,B&C,SII,0.7,2459089.0277546295,2020-08-27T12:39:58,,,,102.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0046_SII.fit
 au_mic,au_mic-0360_g,B&C,g,5.0,2459698.170595949,2022-04-28T16:05:39.49,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0360_g.fit
-bad,Autosave Image -0006,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0006.fit
 HIP_65Ab,HIP_65Ab-0325_I,B&C,I,20.0,2459094.2014930556,2020-09-01T16:50:09,,,,3202.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0325_I.fit
 M26,M26-0147V,B&C,V,30.0,2458727.915474537,2019-09-01T09:58:17,,,,1040.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/M26-0147V.fit
 Jupiter,Jupiter-0014_g,B&C,g,0.05,2459087.9650462964,2020-08-26T11:09:40,,,,842.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200826/Jupiter-0014_g.fit
@@ -7971,7 +7936,6 @@ M26,M26-0146V,B&C,V,30.0,2458727.914976852,2019-09-01T09:57:34,,,,1039.0,Light F
 NGC1360,NGC1360-0001_SII,B&C,SII,300.0,2459468.045950347,2021-09-10T13:06:10.11,,,,855.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210910/NGC1360-0001_SII.fit
 M26,M26-0163V,B&C,V,30.0,2458727.932546296,2019-09-01T10:22:52,,,,1038.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/M26-0163V.fit
 NGC2516,NGC2516-1055g_5,B&C,g,5.0,2459682.977670486,2022-04-13T11:27:50.73,,,,884.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-1055g_5.fit
-bad,-0004_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0004_60.fit
 Autosave Image,Autosave Image -0845g,B&C,g,4.0,2459687.213166088,2022-04-17T17:06:57.55,,,,896.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0845g.fit
 C2019F1-300,C2019F1-300-0001-i,B&C,i,300.0,2459397.2628810187,2021-07-01T18:18:32.92,,,,1739.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210701/C2019F1-300-0001-i.fit
 NGC2516,NGC2516-0933g_2,B&C,g,2.0,2459683.960051852,2022-04-14T11:02:28.48,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0933g_2.fit
@@ -8004,10 +7968,8 @@ AUmic,AUmic-1899r,B&C,r,2.0,2459686.1973211807,2022-04-16T16:44:08.55,,,,890.0,L
 AUmic,AUmic-0453r,B&C,r,1.5,2459687.104378472,2022-04-17T14:30:18.30,,,,869.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0453r.fit
 NGC2516,NGC2516-0562g_5,B&C,g,5.0,2459682.8811916667,2022-04-13T09:08:54.96,,,,889.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0562g_5.fit
 AUmic,AUmic-1288g,B&C,g,5.0,2459688.2294243057,2022-04-18T17:30:22.26,,,,1082.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1288g.fit
-bad,AUmic-2560r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2560r.fit
 AUmic,AUmic-1797r,B&C,r,2.0,2459686.1903072917,2022-04-16T16:34:02.55,,,,908.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1797r.fit
 AUmic,AUmic-0206g,B&C,g,5.0,2459688.1091668983,2022-04-18T14:37:12.02,,,,998.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0206g.fit
-bad,Autosave Image -0003,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0003.fit
 WASP75b,WASP75b-0027V,B&C,V,20.0,2458728.936226852,2019-09-02T10:28:10,,,,1021.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/WASP75b-0027V.fit
 M6v2_20220908,M6v2_20220908-0002_g30,B&C,g,30.0,2459830.9163877317,2022-09-08T09:59:35.90,,,,1321.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220908/M6v2_20220908-0002_g30.fit
 Jupiter,Jupiter-0012_r,B&C,r,0.05,2459088.8764930554,2020-08-27T09:02:09,,,,844.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0012_r.fit
@@ -8099,7 +8061,6 @@ TOI319,TOI319-0082_NoFilter,B&C,Clear,60.0,2459094.8640046297,2020-09-02T08:44:1
 HE 0218-4447_20220829,HE 0218-4447_20220829-0017B30,B&C,B,30.0,2459821.1117099538,2022-08-29T14:40:51.74,,,,843.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220829/HE 0218-4447_20220829-0017B30.fit
 Autosave Image,Autosave Image -1346g,B&C,g,4.0,2459687.2588662035,2022-04-17T18:12:46.04,,,,918.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1346g.fit
 Jupiter,Jupiter-0005_SII,B&C,SII,0.5,2459094.7942592595,2020-09-02T07:03:44,,,,831.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/Jupiter-0005_SII.fit
-bad,AUmic -0009,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0009.fit
 au_mic,au_mic-0311_g,B&C,g,5.0,2459698.165586574,2022-04-28T15:58:26.68,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0311_g.fit
 Autosave Image,Autosave Image -1314g,B&C,g,4.0,2459687.255947454,2022-04-17T18:08:33.86,,,,908.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1314g.fit
 NGC5315_,NGC5315_-0001B,B&C,B,180.0,2459086.9507291666,2020-08-25T10:49:03,,,,898.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/NGC5315_-0001B.fit
@@ -8362,7 +8323,6 @@ Autosave Image,Autosave Image -0690g,B&C,g,4.0,2459687.1990233795,2022-04-17T16:
 TOI173,TOI173-0199V,B&C,V,5.0,2458725.9174421295,2019-08-30T10:01:07,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0199V.fit
 NGC2516,NGC2516-0685g_2,B&C,g,2.0,2459683.928646181,2022-04-14T10:17:15.03,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0685g_2.fit
 AUmic,AUmic-2165r,B&C,r,2.0,2459686.215566898,2022-04-16T17:10:24.98,,,,878.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2165r.fit
-bad,AUmic -0010,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0010.fit
 NGC2516,NGC2516-0414i_2,B&C,i,2.0,2459683.913516782,2022-04-14T09:55:27.85,,,,885.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0414i_2.fit
 HIP_65Ab,HIP_65Ab-0001_I,B&C,I,5.0,2459094.1119212965,2020-09-01T14:41:10,,,,148.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0001_I.fit
 NGC2516,NGC2516-0253g_5,B&C,g,5.0,2459682.833293287,2022-04-13T07:59:56.54,,,,889.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0253g_5.fit
@@ -8462,7 +8422,6 @@ M26,M26-0125V,B&C,V,30.0,2458726.9366782405,2019-08-31T10:28:49,,,,1037.0,Light 
 NGC2516,NGC2516-0416g_5,B&C,g,5.0,2459682.8619859954,2022-04-13T08:41:15.59,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0416g_5.fit
 AUmic,AUmic-0069r,B&C,r,2.0,2459687.0774511574,2022-04-17T13:51:31.78,,,,885.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0069r.fit
 WASP144b,WASP144b-0049V,B&C,V,30.0,2458726.9872916667,2019-08-31T11:41:42,,,,1024.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/WASP144b-0049V.fit
-bad,AUmic-2563r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2563r.fit
 NGC2516,NGC2516-0007g_2,B&C,g,2.0,2459683.863780324,2022-04-14T08:43:50.62,,,,886.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0007g_2.fit
 KapteynsStar_20220905,KapteynsStar_20220905-0009_r10,B&C,r,10.0,2459828.2359457174,2022-09-05T17:39:45.71,,,,810.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220905/KapteynsStar_20220905-0009_r10.fit
 HIP_65Ab,HIP_65Ab-0246_I,B&C,I,20.0,2459094.179722222,2020-09-01T16:18:48,,,,2791.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0246_I.fit
@@ -9341,7 +9300,6 @@ NGC7293,NGC7293-0005Ha,B&C,Halpha,60.0,2458726.0593634257,2019-08-30T13:25:29,,,
 AUmic,AUmic-1494r,B&C,r,2.0,2459686.169487037,2022-04-16T16:04:03.68,,,,967.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1494r.fit
 c2021-c5,c2021-c5-0009_g,B&C,g,300.0,2459694.9488693285,2022-04-25T10:46:22.31,,,,1065.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220425/c2021-c5-0009_g.fit
 Autosave Image,Autosave Image -0730g,B&C,g,4.0,2459687.2026721067,2022-04-17T16:51:50.87,,,,897.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0730g.fit
-bad,AUmic -0007,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0007.fit
 au_mic,au_mic-0656_g,B&C,g,5.0,2459698.200935764,2022-04-28T16:49:20.85,,,,854.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0656_g.fit
 AUmic,AUmic-0933r,B&C,r,2.0,2459686.130220139,2022-04-16T15:07:31.02,,,,928.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0933r.fit
 WASP144b,WASP144b-0076V,B&C,V,30.0,2458727.000590278,2019-08-31T12:00:51,,,,1024.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/WASP144b-0076V.fit
@@ -9446,7 +9404,6 @@ NGC2516,NGC2516-0346g_5,B&C,g,5.0,2459682.8509950233,2022-04-13T08:25:25.97,,,,8
 NGC2516,NGC2516-0641g_5,B&C,g,5.0,2459682.9021189814,2022-04-13T09:39:03.08,,,,886.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0641g_5.fit
 Autosave Image,Autosave Image -1255g,B&C,g,4.0,2459687.250564815,2022-04-17T18:00:48.80,,,,905.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1255g.fit
 AUmic,AUmic-1420g,B&C,g,5.0,2459688.2429064815,2022-04-18T17:49:47.12,,,,1048.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1420g.fit
-bad,AUmic-2548r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2548r.fit
 AUmic,AUmic-0119r,B&C,r,2.0,2459687.0808210648,2022-04-17T13:56:22.94,,,,884.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0119r.fit
 NGC2516,NGC2516-0117g_2,B&C,g,2.0,2459683.873744792,2022-04-14T08:58:11.55,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0117g_2.fit
 AUmic,AUmic-0244r,B&C,r,2.0,2459686.0826059026,2022-04-16T13:58:57.15,,,,908.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0244r.fit
@@ -9996,7 +9953,6 @@ AUmic,AUmic-0034r,B&C,r,2.0,2459687.075093403,2022-04-17T13:48:08.07,,,,885.0,Li
 AUmic,AUmic-2025r,B&C,r,2.0,2459686.2060335646,2022-04-16T16:56:41.30,,,,885.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2025r.fit
 NGC2516,NGC2516-0094g_2,B&C,g,2.0,2459683.871500116,2022-04-14T08:54:57.61,,,,887.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0094g_2.fit
 AUmic,AUmic-1599r,B&C,r,2.0,2459686.1767056715,2022-04-16T16:14:27.37,,,,903.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1599r.fit
-bad,-0005_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0005_60.fit
 AUmic,AUmic-0925g,B&C,g,5.0,2459688.191995949,2022-04-18T16:36:28.45,,,,939.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0925g.fit
 C2020O2,C2020O2-0008-i,B&C,i,300.0,2459398.034887963,2021-07-02T12:50:14.32,,,,1308.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210702/C2020O2-0008-i.fit
 Jupiter,Jupiter-0014_r,B&C,r,0.05,2459088.8791203704,2020-08-27T09:05:56,,,,844.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0014_r.fit
@@ -10093,7 +10049,6 @@ HIP65Ab_20220904,HIP65Ab_20220904-0129_R30,B&C,R,30.0,2459827.0228818287,2022-09
 C2020O2-300,C2020O2-300-0004i,B&C,i,300.0,2459396.9985278933,2021-07-01T11:57:52.81,,,,1313.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210701/C2020O2-300-0004i.fit
 AUmic,AUmic-0413g,B&C,g,5.0,2459688.130479051,2022-04-18T15:07:53.39,,,,947.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0413g.fit
 M26,M26-0014V,B&C,V,30.0,2458727.846724537,2019-09-01T08:19:17,,,,1040.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/M26-0014V.fit
-bad,AUmic-2558r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2558r.fit
 DOMEFLAT,DOMEFLAT-0006_OIII,B&C,OIII,200.0,2459468.8584825234,2021-09-11T08:36:12.89,,,,8397.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210910/DOMEFLAT-0006_OIII.fit
 AUmic,AUmic-0609r,B&C,r,1.5,2459687.1140803243,2022-04-17T14:44:16.54,,,,867.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0609r.fit
 HE0218-4446_20220908,HE0218-4446_20220908-0007_V15,B&C,V,15.0,2459831.1745707174,2022-09-08T16:11:22.91,,,,923.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220908/HE0218-4446_20220908-0007_V15.fit
@@ -10536,7 +10491,6 @@ Jupiter,Jupiter-0033_z,B&C,z,0.04,2459089.0221990743,2020-08-27T12:31:58,,,,106.
 TOI319,TOI319-0045NoFilter,B&C,Clear,60.0,2459095.0970949074,2020-09-02T14:19:49,,,,4266.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/TOI319-0045NoFilter.fit
 Autosave Image,Autosave Image -1237g,B&C,g,4.0,2459687.2489233795,2022-04-17T17:58:26.98,,,,893.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1237g.fit
 C2021G2,C2021G2-0008r,B&C,r,300.0,2459609.171437963,2022-01-29T16:06:52.24,,,,1560.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220129/C2021G2-0008r.fit
-bad,AUmic -0001,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0001.fit
 NGC5189_,NGC5189_-0002V,B&C,V,180.0,2459086.892025463,2020-08-25T09:24:31,,,,1094.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/NGC5189_-0002V.fit
 NGC2516,NGC2516-002430_i,B&C,i,30.0,2459681.924520023,2022-04-12T10:11:18.53,,,,1553.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/NGC2516-002430_i.fit
 AUmic,AUmic-0481g,B&C,g,5.0,2459688.137477083,2022-04-18T15:17:58.02,,,,961.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0481g.fit
@@ -10627,7 +10581,6 @@ AUmic,AUmic-0779g,B&C,g,5.0,2459688.176976042,2022-04-18T16:14:50.73,,,,963.0,Li
 SN2022nah_20220908,SN2022nah_20220908-0002_r300,B&C,r,300.0,2459831.0139953704,2022-09-08T12:20:09.20,,,,5126.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220908/SN2022nah_20220908-0002_r300.fit
 au_mic,au_mic-0040_g,B&C,g,5.0,2459698.1359380786,2022-04-28T15:15:45.05,,,,858.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0040_g.fit
 AUmic,AUmic-0911r,B&C,r,2.0,2459686.128662847,2022-04-16T15:05:16.47,,,,925.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0911r.fit
-bad,calib-0003_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/calib-0003_60.fit
 C2022F2,C2022F2-0018r_300,B&C,r,300.0,2459683.1225211807,2022-04-13T14:56:25.83,,,,1929.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/C2022F2-0018r_300.fit
 HIP_65Ab,HIP_65Ab-0071_I,B&C,I,20.0,2459094.1314930557,2020-09-01T15:09:21,,,,1794.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0071_I.fit
 C2021E3,C2021E3-0002g_30,B&C,g,30.0,2459684.1849056715,2022-04-14T16:26:15.85,,,,982.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-0002g_30.fit
@@ -11102,7 +11055,6 @@ M26,M26-0025V,B&C,V,30.0,2458727.852141204,2019-09-01T08:27:05,,,,1040.0,Light F
 NGC2516,NGC2516-0874g_5,B&C,g,5.0,2459682.9360135417,2022-04-13T10:27:51.57,,,,885.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0874g_5.fit
 Autosave Image,Autosave Image -0435g,B&C,g,4.0,2459687.1757625,2022-04-17T16:13:05.88,,,,910.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0435g.fit
 WASP75b,WASP75b-0323V,B&C,V,20.0,2458729.055648148,2019-09-02T13:20:08,,,,1023.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/WASP75b-0323V.fit
-bad,-0005_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0005_300.fit
 AUmic,AUmic-1364r,B&C,r,2.0,2459686.1605346063,2022-04-16T15:51:10.19,,,,960.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1364r.fit
 SN2022ooh_20220909,SN2022ooh_20220909-0003_g300,B&C,g,300.0,2459832.0972900465,2022-09-09T14:20:05.86,,,,8089.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220909/SN2022ooh_20220909-0003_g300.fit
 NGC2516,NGC2516-0530g_5,B&C,g,5.0,2459682.8773034723,2022-04-13T09:03:19.02,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0530g_5.fit
@@ -11243,12 +11195,10 @@ NGC2516,NGC2516-0015g_5,B&C,g,5.0,2459682.799558565,2022-04-13T07:11:21.86,,,,91
 AUmic,AUmic-1730r,B&C,r,2.0,2459686.185705903,2022-04-16T16:27:24.99,,,,900.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1730r.fit
 HIP_65Ab,HIP_65Ab-0294_I,B&C,I,20.0,2459094.1929513887,2020-09-01T16:37:51,,,,2824.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0294_I.fit
 AUmic,AUmic-0105r,B&C,r,2.0,2459687.0798785877,2022-04-17T13:55:01.51,,,,884.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0105r.fit
-bad,Autosave Image -0010,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0010.fit
 au_mic,au_mic-0087_g,B&C,g,6.0,2459698.1409991896,2022-04-28T15:23:02.33,,,,858.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0087_g.fit
 Autosave Image,Autosave Image -0390g,B&C,g,4.0,2459687.1716601853,2022-04-17T16:07:11.44,,,,908.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0390g.fit
 NGC6818_20220830,NGC6818_20220830-0003i150,B&C,i,150.0,2459821.9778538193,2022-08-30T11:28:06.57,,,,1086.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220830/NGC6818_20220830-0003i150.fit
 AUmic,AUmic-1976r,B&C,r,2.0,2459686.2026961804,2022-04-16T16:51:52.95,,,,886.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1976r.fit
-bad,Autosave Image -0008,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0008.fit
 Autosave Image,Autosave Image -0388g,B&C,g,4.0,2459687.1714778934,2022-04-17T16:06:55.69,,,,908.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0388g.fit
 C2022F1,C2022F1-0001r,B&C,r,300.0,2459682.1876489585,2022-04-12T16:30:12.87,,,,1262.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/C2022F1-0001r.fit
 KS36C047893,KS36C047893-0054V,B&C,V,10.0,2458728.853310185,2019-09-02T08:28:46,,,,1016.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/KS36C047893-0054V.fit
@@ -11575,7 +11525,6 @@ eta_carinae,eta_carinae-0001H_300,B&C,Halpha,300.0,2459696.807589699,2022-04-27T
 AUmic,AUmic-0447g,B&C,g,5.0,2459688.1339802085,2022-04-18T15:12:55.89,,,,960.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0447g.fit
 NGC2516,NGC2516-0419g_2,B&C,g,2.0,2459683.902833912,2022-04-14T09:40:04.85,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0419g_2.fit
 NGC6302,NGC6302-0001I,B&C,I,180.0,2459093.998460648,2020-09-01T11:57:47,,,,2467.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/NGC6302-0001I.fit
-bad,C2021E3-000160,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-000160.fit
 AUmic,AUmic-2473r,B&C,r,2.0,2459686.2365542823,2022-04-16T17:40:38.29,,,,861.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2473r.fit
 NGC1399_20220904,NGC1399_20220904-0003_r120,B&C,r,120.0,2459827.156444329,2022-09-04T15:45:16.79,,,,979.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220904/NGC1399_20220904-0003_r120.fit
 C2021C5,C2021C5-0003g,B&C,g,300.0,2459616.9960135417,2022-02-06T11:54:15.57,,,,1109.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220206/C2021C5-0003g.fit
@@ -12048,7 +11997,6 @@ NGC2516,NGC2516-0533g_2,B&C,g,2.0,2459683.913076273,2022-04-14T09:54:49.79,,,,89
 c2022-f1,c2022-f1-0002_r,B&C,r,300.0,2459697.031295255,2022-04-27T12:45:03.91,,,,1369.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220427/c2022-f1-0002_r.fit
 AUmic,AUmic-0454r,B&C,r,2.0,2459686.097095255,2022-04-16T14:19:49.03,,,,904.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0454r.fit
 Jupiter,Jupiter-0169_z,B&C,z,1.0,2459089.095810185,2020-08-27T14:17:58,,,,143.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0169_z.fit
-bad,calib-0002_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/calib-0002_60.fit
 TOI319,TOI319-0019NoFilter,B&C,Clear,60.0,2459095.0778935184,2020-09-02T13:52:10,,,,4278.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/TOI319-0019NoFilter.fit
 NGC6242_,NGC6242_-0003V_20s,B&C,V,20.0,2459083.937835648,2020-08-22T10:30:29,,,,872.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/NGC6242_-0003V_20s.fit
 HIP_65Ab,HIP_65Ab-0451_I,B&C,I,20.0,2459094.236226852,2020-09-01T17:40:10,,,,979.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0451_I.fit
@@ -12101,7 +12049,6 @@ AUmic,AUmic-0585r,B&C,r,2.0,2459686.106270486,2022-04-16T14:33:01.77,,,,922.0,Li
 M26,M26-0079V,B&C,V,30.0,2458727.8787268517,2019-09-01T09:05:22,,,,1039.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/M26-0079V.fit
 AUmic,AUmic-0368r,B&C,r,2.0,2459686.091188889,2022-04-16T14:11:18.72,,,,916.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0368r.fit
 NGC4833,NGC4833-0014V_300,B&C,V,300.0,2459617.1889260416,2022-02-06T16:32:03.21,,,,2800.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220206/NGC4833-0014V_300.fit
-bad,C2021E3-000260,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-000260.fit
 A10EzMz,A10EzMz-0002r,B&C,r,60.0,2459607.0181805557,2022-01-27T12:26:10.80,,,,933.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220127/A10EzMz-0002r.fit
 Autosave Image,Autosave Image -1114g,B&C,g,4.0,2459687.237704514,2022-04-17T17:42:17.67,,,,896.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1114g.fit
 M26,M26-0170V,B&C,V,30.0,2458727.9360185186,2019-09-01T10:27:52,,,,1037.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/M26-0170V.fit
@@ -12331,7 +12278,6 @@ AUmic,AUmic-1654r,B&C,r,2.0,2459686.18048669,2022-04-16T16:19:54.05,,,,910.0,Lig
 Jupiter,Jupiter-0002_SII,B&C,SII,0.5,2459091.789398148,2020-08-30T06:56:44,,,,892.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200830/Jupiter-0002_SII.fit
 NGC7293,NGC7293-0002SII,B&C,SII,300.0,2459095.034247685,2020-09-02T12:49:19,,,,1024.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/NGC7293-0002SII.fit
 Autosave Image,Autosave Image -0797g,B&C,g,4.0,2459687.2087854166,2022-04-17T17:00:39.06,,,,896.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0797g.fit
-bad,C2021E3-000560,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-000560.fit
 NGC6818,NGC7293-0001SII,B&C,SII,300.0,2459094.9437152776,2020-09-02T10:38:57,,,,2950.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/NGC7293-0001SII.fit
 NGC1427A,NGC1427A-0002Halpha,B&C,Halpha,60.0,2458727.2142708334,2019-08-31T17:08:33,,,,1008.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/NGC1427A-0002Halpha.fit
 C2019F1,C2019F1-0010-r,B&C,r,300.0,2459399.173456713,2021-07-03T16:09:46.66,,,,1229.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210703/C2019F1-0010-r.fit
@@ -12343,7 +12289,6 @@ Autosave Image,Autosave Image -0696g,B&C,g,4.0,2459687.1995724537,2022-04-17T16:
 KS36C047893,KS36C047893-0145V,B&C,V,10.0,2458728.877037037,2019-09-02T09:02:56,,,,1015.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/KS36C047893-0145V.fit
 Autosave Image,Autosave Image -0026g,B&C,g,4.0,2459687.138454398,2022-04-17T15:19:22.46,,,,918.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0026g.fit
 au_mic,au_mic-0119_g,B&C,g,6.0,2459698.1446530093,2022-04-28T15:28:18.02,,,,858.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0119_g.fit
-bad,c2020-r7-0008_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220425/c2020-r7-0008_300.fit
 au_mic,au_mic-0314_g,B&C,g,5.0,2459698.165893287,2022-04-28T15:58:53.18,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0314_g.fit
 C2020O2,C2020O2-0007-g,B&C,g,300.0,2459399.036566551,2021-07-03T12:52:39.35,,,,1043.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210703/C2020O2-0007-g.fit
 C2020F3-NEOWISE,C2020F3-NEOWISE-0004_r,B&C,r,300.0,2459088.844490741,2020-08-27T08:16:04,,,,2992.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/C2020F3-NEOWISE-0004_r.fit
@@ -12953,7 +12898,6 @@ AUmic,AUmic-1459r,B&C,r,2.0,2459686.1670695604,2022-04-16T16:00:34.81,,,,940.0,L
 KS36C047893,KS36C047893-0126V,B&C,V,10.0,2458728.8720833333,2019-09-02T08:55:48,,,,1015.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/KS36C047893-0126V.fit
 AUmic,AUmic-0185r,B&C,r,4.0,2459686.076720602,2022-04-16T13:50:28.66,,,,961.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0185r.fit
 Autosave Image,Autosave Image -1288g,B&C,g,4.0,2459687.2535761576,2022-04-17T18:05:08.98,,,,908.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1288g.fit
-bad,AUmic-2550r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2550r.fit
 AUmic,AUmic-1124r,B&C,r,2.0,2459686.1440467592,2022-04-16T15:27:25.64,,,,924.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1124r.fit
 NGC1399,NGC1399-0024Halpha,B&C,Halpha,60.0,2458727.1517592594,2019-08-31T15:38:32,,,,1009.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/NGC1399-0024Halpha.fit
 au_mic,au_mic-0376_g,B&C,g,5.0,2459698.172230787,2022-04-28T16:08:00.74,,,,856.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0376_g.fit
@@ -13003,7 +12947,6 @@ AUmic,AUmic-1628r,B&C,r,2.0,2459686.1786978007,2022-04-16T16:17:19.49,,,,906.0,L
 Autosave Image,Autosave Image -0724g,B&C,g,4.0,2459687.202125347,2022-04-17T16:51:03.63,,,,897.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0724g.fit
 AUmic,AUmic-0440r,B&C,r,2.0,2459686.0961331017,2022-04-16T14:18:25.90,,,,904.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0440r.fit
 NGC2516,NGC2516-0025g_5,B&C,g,5.0,2459682.8008793984,2022-04-13T07:13:15.98,,,,904.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0025g_5.fit
-bad,AUmic-2564r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2564r.fit
 HE 0218-4447_20220829,HE 0218-4447_20220829-0020V30,B&C,V,30.0,2459821.125372338,2022-08-29T15:00:32.17,,,,855.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220829/HE 0218-4447_20220829-0020V30.fit
 Autosave Image,Autosave Image -1428g,B&C,g,4.0,2459687.2663415507,2022-04-17T18:23:31.91,,,,1062.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1428g.fit
 Lacaille9352_20220829,Lacaille9352_20220829-0007r5,B&C,r,5.0,2459821.0671506943,2022-08-29T13:36:41.82,,,,841.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220829/Lacaille9352_20220829-0007r5.fit
@@ -13131,7 +13074,6 @@ Autosave Image,Autosave Image -1338g,B&C,g,4.0,2459687.258137037,2022-04-17T18:1
 HIP65Ab_20220905,HIP65Ab_20220905-0076_R30,B&C,R,30.0,2459827.972372222,2022-09-05T11:20:12.96,,,,917.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220905/HIP65Ab_20220905-0076_R30.fit
 NGC2516,NGC2516-0251r_5,B&C,r,5.0,2459682.8329092595,2022-04-13T07:59:23.36,,,,884.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0251r_5.fit
 NGC2516,NGC2516-0414g_5,B&C,g,5.0,2459682.86178206,2022-04-13T08:40:57.97,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0414g_5.fit
-bad,AUmic -0006,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0006.fit
 WASP75b,WASP75b-0213V,B&C,V,20.0,2458729.007233796,2019-09-02T12:10:25,,,,1021.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/WASP75b-0213V.fit
 KS36C047893,KS36C047893-0275V,B&C,V,10.0,2458728.9112962964,2019-09-02T09:52:16,,,,1015.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/KS36C047893-0275V.fit
 M26,M26-0119V,B&C,V,30.0,2458727.901701389,2019-09-01T09:38:27,,,,1039.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/M26-0119V.fit
@@ -13656,7 +13598,6 @@ au_mic,au_mic-0180_g,B&C,g,5.0,2459698.151327546,2022-04-28T15:37:54.70,,,,857.0
 NGC4372,NGC4372-0011V,B&C,V,10.0,2458726.8339236113,2019-08-31T08:00:51,,,,1017.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/NGC4372-0011V.fit
 m83,m83-0005_g,B&C,g,300.0,2459698.0215128474,2022-04-28T12:30:58.71,,,,1095.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/m83-0005_g.fit
 AUmic,AUmic-2038r,B&C,r,2.0,2459686.2069203705,2022-04-16T16:57:57.92,,,,886.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2038r.fit
-bad,-0004_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0004_300.fit
 AUmic,AUmic-0288r,B&C,r,2.0,2459687.0930872685,2022-04-17T14:14:02.74,,,,880.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0288r.fit
 AUmic,AUmic-1397g,B&C,g,5.0,2459688.240554051,2022-04-18T17:46:23.87,,,,1081.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1397g.fit
 NGC2516,NGC2516-0146g_2,B&C,g,2.0,2459683.8761608796,2022-04-14T09:01:40.30,,,,889.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0146g_2.fit
@@ -14102,7 +14043,6 @@ Jupiter,Jupiter-0018_i,B&C,i,0.05,2459088.934861111,2020-08-27T10:26:12,,,,841.0
 HE 0218-4447_20220829,HE 0218-4447_20220829-0002V30,B&C,V,30.0,2459821.103885301,2022-08-29T14:29:35.69,,,,854.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220829/HE 0218-4447_20220829-0002V30.fit
 NGC2516,NGC2516-0036g_2,B&C,g,2.0,2459683.8664292824,2022-04-14T08:47:39.49,,,,887.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0036g_2.fit
 AUmic,AUmic-1192g,B&C,g,5.0,2459688.2196233794,2022-04-18T17:16:15.46,,,,1061.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1192g.fit
-bad,c2020-r7-0007_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220425/c2020-r7-0007_300.fit
 Autosave Image,Autosave Image -0706g,B&C,g,4.0,2459687.200483912,2022-04-17T16:48:41.81,,,,897.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0706g.fit
 M26,M26-0005V,B&C,V,10.0,2458726.862037037,2019-08-31T08:41:20,,,,1017.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/M26-0005V.fit
 eta_carinae,eta_carinae-0001i_60,B&C,i,60.0,2459696.803384722,2022-04-27T07:16:52.44,,,,1128.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220427/eta_carinae-0001i_60.fit
@@ -14156,7 +14096,6 @@ WASP75b,WASP75b-0202V,B&C,V,20.0,2458729.003090278,2019-09-02T12:04:27,,,,1020.0
 NGC1316,NGC1316-0029Halpha,B&C,Halpha,60.0,2458727.197060185,2019-08-31T16:43:46,,,,1009.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/NGC1316-0029Halpha.fit
 AUmic,AUmic-2731r,B&C,r,2.0,2459686.2638631943,2022-04-16T18:19:57.78,,,,1010.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2731r.fit
 C2020O2,C2020O2-0007-i,B&C,i,300.0,2459400.074636574,2021-07-04T13:47:28.60,,,,2268.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210704/C2020O2-0007-i.fit
-bad,C2021E3-001160,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-001160.fit
 Autosave Image,Autosave Image -1268g,B&C,g,4.0,2459687.251750347,2022-04-17T18:02:31.23,,,,900.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1268g.fit
 Jupiter,Jupiter-0027_OIII,B&C,OIII,0.7,2459088.0820370372,2020-08-26T13:58:08,,,,838.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200826/Jupiter-0027_OIII.fit
 Lacaille9352_20220906,Lacaille9352_20220906-0025_r0-7,B&C,r,0.7,2459828.878707176,2022-09-06T09:05:20.30,,,,829.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220906/Lacaille9352_20220906-0025_r0-7.fit
@@ -14171,7 +14110,6 @@ HE0218-4446_20220908,HE0218-4446_20220908-0015_V15,B&C,V,15.0,2459831.176314815,
 AUmic,AUmic-1417g,B&C,g,5.0,2459688.242600463,2022-04-18T17:49:20.68,,,,1011.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1417g.fit
 HIP_65Ab,HIP_65Ab-0359_I,B&C,I,20.0,2459094.2108680555,2020-09-01T17:03:39,,,,2460.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0359_I.fit
 jupiter,jupiter-0001SII,B&C,SII,0.5,2459397.051233565,2021-07-01T13:13:46.58,,,,825.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210701/jupiter-0001SII.fit
-bad,Sii2x,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/2022121/Sii2x.fit
 NGC2516,NGC2516-0327g_5,B&C,g,5.0,2459682.8487569443,2022-04-13T08:22:12.60,,,,887.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0327g_5.fit
 NGC2516,NGC2516-0330g_2,B&C,g,2.0,2459683.8933461807,2022-04-14T09:26:25.11,,,,892.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0330g_2.fit
 AUmic,AUmic-1648r,B&C,r,2.0,2459686.180073727,2022-04-16T16:19:18.37,,,,914.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1648r.fit
@@ -14195,7 +14133,6 @@ M30_,M30_-0002I_300,B&C,I,300.0,2459094.966296296,2020-09-02T11:11:28,,,,32394.0
 AUmic,AUmic-0293g,B&C,g,5.0,2459688.1181172454,2022-04-18T14:50:05.33,,,,1003.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0293g.fit
 HIP_65Ab,HIP_65Ab-0029_I,B&C,I,20.0,2459094.1199189816,2020-09-01T14:52:41,,,,1629.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0029_I.fit
 NGC2516,NGC2516-0018g,B&C,g,10.0,2459682.7963655093,2022-04-13T07:06:45.98,,,,1013.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0018g.fit
-bad,-0007_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0007_60.fit
 HIP_65Ab,HIP_65Ab-0116_I,B&C,I,20.0,2459094.143900463,2020-09-01T15:27:13,,,,2235.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0116_I.fit
 Jupiter,Jupiter-0022_r,B&C,r,0.05,2459088.970509259,2020-08-27T11:17:32,,,,854.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0022_r.fit
 Lacaille9352_20220906,Lacaille9352_20220906-0005_r5,B&C,r,5.0,2459828.874370602,2022-09-06T08:59:05.62,,,,860.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220906/Lacaille9352_20220906-0005_r5.fit
@@ -14635,7 +14572,6 @@ C2022F2,C2022F2-0027g_300,B&C,g,300.0,2459683.1894327546,2022-04-13T16:32:46.99,
 AUmic,AUmic-2669r,B&C,r,2.0,2459686.2595980326,2022-04-16T18:13:49.27,,,,922.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2669r.fit
 Jupiter,Jupiter-0007_r,B&C,r,0.05,2459087.958842593,2020-08-26T11:00:44,,,,848.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200826/Jupiter-0007_r.fit
 AUmic,AUmic-1286g,B&C,g,5.0,2459688.22921956,2022-04-18T17:30:04.57,,,,1072.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1286g.fit
-bad,Ha2x,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/2022121/Ha2x.fit
 Jupiter,Jupiter-0014_g,B&C,g,0.05,2459084.1625925926,2020-08-22T15:54:08,,,,843.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/Jupiter-0014_g.fit
 AUmic,AUmic-2389r,B&C,r,2.0,2459686.23083669,2022-04-16T17:32:24.29,,,,866.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2389r.fit
 AUmic,AUmic-1433g,B&C,g,5.0,2459688.2442346066,2022-04-18T17:51:41.87,,,,1113.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1433g.fit
@@ -14655,7 +14591,6 @@ AUmic,AUmic-1999r,B&C,r,2.0,2459686.2042627316,2022-04-16T16:54:08.30,,,,884.0,L
 NGC246_20220830,NGC246_20220830-0006OIII300,B&C,OIII,300.0,2459822.084343171,2022-08-30T14:01:27.25,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220830/NGC246_20220830-0006OIII300.fit
 NGC2516,NGC2516-0946g_5,B&C,g,5.0,2459682.963679051,2022-04-13T11:07:41.87,,,,882.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0946g_5.fit
 NGC2516,NGC2516-0423g_5,B&C,g,5.0,2459682.8633828703,2022-04-13T08:43:16.28,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0423g_5.fit
-bad,AUmic-2562r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2562r.fit
 NGC1427A,NGC1427A-0028Halpha,B&C,Halpha,60.0,2458727.2398032406,2019-08-31T17:45:19,,,,1008.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/NGC1427A-0028Halpha.fit
 Autosave Image,Autosave Image -1339g,B&C,g,4.0,2459687.2582282405,2022-04-17T18:11:50.92,,,,918.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1339g.fit
 NGC7009_20220830,NGC7009_20220830-0003Halpha300,B&C,Halpha,300.0,2459822.0078502316,2022-08-30T12:11:18.26,,,,859.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220830/NGC7009_20220830-0003Halpha300.fit
@@ -14744,7 +14679,6 @@ NGC2516,NGC2516-0005g_5,B&C,g,5.0,2459682.798537847,2022-04-13T07:09:53.67,,,,91
 Autosave Image,Autosave Image -0166g,B&C,g,4.0,2459687.151224884,2022-04-17T15:37:45.83,,,,916.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0166g.fit
 NGC7293_20220829,NGC7293_20220829-0004g300,B&C,Halpha,300.0,2459821.0191018516,2022-08-29T12:27:30.40,,,,864.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220829/NGC7293_20220829-0004g300.fit
 NGC7009,NGC7009-0004OIII,B&C,OIII,60.0,2458726.004583333,2019-08-30T12:06:36,,,,1005.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/NGC7009-0004OIII.fit
-bad,AUmic-2546r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2546r.fit
 AUmic,AUmic-1457g,B&C,g,5.0,2459688.2466846067,2022-04-18T17:55:13.55,,,,1185.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1457g.fit
 Jupiter,Jupiter-0018_z,B&C,z,0.05,2459088.9349189815,2020-08-27T10:26:17,,,,836.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0018_z.fit
 NGC4833,NGC4833-0013R_60,B&C,R,60.0,2459618.036572917,2022-02-07T12:52:39.90,,,,986.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220207/NGC4833-0013R_60.fit
@@ -14929,7 +14863,6 @@ C2020F3-NEOWISE,C2020F3-NEOWISE-0005_g,B&C,g,300.0,2459088.8551157406,2020-08-27
 au_mic,au_mic-0527_g,B&C,g,5.0,2459698.187724884,2022-04-28T16:30:19.43,,,,855.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0527_g.fit
 Lacaille9352_20220906,Lacaille9352_20220906-0048_r0-7,B&C,r,0.7,2459828.8799050925,2022-09-06T09:07:03.80,,,,825.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220906/Lacaille9352_20220906-0048_r0-7.fit
 AUmic,AUmic-2422r,B&C,r,2.0,2459686.2330820602,2022-04-16T17:35:38.29,,,,864.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2422r.fit
-bad,Autosave Image -0002,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0002.fit
 Autosave Image,Autosave Image -0680g,B&C,g,4.0,2459687.198111227,2022-04-17T16:45:16.81,,,,898.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0680g.fit
 NGC2516,NGC2516-003830_r,B&C,r,30.0,2459681.9891383103,2022-04-12T11:44:21.55,,,,970.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/NGC2516-003830_r.fit
 AUmic,AUmic-1692r,B&C,r,2.0,2459686.1830959492,2022-04-16T16:23:39.49,,,,904.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1692r.fit
@@ -15040,7 +14973,6 @@ SN2022nah_20220908,SN2022nah_20220908-0003_r300,B&C,r,300.0,2459831.024716551,20
 M26,M26-0120V,B&C,V,30.0,2458726.934212963,2019-08-31T10:25:16,,,,1036.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/M26-0120V.fit
 AUmic,AUmic-2315r,B&C,r,2.0,2459686.225795486,2022-04-16T17:25:08.73,,,,870.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2315r.fit
 AUmic,AUmic-1532r,B&C,r,2.0,2459686.1720978008,2022-04-16T16:07:49.25,,,,935.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1532r.fit
-bad,C2021E3-000760,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-000760.fit
 AUmic,AUmic-0379r,B&C,r,2.0,2459687.0992576387,2022-04-17T14:22:55.86,,,,878.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0379r.fit
 C2022A2,C2022A2-0001r,B&C,r,300.0,2459617.0375545137,2022-02-06T12:54:04.71,,,,1307.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220206/C2022A2-0001r.fit
 NGC1427A,NGC1427A-0011Halpha,B&C,Halpha,60.0,2458727.221828704,2019-08-31T17:19:26,,,,1009.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/NGC1427A-0011Halpha.fit
@@ -15107,7 +15039,6 @@ AUmic,AUmic-0009g,B&C,g,10.0,2459688.05362963,2022-04-18T13:17:13.60,,,,1225.0,L
 c2022-f1,c2022-f1-0013_g,B&C,g,300.0,2459696.0577518516,2022-04-26T13:23:09.76,,,,1047.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220426/c2022-f1-0013_g.fit
 NGC2516,NGC2516-0457g_2,B&C,g,2.0,2459683.906317824,2022-04-14T09:45:05.86,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0457g_2.fit
 TOI173,TOI173-0132V,B&C,V,5.0,2458725.903923611,2019-08-30T09:41:39,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0132V.fit
-bad,-0006_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0006_60.fit
 C2021E3,C2021E3-0005i_60,B&C,i,60.0,2459684.203398727,2022-04-14T16:52:53.65,,,,1075.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-0005i_60.fit
 AUmic,AUmic-1116r,B&C,r,2.0,2459686.1434969907,2022-04-16T15:26:38.14,,,,938.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1116r.fit
 NGC2516,NGC2516-0554g_2,B&C,g,2.0,2459683.914952662,2022-04-14T09:57:31.91,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0554g_2.fit
@@ -15118,7 +15049,6 @@ Autosave Image,Autosave Image -1064g,B&C,g,4.0,2459687.2331305556,2022-04-17T17:
 AUmic,AUmic-0654r,B&C,r,1.5,2459687.1168855326,2022-04-17T14:48:18.91,,,,867.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0654r.fit
 NGC7492,NGC7492-0109ii,B&C,i,60.0,2458728.1957291667,2019-09-01T16:41:51,,,,1217.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/NGC7492-0109ii.fit
 AUmic,AUmic-0292g,B&C,g,5.0,2459688.1180145834,2022-04-18T14:49:56.46,,,,1003.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0292g.fit
-bad,Autosave Image -0005,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0005.fit
 AUmic,AUmic-1269g,B&C,g,5.0,2459688.2274856484,2022-04-18T17:27:34.76,,,,1073.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1269g.fit
 Autosave Image,Autosave Image -0341g,B&C,g,4.0,2459687.167191898,2022-04-17T16:00:45.38,,,,909.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0341g.fit
 Jupiter,Jupiter-0024_OIII,B&C,OIII,0.7,2459087.045914352,2020-08-25T13:06:07,,,,814.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/Jupiter-0024_OIII.fit
@@ -15423,7 +15353,6 @@ AUmic,AUmic-1031r,B&C,r,2.0,2459686.1375667825,2022-04-16T15:18:05.77,,,,941.0,L
 NGC2516,NGC2516-010430_i,B&C,i,30.0,2459682.1016146992,2022-04-12T14:26:19.51,,,,935.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/NGC2516-010430_i.fit
 C2022F2,C2022F2-0002g,B&C,g,300.0,2459682.1449611112,2022-04-12T15:28:44.64,,,,1066.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/C2022F2-0002g.fit
 AUmic,AUmic-0202r,B&C,r,4.0,2459686.0782800927,2022-04-16T13:52:43.40,,,,960.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0202r.fit
-bad,-0003_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0003_300.fit
 Jupiter,Jupiter-0012_OIII,B&C,OIII,0.7,2459086.9337847224,2020-08-25T10:24:39,,,,818.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/Jupiter-0012_OIII.fit
 AUmic,AUmic-0377r,B&C,r,2.0,2459686.0918074073,2022-04-16T14:12:12.16,,,,912.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0377r.fit
 AUmic,AUmic-1113r,B&C,r,2.0,2459686.143290741,2022-04-16T15:26:20.32,,,,942.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1113r.fit
@@ -15516,7 +15445,6 @@ AUmic,AUmic-0723r,B&C,r,2.0,2459686.1157488427,2022-04-16T14:46:40.70,,,,920.0,L
 AUmic,AUmic-0967r,B&C,r,2.0,2459686.1325305556,2022-04-16T15:10:50.64,,,,922.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0967r.fit
 AUmic,AUmic-0738g,B&C,g,5.0,2459688.172757986,2022-04-18T16:08:46.29,,,,979.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0738g.fit
 TOI319,TOI319-0091_NoFilter,B&C,Clear,60.0,2459094.870648148,2020-09-02T08:53:44,,,,5464.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/TOI319-0091_NoFilter.fit
-bad,c2020-r7-0010_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220425/c2020-r7-0010_300.fit
 NGC7009,NGC7009-0001Ha,B&C,Halpha,60.0,2458725.998310185,2019-08-30T11:57:34,,,,1005.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/NGC7009-0001Ha.fit
 au_mic,au_mic-0533_g,B&C,g,5.0,2459698.188338889,2022-04-28T16:31:12.48,,,,856.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0533_g.fit
 Jupiter,Jupiter-0003_Halpha,B&C,Halpha,0.05,2459084.027650463,2020-08-22T12:39:49,,,,847.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/Jupiter-0003_Halpha.fit
@@ -15570,7 +15498,6 @@ Autosave Image,Autosave Image -0875g,B&C,g,4.0,2459687.2159019676,2022-04-17T17:
 c2020-r7,c2020-r7-0002_g,B&C,g,300.0,2459696.219085648,2022-04-26T17:15:29.00,,,,1137.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220426/c2020-r7-0002_g.fit
 AUmic,AUmic-2317r,B&C,r,2.0,2459686.2259314815,2022-04-16T17:25:20.48,,,,870.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2317r.fit
 au_mic,au_mic-0323_g,B&C,g,5.0,2459698.166814815,2022-04-28T16:00:12.80,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0323_g.fit
-bad,AUmic-2545r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2545r.fit
 c2021-g2,c2021-g2-0002_g,B&C,g,300.0,2459697.797237847,2022-04-28T07:08:01.35,,,,1158.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/c2021-g2-0002_g.fit
 Autosave Image,Autosave Image -1277g,B&C,g,4.0,2459687.2525734953,2022-04-17T18:03:42.35,,,,898.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1277g.fit
 WASP144b,WASP144b-0252V,B&C,V,30.0,2458727.0888888887,2019-08-31T14:08:00,,,,1025.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/WASP144b-0252V.fit
@@ -15642,7 +15569,6 @@ AUmic,AUmic-2363r,B&C,r,2.0,2459686.229065162,2022-04-16T17:29:51.23,,,,867.0,Li
 AUmic,AUmic-0596g,B&C,g,5.0,2459688.1493072915,2022-04-18T15:35:00.15,,,,955.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0596g.fit
 NGC7293,NGC7293-0007SII,B&C,SII,60.0,2458726.0637962963,2019-08-30T13:31:52,,,,1005.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/NGC7293-0007SII.fit
 AUmic,AUmic-0616r,B&C,r,2.0,2459686.1084023146,2022-04-16T14:36:05.96,,,,937.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0616r.fit
-bad,-0002_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0002_60.fit
 NGC4833,NGC4833-0001V_120,B&C,V,120.0,2459609.9049126157,2022-01-30T09:43:04.45,,,,1098.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220130/NGC4833-0001V_120.fit
 Jupiter,Jupiter-0038_SII,B&C,SII,0.7,2459089.024398148,2020-08-27T12:35:08,,,,102.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0038_SII.fit
 TOI173,TOI173-0024V,B&C,V,5.0,2458725.882037037,2019-08-30T09:10:08,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0024V.fit
@@ -16040,7 +15966,6 @@ AUmic,AUmic-0168r,B&C,r,4.0,2459686.0751622687,2022-04-16T13:48:14.02,,,,973.0,L
 NGC2516,NGC2516-0121g_2,B&C,g,2.0,2459683.8740138886,2022-04-14T08:58:34.80,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0121g_2.fit
 AUmic,AUmic-0788g,B&C,g,5.0,2459688.177901157,2022-04-18T16:16:10.66,,,,964.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0788g.fit
 c2021-c5,c2021-c5-0004_g,B&C,g,300.0,2459694.914267361,2022-04-25T09:56:32.70,,,,1045.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220425/c2021-c5-0004_g.fit
-bad,-0006_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0006_300.fit
 NGC2516,NGC2516-1017g_5,B&C,g,5.0,2459682.9727819446,2022-04-13T11:20:48.36,,,,884.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-1017g_5.fit
 HIP65Ab_20220905,HIP65Ab_20220905-0064_R30,B&C,R,30.0,2459827.9676760416,2022-09-05T11:13:27.21,,,,919.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220905/HIP65Ab_20220905-0064_R30.fit
 AUmic,AUmic-1769r,B&C,r,2.0,2459686.188381713,2022-04-16T16:31:16.18,,,,907.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1769r.fit
@@ -16202,7 +16127,6 @@ NGC2516,NGC2516-0814g_5,B&C,g,5.0,2459682.9259991897,2022-04-13T10:13:26.33,,,,8
 W-gru,W-gru-0001_B,B&C,B,20.0,2459091.903171296,2020-08-30T09:40:34,,,,976.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200830/W-gru-0001_B.fit
 HIP_65Ab,HIP_65Ab-0270_I,B&C,I,20.0,2459094.1863310183,2020-09-01T16:28:19,,,,3059.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0270_I.fit
 jupiter,jupiter-0002SII,B&C,SII,0.5,2459397.0512849535,2021-07-01T13:13:51.02,,,,826.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210701/jupiter-0002SII.fit
-bad,AUmic-2537r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2537r.fit
 AUmic,AUmic-0242r,B&C,r,2.0,2459686.082469213,2022-04-16T13:58:45.34,,,,908.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0242r.fit
 AUmic,AUmic-0235g,B&C,g,5.0,2459688.112149421,2022-04-18T14:41:29.71,,,,970.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0235g.fit
 Jupiter,Jupiter-0031_i,B&C,i,0.05,2459088.085300926,2020-08-26T14:02:50,,,,841.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200826/Jupiter-0031_i.fit
@@ -16260,7 +16184,6 @@ AUmic,AUmic-0238r,B&C,r,2.0,2459686.082196412,2022-04-16T13:58:21.77,,,,908.0,Li
 HIP65Ab_20220905,HIP65Ab_20220905-0154_R30,B&C,R,30.0,2459828.0029030093,2022-09-05T12:04:10.82,,,,913.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220905/HIP65Ab_20220905-0154_R30.fit
 HIP_65Ab,HIP_65Ab-0080_I,B&C,I,20.0,2459094.1339814817,2020-09-01T15:12:56,,,,3506.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0080_I.fit
 HIP_65Ab,HIP_65Ab-0153_I,B&C,I,20.0,2459094.1540972223,2020-09-01T15:41:54,,,,3773.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200901/HIP_65Ab-0153_I.fit
-bad,AUmic -0002,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0002.fit
 NGC2516,NGC2516-0317g_2,B&C,g,2.0,2459683.8922393518,2022-04-14T09:24:49.48,,,,891.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0317g_2.fit
 NGC6242_,NGC6242_-0005V_15s,B&C,V,15.0,2459083.9404398147,2020-08-22T10:34:14,,,,868.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200822/NGC6242_-0005V_15s.fit
 Autosave Image,Autosave Image -000730_r,B&C,r,30.0,2459681.8417711807,2022-04-12T08:12:09.03,,,,971.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220412/Autosave Image -000730_r.fit
@@ -16322,7 +16245,6 @@ C2019F1,C2019F1-0001-z,B&C,z,300.0,2459398.1828292822,2021-07-02T16:23:16.45,,,,
 AUmic,AUmic-0183g,B&C,g,5.0,2459688.1068001157,2022-04-18T14:33:47.53,,,,1013.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0183g.fit
 M26,M26-0224V,B&C,V,30.0,2458727.9633449074,2019-09-01T11:07:13,,,,1030.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190901/M26-0224V.fit
 NGC4833,NGC4833-0008V_120,B&C,V,120.0,2459611.0194283566,2022-01-31T12:27:58.61,,,,1072.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220131/NGC4833-0008V_120.fit
-bad,Autosave Image -0007,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0007.fit
 WASP75b,WASP75b-0029V,B&C,V,20.0,2458728.9369907407,2019-09-02T10:29:16,,,,1021.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/WASP75b-0029V.fit
 Autosave Image,Autosave Image -0090g,B&C,g,4.0,2459687.144294213,2022-04-17T15:27:47.02,,,,916.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0090g.fit
 NGC246_20220830,NGC246_20220830-0002Halpha300,B&C,Halpha,300.0,2459822.0373444445,2022-08-30T12:53:46.56,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220830/NGC246_20220830-0002Halpha300.fit
@@ -16351,7 +16273,6 @@ Jupiter,Jupiter-0024_SII,B&C,SII,0.5,2459088.9725810187,2020-08-27T11:20:31,,,,8
 C2021G2,C2021G2-0001r,B&C,r,300.0,2459606.879521065,2022-01-27T09:06:30.62,,,,7775.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220127/C2021G2-0001r.fit
 AUmic,AUmic-1363r,B&C,r,2.0,2459686.1604651622,2022-04-16T15:51:04.19,,,,963.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1363r.fit
 WASP144b,WASP144b-0192V,B&C,V,30.0,2458727.0588310184,2019-08-31T13:24:43,,,,1025.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/WASP144b-0192V.fit
-bad,Autosave Image -0002d,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0002d.fit
 M26,M26-0072V,B&C,V,30.0,2458726.910243056,2019-08-31T09:50:45,,,,1037.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/M26-0072V.fit
 KS36C047893,KS36C047893-0283V,B&C,V,10.0,2458728.9134027776,2019-09-02T09:55:18,,,,1015.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/KS36C047893-0283V.fit
 AUmic,AUmic-0508r,B&C,r,2.0,2459686.10080544,2022-04-16T14:25:09.59,,,,912.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0508r.fit
@@ -16381,7 +16302,6 @@ AUmic,AUmic-0836g,B&C,g,5.0,2459688.182840278,2022-04-18T16:23:17.40,,,,988.0,Li
 AUmic,AUmic-0462r,B&C,r,1.5,2459687.1049390044,2022-04-17T14:31:06.73,,,,869.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0462r.fit
 C2021C5,C2021C5-0006g,B&C,g,300.0,2459609.126513889,2022-01-29T15:02:10.80,,,,1054.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220129/C2021C5-0006g.fit
 AUmic,AUmic-1233g,B&C,g,5.0,2459688.2238086807,2022-04-18T17:22:17.07,,,,1036.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1233g.fit
-bad,C2021E3-000460,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220414/C2021E3-000460.fit
 AUmic,AUmic-1273g,B&C,g,5.0,2459688.2278936342,2022-04-18T17:28:10.01,,,,1083.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1273g.fit
 au_mic,au_mic-0632_g,B&C,g,5.0,2459698.1984740742,2022-04-28T16:45:48.16,,,,855.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0632_g.fit
 Autosave Image,Autosave Image -0943g,B&C,g,4.0,2459687.222099074,2022-04-17T17:19:49.36,,,,894.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0943g.fit
@@ -16822,7 +16742,6 @@ au_mic,au_mic-0094_g,B&C,g,6.0,2459698.141804398,2022-04-28T15:24:11.90,,,,858.0
 Autosave Image,Autosave Image -1214g,B&C,g,4.0,2459687.2468256946,2022-04-17T17:55:25.74,,,,892.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1214g.fit
 NGC4833,NGC4833-0020V_120,B&C,V,120.0,2459618.110072917,2022-02-07T14:38:30.30,,,,966.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220207/NGC4833-0020V_120.fit
 Jupiter,Jupiter-0064_OIII,B&C,OIII,0.9,2459089.0347569445,2020-08-27T12:50:03,,,,103.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0064_OIII.fit
-bad,calib-0001_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/calib-0001_300.fit
 AUmic,AUmic-1977r,B&C,r,2.0,2459686.202763889,2022-04-16T16:51:58.80,,,,886.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1977r.fit
 TOI173,TOI173-0165V,B&C,V,5.0,2458725.9105787035,2019-08-30T09:51:14,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0165V.fit
 Jupiter,Jupiter-0028_r,B&C,r,0.05,2459089.017511574,2020-08-27T12:25:13,,,,123.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0028_r.fit
@@ -17025,7 +16944,6 @@ AUmic,AUmic-0410g,B&C,g,5.0,2459688.1301702545,2022-04-18T15:07:26.71,,,,949.0,L
 HIP65Ab_20220904,HIP65Ab_20220904-0103_R30,B&C,R,30.0,2459827.012674074,2022-09-04T12:18:15.04,,,,919.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220904/HIP65Ab_20220904-0103_R30.fit
 NGC2516,NGC2516-0702g_2,B&C,g,2.0,2459683.9300234956,2022-04-14T10:19:14.03,,,,890.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0702g_2.fit
 AUmic,AUmic-0703r,B&C,r,1.5,2459687.119935301,2022-04-17T14:52:42.41,,,,867.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0703r.fit
-bad,Autosave Image -0011,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/Autosave Image -0011.fit
 NGC2516,NGC2516-0018g_5,B&C,g,5.0,2459682.800164699,2022-04-13T07:12:14.23,,,,907.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0018g_5.fit
 CD-37_1592_20220909,CD-37_15492_20220909-0002_r10,B&C,r,10.0,2459831.942284954,2022-09-09T10:36:53.42,,,,1112.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220909/CD-37_15492_20220909-0002_r10.fit
 AUmic,AUmic-0037r,B&C,r,5.0,2459688.0650871526,2022-04-18T13:33:43.53,,,,1009.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0037r.fit
@@ -17060,7 +16978,6 @@ AUmic,AUmic-0127r,B&C,r,4.0,2459686.0714006945,2022-04-16T13:42:49.02,,,,984.0,L
 Autosave Image,Autosave Image -0081g,B&C,g,4.0,2459687.143471065,2022-04-17T15:26:35.90,,,,917.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0081g.fit
 AUmic,AUmic-0116r,B&C,r,2.0,2459688.089464352,2022-04-18T14:08:49.72,,,,916.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0116r.fit
 AUmic,AUmic-0934g,B&C,g,5.0,2459688.192924074,2022-04-18T16:37:48.64,,,,953.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0934g.fit
-bad,-0001_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220425/-0001_60.fit
 NGC2516,NGC2516-0009r_2,B&C,r,2.0,2459683.8706791666,2022-04-14T08:53:46.68,,,,884.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0009r_2.fit
 Autosave Image,Autosave Image -1108g,B&C,g,4.0,2459687.237157639,2022-04-17T17:41:30.42,,,,897.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1108g.fit
 P2016J3-300,P2016J3-300-0001z,B&C,z,300.0,2459396.8181170137,2021-07-01T07:38:05.31,,,,1489.0,Light Frame,/home/phys/astro8/MJArchive/octans/20210701/P2016J3-300-0001z.fit
@@ -17113,7 +17030,6 @@ HIP_65Ab,HIP_65Ab-0053_I,B&C,I,20.0,2459094.126527778,2020-09-01T15:02:12,,,,270
 Autosave Image,Autosave Image -0323g,B&C,g,4.0,2459687.165550579,2022-04-17T15:58:23.57,,,,909.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0323g.fit
 AUmic,AUmic-1469r,B&C,r,2.0,2459686.1677577547,2022-04-16T16:01:34.27,,,,950.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1469r.fit
 Jupiter,Jupiter-0033_SII,B&C,SII,0.5,2459089.022291667,2020-08-27T12:32:06,,,,102.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0033_SII.fit
-bad,AUmic -0005,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220417/AUmic -0005.fit
 AUmic,AUmic-1950r,B&C,r,2.0,2459686.2009258103,2022-04-16T16:49:19.99,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1950r.fit
 Autosave Image,Autosave Image -0660g,B&C,g,4.0,2459687.19628831,2022-04-17T16:42:39.31,,,,898.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0660g.fit
 Jupiter_20220904,Jupiter_20220904-0003__SII0-1,B&C,SII,0.1,2459827.1023712964,2022-09-04T14:27:24.88,,,,833.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220904/Jupiter_20220904-0003__SII0-1.fit
@@ -17128,7 +17044,6 @@ NGC1232,NGC1232-0001_B,B&C,B,300.0,2459468.097078125,2021-09-10T14:19:47.55,,,,9
 TOI173,TOI173-0202V,B&C,V,5.0,2458725.9183333335,2019-08-30T10:02:24,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/TOI173-0202V.fit
 HIP65Ab_20220904,HIP65Ab_20220904-0102_R30,B&C,R,30.0,2459827.0122827548,2022-09-04T12:17:41.23,,,,919.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220904/HIP65Ab_20220904-0102_R30.fit
 au_mic,au_mic-0017_g,B&C,g,5.0,2459698.1335582174,2022-04-28T15:12:19.43,,,,858.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0017_g.fit
-bad,-0002_300,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0002_300.fit
 AUmic,AUmic-1119g,B&C,g,5.0,2459688.21195625,2022-04-18T17:05:13.02,,,,948.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-1119g.fit
 NGC7492,NGC7492-0017ii,B&C,i,60.0,2458729.102685185,2019-09-02T14:27:52,,,,1171.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190902/NGC7492-0017ii.fit
 Autosave Image,Autosave Image -0982g,B&C,g,4.0,2459687.2256538193,2022-04-17T17:24:56.49,,,,893.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0982g.fit
@@ -17257,7 +17172,6 @@ NGC2516,NGC2516-0269g_5,B&C,g,5.0,2459682.8352253474,2022-04-13T08:02:43.47,,,,8
 Jupiter,Jupiter-0087_z,B&C,z,0.02,2459089.047453704,2020-08-27T13:08:20,,,,98.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200827/Jupiter-0087_z.fit
 NGC2516,NGC2516-0300g_2,B&C,g,2.0,2459683.8906284724,2022-04-14T09:22:30.30,,,,891.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0300g_2.fit
 AUmic,AUmic-0484r,B&C,r,1.5,2459687.106307639,2022-04-17T14:33:04.98,,,,869.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0484r.fit
-bad,AUmic-2538r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2538r.fit
 NGC2516,NGC2516-0934g_5,B&C,g,5.0,2459682.962154167,2022-04-13T11:05:30.12,,,,882.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0934g_5.fit
 AUmic,AUmic-0403r,B&C,r,2.0,2459686.093594097,2022-04-16T14:14:46.53,,,,903.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-0403r.fit
 TOI319,TOI319-0101_NoFilter,B&C,Clear,60.0,2459094.8780324073,2020-09-02T09:04:22,,,,5435.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200902/TOI319-0101_NoFilter.fit
@@ -17326,7 +17240,6 @@ au_mic,au_mic-0523_g,B&C,g,5.0,2459698.1873131944,2022-04-28T16:29:43.86,,,,855.
 au_mic,au_mic-0517_g,B&C,g,5.0,2459698.186698264,2022-04-28T16:28:50.73,,,,856.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0517_g.fit
 NGC5315_,NGC5315_-0001V,B&C,V,180.0,2459086.948599537,2020-08-25T10:45:59,,,,2597.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/NGC5315_-0001V.fit
 DESJ020706_20220908,DESJ020706_20220908-0002_r300,B&C,r,300.0,2459831.1225056713,2022-09-08T14:56:24.49,,,,3402.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220908/DESJ020706_20220908-0002_r300.fit
-bad,AUmic-2549r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2549r.fit
 NGC2516,NGC2516-0354g_5,B&C,g,5.0,2459682.852111111,2022-04-13T08:27:02.40,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0354g_5.fit
 SN2022nah_20220829,SN2022nah_20220829-0002r300,B&C,r,300.0,2459821.0870905095,2022-08-29T14:05:24.62,,,,1148.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220829/SN2022nah_20220829-0002r300.fit
 NGC2516,NGC2516-0262g_5,B&C,g,5.0,2459682.834211227,2022-04-13T08:01:15.85,,,,888.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0262g_5.fit
@@ -17483,10 +17396,8 @@ AUmic,AUmic-0548g,B&C,g,5.0,2459688.1443730323,2022-04-18T15:27:53.83,,,,995.0,L
 Autosave Image,Autosave Image -0591g,B&C,g,4.0,2459687.1899935184,2022-04-17T16:33:35.44,,,,900.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0591g.fit
 AUmic,AUmic-0259g,B&C,g,5.0,2459688.1146197915,2022-04-18T14:45:03.15,,,,968.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220418/AUmic-0259g.fit
 Autosave Image,Autosave Image -1322g,B&C,g,4.0,2459687.2566766203,2022-04-17T18:09:36.86,,,,905.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1322g.fit
-bad,-0003_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/-0003_60.fit
 AUmic,AUmic-0708r,B&C,r,1.5,2459687.120246412,2022-04-17T14:53:09.29,,,,866.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0708r.fit
 big_spider_30s,big_spider_30s-0003g,B&C,g,30.0,2459596.9862063657,2022-01-17T11:40:08.23,,,,1263.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220117/big_spider_30s-0003g.fit
-bad,AUmic-2552r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2552r.fit
 NGC1232_,NGC1232_-0004SII,B&C,SII,300.0,2459087.2278587963,2020-08-25T17:28:07,,,,812.0,Light Frame,/home/phys/astro8/MJArchive/octans/20200825/NGC1232_-0004SII.fit
 Lacaille9352_20220906,Lacaille9352_20220906-0009_r0-7,B&C,r,0.7,2459828.8778738426,2022-09-06T09:04:08.30,,,,825.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220906/Lacaille9352_20220906-0009_r0-7.fit
 Autosave Image,Autosave Image -1218g,B&C,g,4.0,2459687.2471916666,2022-04-17T17:55:57.36,,,,895.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -1218g.fit
@@ -17892,7 +17803,6 @@ HIP_65Ab,HIP_65Ab-0241_I,B&C,I,20.0,2459094.1783449072,2020-09-01T16:16:49,,,,29
 PGC3074547,PGC3074547-0009OIII,B&C,OIII,60.0,2458725.8432060187,2019-08-30T08:14:13,,,,1006.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190830/PGC3074547-0009OIII.fit
 NGC2516,NGC2516-0262g_2,B&C,g,2.0,2459683.8871388887,2022-04-14T09:17:28.80,,,,892.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0262g_2.fit
 AUmic,AUmic-2231r,B&C,r,2.0,2459686.2200627313,2022-04-16T17:16:53.42,,,,874.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2231r.fit
-bad,calib-0001_60,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220426/calib-0001_60.fit
 WASP144b,WASP144b-0114V,B&C,V,30.0,2458727.019837963,2019-08-31T12:28:34,,,,1024.0,Light Frame,/home/phys/astro8/MJArchive/octans/20190831/WASP144b-0114V.fit
 au_mic,au_mic-0246_g,B&C,g,5.0,2459698.1581587964,2022-04-28T15:47:44.92,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0246_g.fit
 AUmic,AUmic-1066r,B&C,r,2.0,2459686.139938079,2022-04-16T15:21:30.65,,,,943.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1066r.fit
@@ -18216,7 +18126,6 @@ AUmic,AUmic-1198r,B&C,r,2.0,2459686.1491291667,2022-04-16T15:34:44.76,,,,920.0,L
 AUmic,AUmic-1403r,B&C,r,2.0,2459686.163215509,2022-04-16T15:55:01.82,,,,954.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220416/AUmic-1403r.fit
 NGC2516,NGC2516-0325g_5,B&C,g,5.0,2459682.8485528934,2022-04-13T08:21:54.97,,,,887.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220413/NGC2516-0325g_5.fit
 Autosave Image,Autosave Image -0045g,B&C,g,4.0,2459687.1401891205,2022-04-17T15:21:52.34,,,,918.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/Autosave Image -0045g.fit
-bad,AUmic-2565r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2565r.fit
 HIP65Ab_20220905,HIP65Ab_20220905-0113_R30,B&C,R,30.0,2459827.9868541667,2022-09-05T11:41:04.20,,,,913.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220905/HIP65Ab_20220905-0113_R30.fit
 SN2022rjg_20220905,SN2022rjg_20220905-0001_r300,B&C,r,300.0,2459828.1563983797,2022-09-05T15:45:12.82,,,,1419.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220905/SN2022rjg_20220905-0001_r300.fit
 au_mic,au_mic-0250_g,B&C,g,5.0,2459698.1585725695,2022-04-28T15:48:20.67,,,,857.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220428/au_mic-0250_g.fit
@@ -18729,4 +18638,3 @@ AUmic,AUmic-0977g,B&C,g,5.0,2459688.1973475693,2022-04-18T16:44:10.83,,,,1046.0,
 AUmic,AUmic-0337r,B&C,r,2.0,2459687.0963902776,2022-04-17T14:18:48.12,,,,879.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220417/AUmic-0337r.fit
 NGC2516,NGC2516-0004i_2,B&C,i,2.0,2459683.8660994214,2022-04-14T08:47:10.99,,,,882.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0004i_2.fit
 NGC2516,NGC2516-0512g_2,B&C,g,2.0,2459683.9111875,2022-04-14T09:52:06.60,,,,891.0,Light Frame,/home/phys/astro8/MJArchive/octans/20220414/NGC2516-0512g_2.fit
-bad,AUmic-2542r,bad,bad,bad,bad,bad,bad,bad,bad,bad,bad,/home/phys/astro8/MJArchive/octans/20220416/AUmic-2542r.fit
