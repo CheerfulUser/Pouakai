@@ -107,13 +107,13 @@ class pouakai():
 		hdu = fits.open(self.file)[0]
 		self.header = hdu.header
 		self.raw_image = hdu.data
-		self.jd = hdu.header['JDSTART']
-		self.filter = hdu.header['COLOUR']
+		self.jd = hdu.header['JD']
+		self.filter = hdu.header['FILTER'].strip()
 		self.telescope = hdu.header['TELESCOP']
 		self.exp_time = hdu.header['EXPTIME']
-		self._field_coords()
+		#self._field_coords()
 
-		self.log['band'] = self.filter.strip()
+		self.log['band'] = self.filter
 		self.log['raw_filename'] = self.file
 		self.log['jd'] = self.jd
 		self.log['telescope'] = self.telescope
