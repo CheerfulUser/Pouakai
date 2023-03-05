@@ -91,7 +91,7 @@ class pouakai():
 		"""
 		Set up a log to keep track of key steps and parameters.
 		"""
-		document = {'name':None,'band':None,'chip':None,
+		document = {'name':None,'band':None,'telescope':None,
 					'exptime':None,'jd':None,'date':None,
 					'field':None,'filename':None,'flat':None,
 					'dark':None,'tdiff_flat':None,
@@ -109,14 +109,14 @@ class pouakai():
 		self.raw_image = hdu.data
 		self.jd = hdu.header['JDSTART']
 		self.filter = hdu.header['COLOUR']
-		self.chip = hdu.header['CHIP']
+		self.telescope = hdu.header['TELESCOP']
 		self.exp_time = hdu.header['EXPTIME']
 		self._field_coords()
 
 		self.log['band'] = self.filter.strip()
 		self.log['raw_filename'] = self.file
 		self.log['jd'] = self.jd
-		self.log['chip'] = self.chip
+		self.log['telescope'] = self.telescope
 		self.log['exptime'] = self.exp_time
 		self.log['date'] = hdu.header['DATE-OBS'].strip()
 		self.log['field'] = hdu.header['FIELD'].strip()
@@ -148,7 +148,7 @@ class pouakai():
 		"""
 		if cal_type.lower() == 'flat':
 			masters = pd.read_csv('cal_lists/master_flat_list.csv')
-			ind = (masters['band'].values == self.filter) & (masters['chip'].values == self.chip)
+			ind = (masters['band'].values == self.filter) & (masters['telescope'].values == self.telescope)
 			masters = masters.iloc[ind]
 
 			ind = (masters['note'].values == 'good') & (masters['flat_type'].values == 'dome')
@@ -156,7 +156,7 @@ class pouakai():
 
 		elif cal_type.lower() == 'dark':
 			masters = pd.read_csv('cal_lists/master_dark_list.csv')
-			ind = masters['chip'].values == self.chip
+			ind = masters['telescope'].values == self.telescope
 			masters = masters.iloc[ind]
 			exptimes = masters['exptime'].values
 			ind = np.where(abs(self.exp_time - exptimes)<self.dark_tolerence)[0]
@@ -193,15 +193,15 @@ class pouakai():
 		"""
 		Find the best master image for the science image.
 		"""
-		chip = self.chip
+		telescope = self.telescope
 		date = self.jd
 		tolerence = self.time_tolerence
 
-		chip_ind = masters['chip'].values == chip
-		if len(chip_ind) == 0:
-			m = 'No master files for chip {} listed in {}'.format(chip,masters)
+		telescope_ind = masters['telescope'].values == telescope
+		if len(telescope_ind) == 0:
+			m = f'No master files for telescope {telescope} listed in {masters}'
 			raise ValueError(m)
-		m = masters.iloc[chip_ind]
+		m = masters.iloc[telescope_ind]
 		m_date = m.jd.values
 
 		t_diff = abs(m_date - date)
@@ -356,7 +356,8 @@ class pouakai():
 		Calculate the image wcs using the local libraries for astrometry.net
 		"""
 		# a reasonable search radius is already selected (2deg)
-		astrom_call = "solve-field --no-plots -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
+		#astrom_call = "solve-field --no-plots -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
+		astrom_call = "solve-field --no-plots -O -o {savename} -p"
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		real_save_path = self.savepath + 'red/' + save_path
@@ -368,8 +369,9 @@ class pouakai():
 		print('!!!',name)
 		print(save_path)
 		print(self.base_name)
-		solver = astrom_call.format(savename = name, ra = self.field_coord.ra.deg,
-									dec = self.field_coord.dec.deg, file = self.red_name)
+		#solver = astrom_call.format(savename = name, ra = self.field_coord.ra.deg,
+		#							dec = self.field_coord.dec.deg, file = self.red_name)
+		solver = astrom_call.format(savename = name, file = self.red_name)
 		os.system(solver)
 
 		wcs_header = fits.open(real_name + '.new')[0].header
@@ -577,7 +579,7 @@ class pouakai():
 		return mask
 
 	def _load_bad_pix_mask(self):
-		bpix = np.load(f'badpix/chip{self.chip}_bpix.npy')
+		bpix = np.load(f'badpix/telescope_{self.telescope}_bpix.npy')
 		return bpix.astype(int)
 
 	def Make_mask(self):
@@ -585,9 +587,9 @@ class pouakai():
 		saturation_mask = self._saturaton_mask() * 2
 		flat_mask = self._flat_mask() * 4
 		satellite_mask = self.sat.total_mask * 8
-		bpix = self._load_bad_pix_mask() * 16
+		#bpix = self._load_bad_pix_mask() * 16
 
-		self.mask = flat_mask | saturation_mask | satellite_mask | bpix
+		self.mask = flat_mask | saturation_mask | satellite_mask #| bpix
 
 		self._update_header_mask_bits()
 

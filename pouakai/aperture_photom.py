@@ -96,7 +96,11 @@ class ap_photom():
 
 	def _get_filter(self):
 		if self._band_override is None:
-			self.band = self.header['COLOUR'].strip(' ')
+			self.band = self.header['FILTER'].strip(' ')
+			if self.band in {'B','V','R','I'}:
+				self.band = 'bessell_' + self.band
+			if self.band in {'g','r','i','z'}:
+				self.band = 'sloan_' + self.band
 		else:
 			self.band = self._band_override
 
@@ -222,7 +226,7 @@ class ap_photom():
 			self.cal_sys = 'skymapper'
 		else:
 			self.cal_sys = 'ps1'
-		fname = 'cal_files/MOA-{filt}_{sys}_{model}.npy'.format(filt=self.band,
+		fname = 'cal_files/{filt}_{sys}_{model}.npy'.format(filt=self.band,
 										sys=self.cal_sys,model=self.cal_model)
 		self.sauron = sauron(load_state = package_directory + fname)
 

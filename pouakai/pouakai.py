@@ -9,7 +9,7 @@ import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 class consume_moa():
-    def __init__(self,files,savepath,time_tolerence=100,dark_tolerence=10,
+    def __init__(self,files,savepath,time_tolerence=60,dark_tolerence=1,
 				 local_astrom=True,verbose=True,rescale=True,update_cals=True,
                  cores=10, overwrite=False):
         
