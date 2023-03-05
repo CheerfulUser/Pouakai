@@ -157,7 +157,7 @@ def sort_obs(verbose=False,num_core = 25):
 		print('Number of new obs: ',len(files))
 
 	if len(files) > 0:
-		entries = Parallel(num_core)(delayed(dark_info_grab)(file,verbose) for file in files)
+		entries = Parallel(num_core)(delayed(obs_grab_info)(file,verbose) for file in files)
 		for entry in entries:
 			if len(entry) > 0:
 				obs_list = obs_list.append(entry, ignore_index=True)
@@ -169,7 +169,6 @@ def sort_obs(verbose=False,num_core = 25):
 def obs_grab_info(file,verbose=False):
 	
 	entry = {}
-
 	if type(file) == str:
 		name = file.split('/')[-1].split('.')[0]
 		entry['name'] = name.strip()
@@ -183,26 +182,29 @@ def obs_grab_info(file,verbose=False):
 				entry['telescope'] = 'B&C'
 			entry['band'] = header['FILTER'].strip()
 			entry['exptime'] = header['EXPTIME']
-			entry['jd'] = header['JDSTART']
+			entry['jd'] = header['JD']
 			entry['date'] = header['DATE-OBS'].strip()
-			'''
-			ra = header['RA'].strip()
-			dec = header['DEC'].strip()
-			c = SkyCoord(ra,dec,unit=(u.hourangle,u.deg))
-			t = Time(header['JDSTART'],format='jd')
-			moon = get_moon(t)
-			sep = moon.separation(c)
-			entry['ra'] = ra
-			entry['dec'] = dec
-			entry['moon_sep'] = sep.deg
-			'''
+			try:
+				ra = header['RA'].strip()
+				dec = header['DEC'].strip()
+				c = SkyCoord(ra,dec,unit=(u.hourangle,u.deg))
+				t = Time(header['JDSTART'],format='jd')
+				moon = get_moon(t)
+				sep = moon.separation(c)
+				entry['ra'] = ra
+				entry['dec'] = dec
+				entry['moon_sep'] = sep.deg
+			except:
+				print('No coordinates defined')
+
 			entry['sky'] = np.nanmedian(fits.open(file)[0].data)
 			entry['image_type'] = header['IMAGETYP']
 
 			entry['filename'] = file
 		except:
-			entry['field'] = 'bad'
-			entry['chip'] = 'bad'
+			entry['object'] = 'bad'
+			entry['telescope'] = 'bad'
+			entry['band'] = 'bad'
 			entry['exptime'] = 'bad'
 			entry['jd'] = 'bad'
 			entry['date'] = 'bad'
