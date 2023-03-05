@@ -180,7 +180,11 @@ def obs_grab_info(file,verbose=False):
 				entry['telescope'] = header['TELESCOP'].strip()
 			else:
 				entry['telescope'] = 'B&C'
-			entry['band'] = header['FILTER'].strip()
+			try:
+				entry['band'] = header['FILTER'].strip()
+			except:
+				print('!!! Filter not defined !!!')
+				entry['band'] = 'bad'
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = header['JD']
 			entry['date'] = header['DATE-OBS'].strip()
@@ -188,7 +192,7 @@ def obs_grab_info(file,verbose=False):
 				ra = header['RA'].strip()
 				dec = header['DEC'].strip()
 				c = SkyCoord(ra,dec,unit=(u.hourangle,u.deg))
-				t = Time(header['JDSTART'],format='jd')
+				t = Time(header['JD'],format='jd')
 				moon = get_moon(t)
 				sep = moon.separation(c)
 				entry['ra'] = ra
