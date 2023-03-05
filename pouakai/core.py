@@ -1,4 +1,5 @@
 import os
+from os import path
 from astropy.io import fits
 from glob import glob
 import numpy as np
@@ -15,6 +16,7 @@ from scipy.stats import iqr
 from aperture_photom import ap_photom
 
 from scipy.ndimage.filters import convolve
+from satellite_detection import sat_streaks
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -26,10 +28,9 @@ warnings.filterwarnings("ignore")
 		
 class pouakai():
 
-	def __init__(self,file,reduction='full',time_tolerence=100,dark_tolerence=10,savepath='',
-				 local_astrom=True,verbose=True,update_cals=False):
+	def __init__(self,file,time_tolerence=100,dark_tolerence=10,savepath='',
+				 local_astrom=True,verbose=True,rescale=True):
 
-		#self._update_cals(update_cals)
 		self.verbose = verbose
 		self.file = file 
 		self.savepath = savepath
@@ -38,6 +39,7 @@ class pouakai():
 		self.dark_tolerence = dark_tolerence
 		self.offset = 500
 		self.fail_flag = ''
+		self.rescale = rescale
 
 		self._start_record()
 		self._check_dirs()
@@ -51,16 +53,17 @@ class pouakai():
 
 		self._setup_fig()
 		
-		try:
-			self.reduce(reduction)
-		except Exception as e:
-			self.fail_flag = e
+		#try:
+		self.reduce()
+		#except Exception as e:
+		#	self.fail_flag = e
 
-		if len(self.fail_flag) > 0:
+		if self.fail_flag != '':
 			self._fail_log()
+		
 
 
-	def reduce(self,reduction):
+	def reduce(self):
 		#self._check_reduction(reduction)
 		self.reduce_image()
 		self.save_intermediate()
@@ -69,19 +72,20 @@ class pouakai():
 		else:
 			self.wcs_astrometrynet()
 
+		self.satellite_search()
 		self.Make_mask()
 		self.calculate_zp()
 		self.save_fig()
 		self.save_image()
-		self._record_reduction()
+		#self._record_reduction()
 	#def _check_reduction(self,reduction):
 
 	def _fail_log(self):
 		document = {'fname': self.file,
 					'error':self.fail_flag}
-		error_log = pd.read_csv('cal_lists/error_log.csv')
-		error_log = error_log.append(document)
-		error_log.to_csv('cal_lists/error_log.csv',index=False)
+		#error_log = pd.read_csv('cal_lists/error_log.csv')
+		self.error_log = document
+		#error_log.to_csv('cal_lists/error_log.csv',index=False)
 
 	def _start_record(self):
 		"""
@@ -104,16 +108,18 @@ class pouakai():
 		self.header = hdu.header
 		self.raw_image = hdu.data
 		self.jd = hdu.header['JD']
-		self.filter = hdu.header['FILTER']
+		self.filter = hdu.header['FILTER'].strip()
+		self.telescope = hdu.header['TELESCOP']
 		self.exp_time = hdu.header['EXPTIME']
-		self._field_coords()
-		self.log['telescope'] = hdu.header['TELESCOP']
+		#self._field_coords()
+
 		self.log['band'] = self.filter
 		self.log['raw_filename'] = self.file
 		self.log['jd'] = self.jd
+		self.log['telescope'] = self.telescope
 		self.log['exptime'] = self.exp_time
-		self.log['date'] = hdu.header['DATE-OBS']
-		self.log['field'] = hdu.header['FIELD']
+		self.log['date'] = hdu.header['DATE-OBS'].strip()
+		self.log['field'] = hdu.header['FIELD'].strip()
 
 
 	def _field_coords(self):
@@ -142,7 +148,7 @@ class pouakai():
 		"""
 		if cal_type.lower() == 'flat':
 			masters = pd.read_csv('cal_lists/master_flat_list.csv')
-			ind = (masters['band'].values == self.filter) & (masters['chip'].values == self.chip)
+			ind = (masters['band'].values == self.filter) & (masters['telescope'].values == self.telescope)
 			masters = masters.iloc[ind]
 
 			ind = (masters['note'].values == 'good') & (masters['flat_type'].values == 'dome')
@@ -150,7 +156,7 @@ class pouakai():
 
 		elif cal_type.lower() == 'dark':
 			masters = pd.read_csv('cal_lists/master_dark_list.csv')
-			ind = masters['chip'].values == self.chip
+			ind = masters['telescope'].values == self.telescope
 			masters = masters.iloc[ind]
 			exptimes = masters['exptime'].values
 			ind = np.where(abs(self.exp_time - exptimes)<self.dark_tolerence)[0]
@@ -187,15 +193,15 @@ class pouakai():
 		"""
 		Find the best master image for the science image.
 		"""
-		chip = self.chip
+		telescope = self.telescope
 		date = self.jd
 		tolerence = self.time_tolerence
 
-		chip_ind = masters['chip'].values == chip
-		if len(chip_ind) == 0:
-			m = 'No master files for chip {} listed in {}'.format(chip,masters)
+		telescope_ind = masters['telescope'].values == telescope
+		if len(telescope_ind) == 0:
+			m = f'No master files for telescope {telescope} listed in {masters}'
 			raise ValueError(m)
-		m = masters.iloc[chip_ind]
+		m = masters.iloc[telescope_ind]
 		m_date = m.jd.values
 
 		t_diff = abs(m_date - date)
@@ -209,7 +215,7 @@ class pouakai():
 
 		return file, t_diff[t_ind]
 
-
+	#def _update_header_obj()
 
 
 	def _update_header_sky(self):
@@ -228,8 +234,10 @@ class pouakai():
 		
 	def _update_header_zeropoint(self):
 		self.header['ZP'] = (str(np.round(self.zp)),'Calibrimbore ' + self.system)
-		
-		
+
+	def _update_header_satellites(self):
+		self.header['SAT'] = (self.sat.satellite,'Satellite in image')
+		self.header['SATNUM'] = (self.sat.sat_num,'Number of satellites in image')
 
 	def _check_vars(self):
 		"""
@@ -250,7 +258,7 @@ class pouakai():
 		"""
 		Check that all reduction directories are constructed
 		"""
-		dirlist = ['wcs','red','red/wcs_tmp','cal','fig']
+		dirlist = ['red','red/wcs_tmp','cal','fig','zp_surface']
 		for d in dirlist:
 			if not os.path.isdir(self.savepath + d):
 				os.mkdir(self.savepath + d)
@@ -262,10 +270,6 @@ class pouakai():
 		self._check_vars()
 		
 		image = (self.raw_image - self.dark) / (self.flat/np.nanmedian(self.flat))
-		print('raw ', np.nanmean(self.raw_image))
-		print('dark ', np.nanmean(self.dark))
-		print('flat ', np.nanmean(self.flat))
-		print('image ', np.nanmean(image))
 		if np.nansum(image) == 0:
 			raise ValueError('Image is all NaNs')
 
@@ -312,9 +316,6 @@ class pouakai():
 		phdu = fits.PrimaryHDU(data = self.image, header = self.header)
 		mhdu = fits.ImageHDU(data = self.mask, header = self.header)
 		hdul = fits.HDUList([phdu, mhdu])
-		print(hdul)
-
-
 		if self.verbose:
 			print('Saving final calibrated image')
 		hdul.writeto(name,overwrite=True)
@@ -355,10 +356,12 @@ class pouakai():
 		Calculate the image wcs using the local libraries for astrometry.net
 		"""
 		# a reasonable search radius is already selected (2deg)
-		astrom_call = "solve-field -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
+		#astrom_call = "solve-field --no-plots -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
+		astrom_call = "solve-field --no-plots -O -o {savename} -p"
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		real_save_path = self.savepath + 'red/' + save_path
+		#if not path.exits(real_save_path):
 		os.mkdir(real_save_path)
 	
 		name = save_path + self.base_name + '_wcs'
@@ -366,8 +369,9 @@ class pouakai():
 		print('!!!',name)
 		print(save_path)
 		print(self.base_name)
-		solver = astrom_call.format(savename = name, ra = self.field_coord.ra.deg,
-									dec = self.field_coord.dec.deg, file = self.red_name)
+		#solver = astrom_call.format(savename = name, ra = self.field_coord.ra.deg,
+		#							dec = self.field_coord.dec.deg, file = self.red_name)
+		solver = astrom_call.format(savename = name, file = self.red_name)
 		os.system(solver)
 
 		wcs_header = fits.open(real_name + '.new')[0].header
@@ -381,7 +385,7 @@ class pouakai():
 			print('Solved WCS')
 		
 		clear = 'rm -rf ' + real_save_path
-		#os.system(clear)
+		os.system(clear)
 
 		if self.verbose:
 			print('WCS tmp files cleared')
@@ -409,13 +413,16 @@ class pouakai():
 			brightlim = 13
 		else:
 			brightlim = 15
-
-		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=self.mask, header=self.header,
+		mask = ((self.mask & 2) + (self.mask & 4) + (self.mask & 8) + (self.mask & 16))
+		mask[mask > 0] = 1
+		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
 							 threshold=threshold,cal_model=model,ax=self.fig_axis['I'],
-							 brightlim=brightlim)
+							 brightlim=brightlim,rescale=self.rescale)
 		self._add_image(self.cal.zp_surface,'E',colorbar=True)
 		self._add_image(self.cal.data,'F')
+		self._add_satellite_trail('F')
 		self.image = self.cal.data
+
 		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
 		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
@@ -427,10 +434,15 @@ class pouakai():
 
 		self.fig_axis['D'].plot(self.cal.source_x[self.cal.good],self.cal.source_y[self.cal.good],'r.')
 		self._zp_hist()
-		#self._zp_color()
+		self._zp_color()
 		self.cal.mag_limit_fig(self.fig_axis['I'])
+		self._save_zp_surface()
 		if self.verbose:
 			print('Zeropoint found to be ' + str(np.round(self.cal.zp,2)))
+
+	def _save_zp_surface(self):
+		path = f'{self.savepath}/zp_surface/{self.base_name}_zp_surface'
+		np.save(path,self.cal.zp_surface)
 
 	def _zp_hist(self):
 		"""
@@ -457,10 +469,11 @@ class pouakai():
 		"""
 		Create a figure showing the zeropoint evolving with color.
 		"""
-		zps = self.cal.zps[self.cal.good]
-		gr = (self.cal.cat_mags['g'] - self.cal.cat_mags['r']).values[self.cal.good]
+		zps = self.cal.zps
+		ind = np.isfinite(zps)
+		gr = (self.cal.sauron.cat_mags['g'] - self.cal.sauron.cat_mags['r']).values[ind]
 
-		self.fig_axis['H'].plot(gr,zps,'.')
+		self.fig_axis['H'].plot(gr,zps[ind],'.')
 		self.fig_axis['H'].set_ylabel('zeropoint',fontsize=15)
 		self.fig_axis['H'].set_xlabel('$g-r$',fontsize=15)	
 		med = self.cal.zp
@@ -513,7 +526,28 @@ class pouakai():
 									 vmin=vmin,vmax=vmax)
 		if colorbar:
 			self.fig.colorbar(im,ax=self.fig_axis[ax_ind],fraction=0.046, pad=0.04)
-			
+	
+	def _add_satellite_trail(self,ax_ind):
+		for consolidated_line in self.sat.consolidated_lines:
+			angle = consolidated_line[0]
+			points = np.array(consolidated_line[1])
+			x = points[:,0]
+			y = points[:,1]
+			coefs = np.polyfit(x, y, 1)
+			slope = coefs[0]
+			intercept = coefs[1]
+			x1 = np.min(x)
+			y1 = int(slope * x1 + intercept)
+			x2 = np.max(x)
+			y2 = int(slope * x2 + intercept)
+			# create the x and y points for the consolidated line
+			x_points = [x1, x2]
+			y_points = [y1, y2]
+
+			# plot the consolidated line
+			self.fig_axis[ax_ind].plot(x_points, y_points, '--r', label='Satellite',alpha = .5)
+			self.fig_axis[ax_ind].legend(loc='upper left')
+
 
 	def _record_reduction(self):
 		"""
@@ -522,7 +556,7 @@ class pouakai():
 		log = pd.read_csv('cal_lists/calibrated_image_list.csv')
 		new_entry = pd.DataFrame([self.log])
 		log = pd.concat([log, new_entry], ignore_index=True)
-		log.to_csv('cal_lists/calibrated_image_list.csv',index=False)
+		#log.to_csv('cal_lists/calibrated_image_list.csv',index=False)
 
 
 
@@ -534,19 +568,28 @@ class pouakai():
 		mask = mask.astype(int)
 		return mask
 
-	def _saturaton_mask(self,satlimit=6e4,buffer=3):
-		mask = deepcopy(self.image)
+	def _saturaton_mask(self,satlimit=3.5e4,buffer=3):
+		"""
+		An agressive limit is set here to catch overflow pixels.
+		"""
+		mask = deepcopy(self.raw_image)
 		mask = mask > satlimit
 		mask = convolve(mask,np.ones((buffer,buffer)))
 		mask = mask.astype(int)
 		return mask
 
+	def _load_bad_pix_mask(self):
+		bpix = np.load(f'badpix/telescope_{self.telescope}_bpix.npy')
+		return bpix.astype(int)
 
 	def Make_mask(self):
+		
+		saturation_mask = self._saturaton_mask() * 2
 		flat_mask = self._flat_mask() * 4
-		sat_mask = self._saturaton_mask() * 2
+		satellite_mask = self.sat.total_mask * 8
+		#bpix = self._load_bad_pix_mask() * 16
 
-		self.mask = flat_mask | sat_mask
+		self.mask = flat_mask | saturation_mask | satellite_mask #| bpix
 
 		self._update_header_mask_bits()
 
@@ -558,8 +601,12 @@ class pouakai():
 		#head['STARBIT']  = (1, 'bit value for normal sources')
 		self.header['SATBIT']   = (2, 'bit value for saturated sources')
 		self.header['FLATBIT'] = (4, 'bit value for bad flat')
-		#head['STRAPBIT'] = (8, 'bit value for bad pixels')
-		#head['USERBIT']  = (16, 'bit value for USER list')
+		self.header['SATBIT'] = (8, 'bit value for satellite pixels')
+		self.header['USERBIT']  = (16, 'Bad pixels')
 		#head['SNBIT']    = (32, 'bit value for SN list')
 
 
+	def satellite_search(self):
+		self.sat = sat_streaks(self.image,run=True)
+		self._update_header_satellites()
+		
