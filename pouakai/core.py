@@ -356,7 +356,7 @@ class pouakai():
 		"""
 		# a reasonable search radius is already selected (2deg)
 		#astrom_call = "solve-field --no-plots -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
-		astrom_call = "solve-field --no-plots --scale-units arcminwidth --scale-low 20 --scale-high 30 -O -o {savename} -p {file}"
+		astrom_call = "solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 -O -o {savename} -p {file}"
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		real_save_path = self.savepath + 'red/' + save_path
