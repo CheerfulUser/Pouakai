@@ -116,10 +116,10 @@ class pouakai():
 		self.log['band'] = self.filter
 		self.log['raw_filename'] = self.file
 		self.log['jd'] = self.jd
-		self.log['telescope'] = self.telescope
+		self.log['telescope'] = self.telescope.strip()
 		self.log['exptime'] = self.exp_time
 		self.log['date'] = hdu.header['DATE-OBS'].strip()
-		self.log['field'] = hdu.header['FIELD'].strip()
+		self.log['field'] = hdu.header['OBJECT'].strip()
 
 
 	def _field_coords(self):
@@ -151,7 +151,7 @@ class pouakai():
 			ind = (masters['band'].values == self.filter) & (masters['telescope'].values == self.telescope)
 			masters = masters.iloc[ind]
 
-			ind = (masters['note'].values == 'good') & (masters['flat_type'].values == 'dome')
+			ind = (masters['note'].values == 'good')
 			masters = masters.iloc[ind]
 
 		elif cal_type.lower() == 'dark':
@@ -196,9 +196,8 @@ class pouakai():
 		telescope = self.telescope
 		date = self.jd
 		tolerence = self.time_tolerence
-
 		telescope_ind = masters['telescope'].values == telescope
-		if len(telescope_ind) == 0:
+		if sum(telescope_ind * 1.) == 0:
 			m = f'No master files for telescope {telescope} listed in {masters}'
 			raise ValueError(m)
 		m = masters.iloc[telescope_ind]
@@ -357,7 +356,7 @@ class pouakai():
 		"""
 		# a reasonable search radius is already selected (2deg)
 		#astrom_call = "solve-field --no-plots -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
-		astrom_call = "solve-field --no-plots -O -o {savename} -p"
+		astrom_call = "solve-field --no-plots -O -o {savename} -p {file}"
 
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		real_save_path = self.savepath + 'red/' + save_path
@@ -366,9 +365,6 @@ class pouakai():
 	
 		name = save_path + self.base_name + '_wcs'
 		real_name = real_save_path + self.base_name + '_wcs'
-		print('!!!',name)
-		print(save_path)
-		print(self.base_name)
 		#solver = astrom_call.format(savename = name, ra = self.field_coord.ra.deg,
 		#							dec = self.field_coord.dec.deg, file = self.red_name)
 		solver = astrom_call.format(savename = name, file = self.red_name)
@@ -418,7 +414,7 @@ class pouakai():
 		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
 							 threshold=threshold,cal_model=model,ax=self.fig_axis['I'],
 							 brightlim=brightlim,rescale=self.rescale)
-		self._add_image(self.cal.zp_surface,'E',colorbar=True)
+		#self._add_image(self.cal.zp_surface,'E',colorbar=True)
 		self._add_image(self.cal.data,'F')
 		self._add_satellite_trail('F')
 		self.image = self.cal.data
