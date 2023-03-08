@@ -80,6 +80,31 @@ class pouakai():
 		#self._record_reduction()
 	#def _check_reduction(self,reduction):
 
+	def _query_object(self):
+		from astroquery.simbad import Simbad
+		try:
+			result_table = Simbad.query_object(self.header['OBJECT'].strip())
+			r = result_table.to_pandas()
+			c = SkyCoord(r.RA.values,r.DEC.values, unit=(u.hourangle, u.deg))
+			self.field_coord = c
+			print('Retrieved with Simbad')
+		except:
+			print('Simbad failed')
+		if r is None:
+			try:
+				from astroquery.ipac.ned import Ned
+				result_table = Ned.query_object(self.header['OBJECT'].strip())
+				r = result_table.to_pandas()
+				c = SkyCoord(r.RA.values,r.DEC.values, unit=(u.deg, u.deg))
+				self.field_coord = c
+				print('Retrieved with NED')
+			except:
+				print('NED failed')
+
+
+
+
+
 	def _fail_log(self):
 		document = {'fname': self.file,
 					'error':self.fail_flag}
@@ -111,7 +136,10 @@ class pouakai():
 		self.filter = hdu.header['FILTER'].strip()
 		self.telescope = hdu.header['TELESCOP']
 		self.exp_time = hdu.header['EXPTIME']
-		#self._field_coords()
+		try:
+			self._field_coords()
+		except:
+			self._query_object()
 
 		self.log['band'] = self.filter
 		self.log['raw_filename'] = self.file
@@ -131,6 +159,8 @@ class pouakai():
 		dec = self.header['DEC'].strip(' ')
 		c = SkyCoord(ra,dec, unit=(u.hourangle, u.deg))
 		self.field_coord = c
+		self.header['RA'] = c.ra.deg
+		self.header['DEC'] = c.dec.deg
 
 
 
@@ -355,9 +385,6 @@ class pouakai():
 		Calculate the image wcs using the local libraries for astrometry.net
 		"""
 		# a reasonable search radius is already selected (2deg)
-		#astrom_call = "solve-field --no-plots -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
-		astrom_call = "solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 -O -o {savename} -p {file}"
-
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		real_save_path = self.savepath + 'red/' + save_path
 		#if not path.exits(real_save_path):
@@ -365,10 +392,13 @@ class pouakai():
 	
 		name = save_path + self.base_name + '_wcs'
 		real_name = real_save_path + self.base_name + '_wcs'
-		#solver = astrom_call.format(savename = name, ra = self.field_coord.ra.deg,
-		#							dec = self.field_coord.dec.deg, file = self.red_name)
-		solver = astrom_call.format(savename = name, file = self.red_name)
-		os.system(solver)
+
+		if self.field_coord is not None:
+			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 -O -o {name} -p --ra {self.field_coord.ra.deg} --dec {self.field_coord.dec.deg} --radius 0.4 {self.red_name}"
+		else:
+			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 -O -o {name} -p {self.red_name}"
+
+		os.system(astrom_call)
 
 		wcs_header = fits.open(real_name + '.new')[0].header
 		# get rid of all the astrometry.net junk in the header 
