@@ -29,7 +29,7 @@ package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 class ap_photom():
 
 	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
-				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=14,rescale=True,
+				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=10,rescale=True,
 				 plot=True,floor=None,radius_override=None,use_catalogue=True,
 				 band_override=None):
 		self.file = file
@@ -239,10 +239,10 @@ class ap_photom():
 			self.pred_mag[ind] = mags
 
 
-	def calc_zp(self,snr_lim=10):
+	def calc_zp(self,snr_lim=3):
 		zps = self.pred_mag - self.ap_photom['sysmag'].values
 		snr = self.ap_photom['snr'].values
-		ind = (self.pred_mag > self.brightlim) & (snr > snr_lim) & (self.pred_mag < 19)
+		ind = (self.pred_mag > self.brightlim) & (snr > snr_lim) & (self.pred_mag < 17)
 		# cut out saturated and faint sources
 		zps[~ind] = np.nan
 		ind = sigma_clip(zps,maxiters=10).mask
