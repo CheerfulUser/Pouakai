@@ -442,13 +442,13 @@ class ap_photom():
 		"""
 		Correct the zeropoint for the residual background varibility.
 		"""
-		tmp,_ = self.Fit_surface(mask=None,smoother=200)
-		x_data = (self.ap_photom['xcenter'].values + 0.5).astype(int)
-		y_data = (self.ap_photom['ycenter'].values + 0.5).astype(int)
-		diff = (self.zps - tmp[y_data.astype(int),x_data.astype(int)])
-		cut = ~sigma_clip(diff,sigma=sigma).mask
-		estimate,bitmask = self.Fit_surface(mask=cut,smoother=30)
-		self.zp_surface = estimate
+		#tmp,_ = self.Fit_surface(mask=None,smoother=200)
+		#x_data = (self.ap_photom['xcenter'].values + 0.5).astype(int)
+		#y_data = (self.ap_photom['ycenter'].values + 0.5).astype(int)
+		#diff = (self.zps - tmp[y_data.astype(int),x_data.astype(int)])
+		#cut = ~sigma_clip(diff,sigma=sigma).mask
+		#estimate,bitmask = self.Fit_surface(mask=cut,smoother=30)
+		self.zp_surface = np.nanmedian(self.zps)
 
 		
 
