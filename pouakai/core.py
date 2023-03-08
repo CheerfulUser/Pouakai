@@ -506,7 +506,7 @@ class pouakai():
 		self.fig_axis['B'].set_title('Flat image',fontsize=15)
 		self.fig_axis['C'].set_title('Reduced image',fontsize=15)
 		self.fig_axis['D'].set_title('Calibration sources',fontsize=15)
-		self.fig_axis['E'].set_title('Zeropoint correction',fontsize=15)
+		#self.fig_axis['E'].set_title('Zeropoint correction',fontsize=15)
 		self.fig_axis['F'].set_title('Rescaled image',fontsize=15)
 		self.fig_axis['G'].set_title('Zeropoint distribution',fontsize=15)
 		self.fig_axis['H'].set_title('Zeropoint colour',fontsize=15)
