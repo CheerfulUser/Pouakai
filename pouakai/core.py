@@ -82,6 +82,7 @@ class pouakai():
 
 	def _query_object(self):
 		from astroquery.simbad import Simbad
+		r = None
 		try:
 			result_table = Simbad.query_object(self.header['OBJECT'].strip())
 			r = result_table.to_pandas()
