@@ -7,6 +7,7 @@ import numpy as np
 from glob import glob
 import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
+tmp = os.environ['TMPDIR']
 
 class consume_moa():
     def __init__(self,files,savepath,time_tolerence=60,dark_tolerence=1,
@@ -30,8 +31,12 @@ class consume_moa():
         if update_cals:
             self._update_cals()
             self._update_masters()
-
         self.digest()
+        self._remove_tmp()
+
+    def _remove_tmp(self):
+        call = f'rm -rf {tmp}'
+        os.system(call)
         
     def _clip_files(self):
         ind = []
@@ -62,27 +67,26 @@ class consume_moa():
 
     def _overwrite(self,overwrite):
         if not overwrite:
-            print('!!!!!!!!!!!!!!!!!!!!')
-            #try: 
-            anum = []
-            for file in self.files:
-                anum += [file.split('/')[-1].split('.')[0]]
-            done = glob(self.savepath + 'cal/*.gz')
-            dnum =  []
-            for file in done:
-                dnum += [file.split('/')[-1].split('_')[0]]
-            dnum = set(dnum)
-            todo = []
-            for i in range(len(anum)):
-                if not dnum.intersection({anum[i]}):
-                    todo += [i]
-            todo = np.array(todo)
+            try: 
+                anum = []
+                for file in self.files:
+                    anum += [file.split('/')[-1].split('.')[0]]
+                done = glob(self.savepath + 'cal/*.gz')
+                dnum =  []
+                for file in done:
+                    dnum += [file.split('/')[-1].split('_')[0]]
+                dnum = set(dnum)
+                todo = []
+                for i in range(len(anum)):
+                    if not dnum.intersection({anum[i]}):
+                        todo += [i]
+                todo = np.array(todo)
 
-            if self.verbose:
-                print(f'Droping {len(anum) - len(todo)} files that have already been processed')
-            self.files = list(np.array(self.files)[todo])
-            #except:
-             #   pass
+                if self.verbose:
+                    print(f'Droping {len(anum) - len(todo)} files that have already been processed')
+                self.files = list(np.array(self.files)[todo])
+            except:
+                pass
 
 
 
@@ -99,18 +103,21 @@ class consume_moa():
 
     def digest(self):
         if (self.cores > 1) & (len(self.files) > 1):
-            entries = Parallel(self.cores)(delayed(self._run_func)(file) for file in self.files)
+            for file in self.files:
+                print(file)
+                print(file.split('/')[-1])
+            #entries = Parallel(self.cores)(delayed(self._run_func)(file) for file in self.files)
+            Parallel(self.cores)(delayed(self._run_func)(file) for file in self.files)
         else:
             entries = []
             for i in range(len(self.files)):
-                entries += [self._run_func(self.files[i])]
+                #entries += [self._run_func(self.files[i])]\
+                self._run_func(self.files[i])
+        
+        #self._load_calibration_log()
 
-        self._load_calibration_log()
-
-        for entry in entries:
-            new_entry = pd.DataFrame([entry])
-            self.log = pd.concat([self.log, new_entry], ignore_index=True)
+        #for entry in entries:
+        #    new_entry = pd.DataFrame([entry])
+        #    self.log = pd.concat([self.log, new_entry], ignore_index=True)
 		
-        self.log.to_csv(package_directory + 'cal_lists/calibrated_image_list.csv',index=False)
-
-        self._load_calibration_log()
+        #self.log.to_csv(package_directory + 'cal_lists/calibrated_image_list.csv',index=False)
