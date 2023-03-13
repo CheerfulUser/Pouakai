@@ -18,6 +18,10 @@ from aperture_photom import ap_photom
 from scipy.ndimage.filters import convolve
 from satellite_detection import sat_streaks
 
+package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
+tmp = os.environ['TMPDIR']
+
+
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -77,16 +81,19 @@ class pouakai():
 		self.calculate_zp()
 		self.save_fig()
 		self.save_image()
+		self._update_reduction_log()
 		#self._record_reduction()
 	#def _check_reduction(self,reduction):
 
 	def _query_object(self):
 		from astroquery.simbad import Simbad
 		r = None
+		obj = self.header['OBJECT'].strip()
+		print(obj)
 		try:
-			result_table = Simbad.query_object(self.header['OBJECT'].strip())
+			result_table = Simbad.query_object(obj)
 			r = result_table.to_pandas()
-			c = SkyCoord(r.RA.values,r.DEC.values, unit=(u.hourangle, u.deg))
+			c = SkyCoord(r.RA.values[0],r.DEC.values[0], unit=(u.hourangle, u.deg))
 			self.field_coord = c
 			print('Retrieved with Simbad')
 		except:
@@ -94,9 +101,9 @@ class pouakai():
 		if r is None:
 			try:
 				from astroquery.ipac.ned import Ned
-				result_table = Ned.query_object(self.header['OBJECT'].strip())
+				result_table = Ned.query_object(obj)
 				r = result_table.to_pandas()
-				c = SkyCoord(r.RA.values,r.DEC.values, unit=(u.deg, u.deg))
+				c = SkyCoord(r.RA.values[0],r.DEC.values[0], unit=(u.deg, u.deg))
 				self.field_coord = c
 				print('Retrieved with NED')
 			except:
@@ -119,18 +126,26 @@ class pouakai():
 		"""
 		document = {'name':None,'band':None,'telescope':None,
 					'exptime':None,'jd':None,'date':None,
-					'field':None,'filename':None,'flat':None,
+					'field':None,'flat':None,
 					'dark':None,'tdiff_flat':None,
 					'tdiff_dark':None,'zp':None,'zperr':None,
 					'maglim5':None,'maglim3':None,'savename':None}
 		self.log = document 
+
+	def _update_reduction_log(self):
+		new_entry = pd.DataFrame([self.log])
+
+		log = pd.read_csv(package_directory + 'cal_lists/calibrated_image_list.csv')
+		log = pd.concat([log, new_entry], ignore_index=True)
+		log.to_csv(package_directory + 'cal_lists/calibrated_image_list.csv',index=False)
 
 
 	def _read_science_image(self):
 		"""
 		Read in the science image to be calibrated.
 		"""
-		hdu = fits.open(self.file)[0]
+		hdul = fits.open(self.file)
+		hdu = hdul[0]
 		self.header = hdu.header
 		self.raw_image = hdu.data
 		self.jd = hdu.header['JD']
@@ -149,6 +164,7 @@ class pouakai():
 		self.log['exptime'] = self.exp_time
 		self.log['date'] = hdu.header['DATE-OBS'].strip()
 		self.log['field'] = hdu.header['OBJECT'].strip()
+		hdul.close()
 
 
 	def _field_coords(self):
@@ -207,7 +223,7 @@ class pouakai():
 		hdu = fits.open(file)
 		data = hdu[0].data
 		err =  hdu[1].data
-
+		hdu.close()
 
 		if cal_type.lower() == 'flat':
 			self.flat_file = file 
@@ -395,9 +411,9 @@ class pouakai():
 		real_name = real_save_path + self.base_name + '_wcs'
 
 		if self.field_coord is not None:
-			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 -O -o {name} -p --ra {self.field_coord.ra.deg} --dec {self.field_coord.dec.deg} --radius 0.4 {self.red_name}"
+			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 --temp-dir {tmp} -O -o {name} -p --ra {self.field_coord.ra.deg} --dec {self.field_coord.dec.deg} --radius 0.4 {self.red_name}"
 		else:
-			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 -O -o {name} -p {self.red_name}"
+			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 --temp-dir {tmp} -O -o {name} -p {self.red_name}"
 
 		os.system(astrom_call)
 
@@ -429,7 +445,7 @@ class pouakai():
 			print('Saving intermediated wcs file')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
 
-	def calculate_zp(self,threshold=10,model='ckmodel'):
+	def calculate_zp(self,threshold=3,model='ckmodel'):
 		"""
 		Use calibrimbore to calculate the zeropoint for the image and the magnitude limits.
 		"""
@@ -437,32 +453,35 @@ class pouakai():
 			print('Calculating zeropoint')
 
 		if self.log['exptime'] < (2.5 * 60):
-			brightlim = 13
+			brightlim = 10
 		else:
-			brightlim = 15
+			brightlim = 12
 		mask = ((self.mask & 2) + (self.mask & 4) + (self.mask & 8) + (self.mask & 16))
 		mask[mask > 0] = 1
 		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
-							 threshold=threshold,cal_model=model,ax=self.fig_axis['I'],
+							 threshold=threshold,cal_model=model,ax=self.fig_axis['F'],
 							 brightlim=brightlim,rescale=self.rescale)
 		#self._add_image(self.cal.zp_surface,'E',colorbar=True)
-		self._add_image(self.cal.data,'F')
-		self._add_satellite_trail('F')
+		self._add_image(self.cal.data,'C')
+		self._add_satellite_trail('C')
 		self.image = self.cal.data
 
 		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
 		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
 		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
 		self.header['MAGLIM3'] = (str(np.round(self.cal.maglim3)), '3 sig mag lim')
-		self.log['zp'] = self.cal.zp
-		self.log['zperr'] = self.cal.zp_std
-		self.log['maglim5'] = self.cal.maglim5
-		self.log['maglim3'] = self.cal.maglim3
+		self.log['zp'] = np.round(self.cal.zp,3)
+		self.log['zperr'] = np.round(self.cal.zp_std,3)
+		self.log['maglim5'] = np.round(self.cal.maglim5,3)
+		self.log['maglim3'] = np.round(self.cal.maglim3,3)
 
-		self.fig_axis['D'].plot(self.cal.source_x[self.cal.good],self.cal.source_y[self.cal.good],'r.')
+
+		ind = np.isfinite(self.cal.zps)
+
+		self.fig_axis['D'].plot(self.cal.source_x[ind],self.cal.source_y[ind],'r+')
 		self._zp_hist()
-		self._zp_color()
-		self.cal.mag_limit_fig(self.fig_axis['I'])
+		#self._zp_color()
+		self.cal.mag_limit_fig(self.fig_axis['F'])
 		self._save_zp_surface()
 		if self.verbose:
 			print('Zeropoint found to be ' + str(np.round(self.cal.zp,2)))
@@ -475,22 +494,22 @@ class pouakai():
 		"""
 		Create a histogram of the zeropoint distribution
 		"""
-		zps = self.cal.zps
+		zps = self.cal.zps#[self.cal.good]
 		zps = zps[np.isfinite(zps)]
 		#b = int(abs(np.nanmax(zps) - np.nanmin(zps) /(2*iqr(zps)*len(zps)**(-1/3))))
-		self.fig_axis['G'].hist(zps,alpha=0.5)		
+		self.fig_axis['E'].hist(zps,alpha=0.5)		
 		med = self.cal.zp
 		high = self.cal.zp+self.cal.zp_std
 		low = self.cal.zp-self.cal.zp_std
-		self.fig_axis['G'].axvline(med,color='k',ls='--')
-		self.fig_axis['G'].axvline(low,color='k',ls=':')
-		self.fig_axis['G'].axvline(high,color='k',ls=':')
+		self.fig_axis['E'].axvline(med,color='k',ls='--')
+		self.fig_axis['E'].axvline(low,color='k',ls=':')
+		self.fig_axis['E'].axvline(high,color='k',ls=':')
 		s = ('$zp='+str((np.round(med,2)))+'^{+' + 
 			str(np.round(high-med,2))+'}_{'+
 			str(np.round(low-med,2))+'}$')
-		self.fig_axis['G'].annotate(s,(.7,.8),fontsize=10,xycoords='axes fraction')
-		self.fig_axis['G'].set_xlabel('zeropoint',fontsize=15)
-		self.fig_axis['G'].set_ylabel('Occurrence',fontsize=15)
+		self.fig_axis['E'].annotate(s,(0.7,0.8),fontsize=10,xycoords='axes fraction')
+		self.fig_axis['E'].set_xlabel('zeropoint',fontsize=15)
+		self.fig_axis['E'].set_ylabel('Occurrence',fontsize=15)
 
 	def _zp_color(self):
 		"""
@@ -529,19 +548,15 @@ class pouakai():
 											ABC
 											ABC
 											DEF
-											DEF
-											GHI
 											"""
 										  )
 		self.fig_axis['A'].set_title('Raw image',fontsize=15)
 		self.fig_axis['B'].set_title('Flat image',fontsize=15)
 		self.fig_axis['C'].set_title('Reduced image',fontsize=15)
 		self.fig_axis['D'].set_title('Calibration sources',fontsize=15)
-		#self.fig_axis['E'].set_title('Zeropoint correction',fontsize=15)
-		self.fig_axis['F'].set_title('Rescaled image',fontsize=15)
-		self.fig_axis['G'].set_title('Zeropoint distribution',fontsize=15)
-		self.fig_axis['H'].set_title('Zeropoint colour',fontsize=15)
-		self.fig_axis['I'].set_title('Signal-Noise Limit',fontsize=15)
+		self.fig_axis['E'].set_title('Zeropoint distribution',fontsize=15)
+		#self.fig_axis['F'].set_title('Zeropoint colour',fontsize=15)
+		self.fig_axis['F'].set_title('Signal-Noise Limit',fontsize=15)
 
 	def _add_image(self,image,ax_ind,colorbar=False):
 		"""
