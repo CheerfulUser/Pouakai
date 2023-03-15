@@ -22,7 +22,7 @@ def get_gaia_region(ra,dec,size=0.4, magnitude_limit = 21):
 	"""
 	c1 = SkyCoord(ra, dec, frame='icrs', unit='deg')
 	result = Vizier.query_region(c1, catalog=["I/345/gaia2"],
-                             		 radius=Angle(rad, "deg"),column_filters={'Gmag':f'<{magnitude_limit}'})
+                             		 radius=Angle(size, "deg"),column_filters={'Gmag':f'<{magnitude_limit}'})
 
 	keys = ['objID','RAJ2000','DEJ2000','e_RAJ2000','e_DEJ2000','gmag','e_gmag','gKmag','e_gKmag','rmag',
 			'e_rmag','rKmag','e_rKmag','imag','e_imag','iKmag','e_iKmag','zmag','e_zmag','zKmag','e_zKmag',
