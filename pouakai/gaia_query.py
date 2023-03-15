@@ -3,7 +3,7 @@ from astropy import units as u
 import pandas as pd
 from astroquery.vizier import Vizier
 
-def get_gaia_region(ra,dec,rad=0.4, magnitude_limit = 21):
+def get_gaia_region(ra,dec,size=0.4, magnitude_limit = 21):
 	"""
 	Get the coordinates and mag of all gaia sources in the field of view.
 
