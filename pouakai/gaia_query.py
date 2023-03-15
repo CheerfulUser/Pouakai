@@ -29,6 +29,9 @@ def get_gaia_region(ra,dec,size=0.4, magnitude_limit = 21):
 			'ymag','e_ymag','yKmag','e_yKmag','tmag','gaiaid','gaiamag','gaiadist','gaiadist_u','gaiadist_l',
 			'row','col']
 
+
+	no_targets_found_message = ValueError('Either no sources were found in the query region '
+                                          'or Vizier is unavailable')
 	if result is None:
 		raise no_targets_found_message
 	elif len(result) == 0:
