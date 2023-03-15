@@ -103,21 +103,19 @@ class consume_moa():
 
     def digest(self):
         if (self.cores > 1) & (len(self.files) > 1):
-            for file in self.files:
-                print(file)
-                print(file.split('/')[-1])
-            #entries = Parallel(self.cores)(delayed(self._run_func)(file) for file in self.files)
             Parallel(self.cores)(delayed(self._run_func)(file) for file in self.files)
         else:
-            entries = []
             for i in range(len(self.files)):
-                #entries += [self._run_func(self.files[i])]\
                 self._run_func(self.files[i])
         
-        #self._load_calibration_log()
+        
 
-        #for entry in entries:
-        #    new_entry = pd.DataFrame([entry])
-        #    self.log = pd.concat([self.log, new_entry], ignore_index=True)
-		
-        #self.log.to_csv(package_directory + 'cal_lists/calibrated_image_list.csv',index=False)
+    def _update_log(self):
+        self._load_calibration_log()
+        logs = glob(self.savepath + 'log/*.csv')
+        for log in logs:
+            new_entry = pd.read_csv(log)
+            self.log = pd.concat([self.log, new_entry], ignore_index=True)
+        
+        self.log.to_csv(package_directory + 'cal_lists/calibrated_image_list.csv',index=False)
+        os.system(f'rm -rf {self.savepath}log/*.csv')

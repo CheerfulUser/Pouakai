@@ -22,16 +22,17 @@ from scipy.optimize import minimize
 from calibrimbore import sauron, get_skymapper_region, get_ps1_region
 
 from copy import deepcopy
+from .gaia_query import get_gaia_region
 
 import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 
-class ap_photom():
+class cal_photom():
 
 	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
 				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=10,rescale=True,
 				 plot=True,floor=None,radius_override=None,use_catalogue=True,
-				 band_override=None):
+				 band_override=None, ):
 		self.file = file
 		self.data = data
 		self.wcs = wcs
@@ -64,6 +65,7 @@ class ap_photom():
 		self.zp = None 
 		self.zp_std = None  
 		self.zps = None
+		self.phot_table = None
 
 		if run:
 			self._load_image()
@@ -79,6 +81,8 @@ class ap_photom():
 			self.ap_photom['e_mag'] = 2.5/np.log(10)*(self.ap_photom['e_counts']/self.ap_photom['counts'])
 			if plot:
 				self.mag_limit_fig(ax)
+
+			self.ap_photom['gaiaID'] = self.cat['objID'].values
 
 
 
@@ -121,17 +125,17 @@ class ap_photom():
 
 	def catalogue_sources(self):
 		ra,dec = self.wcs.all_pix2world(self.data.shape[1]//2,self.data.shape[0]//2,0)
-		if dec > -25:
-			cat = get_ps1_region([ra],[dec],size=.4*60**2)
-		else:
-			cat = get_skymapper_region([ra],[dec],size=.4*60**2)
-		
-		tab = cat.iloc[np.isfinite(cat.r.values)]
-		x, y = self.wcs.all_world2pix(tab['ra'].values,tab.dec.values,0)
+		#if dec > -25:
+		#	cat = get_ps1_region([ra],[dec],size=.4*60**2)
+		#else:
+		#	cat = get_skymapper_region([ra],[dec],size=.4*60**2)
+		cat = get_gaia_region([ra],[dec],size=.2*60**2)
+		tab = deepcopy(cat)#.iloc[np.isfinite(cat.r.values)]
+		x, y = self.wcs.all_world2pix(tab.ra.values,tab.dec.values,0)
 		tab['x'] = x
 		tab['y'] = y
 
-		ind = (x > 30) & (x < self.data.shape[1]-30) & (y > 30) & (y < self.data.shape[0]-30)
+		ind = (x > 15) & (x < self.data.shape[1]-15) & (y > 15) & (y < self.data.shape[0]-15)
 		tab = tab.iloc[ind]
 		self.cat = tab
 		sources = tab[['x','y']]
@@ -185,8 +189,6 @@ class ap_photom():
 
 
 	def ap_photometry(self):
-
-
 		phot_table = aperture_photometry(self.data,self.aperture)
 		masked = deepcopy(self.data)
 		masked[self.source_mask==0] = np.nan
@@ -449,11 +451,6 @@ class ap_photom():
 		#cut = ~sigma_clip(diff,sigma=sigma).mask
 		#estimate,bitmask = self.Fit_surface(mask=cut,smoother=30)
 		self.zp_surface = np.nanmedian(self.zps)
-
-		
-
-
-
 		
 
 
