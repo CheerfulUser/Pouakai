@@ -1,4 +1,4 @@
-from astropy.coordinates import SkyCoord
+from astropy.coordinates import SkyCoord, Angle
 from astropy import units as u
 import pandas as pd
 from astroquery.vizier import Vizier
