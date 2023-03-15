@@ -22,7 +22,7 @@ from scipy.optimize import minimize
 from calibrimbore import sauron, get_skymapper_region, get_ps1_region
 
 from copy import deepcopy
-from .gaia_query import get_gaia_region
+from gaia_query import get_gaia_region
 
 import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
