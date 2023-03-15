@@ -1,16 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import lightkurve as lk
-from scipy import interpolate
-from astropy.io import fits
-from astropy.wcs import WCS
 from astropy.coordinates import SkyCoord
 from astropy import units as u
-from astropy.coordinates import SkyCoord, Angle
-from copy import deepcopy
 import pandas as pd
-from .R_load import R_val
-
+from astroquery.vizier import Vizier
 
 def get_Gaia_region(ra,dec,rad=0.4, magnitude_limit = 21):
 	"""
