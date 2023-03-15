@@ -13,7 +13,7 @@ from astropy.wcs import WCS
 from copy import deepcopy
 
 from scipy.stats import iqr
-from aperture_photom import ap_photom
+from aperture_photom import cal_photom
 
 from scipy.ndimage.filters import convolve
 from satellite_detection import sat_streaks
@@ -81,8 +81,9 @@ class pouakai():
 		self.calculate_zp()
 		self.save_fig()
 		self.save_image()
-		self._update_reduction_log()
-		#self._record_reduction()
+		#self._update_reduction_log()
+		self._record_reduction()
+		self._save_phot_table()
 	#def _check_reduction(self,reduction):
 
 	def _query_object(self):
@@ -304,7 +305,7 @@ class pouakai():
 		"""
 		Check that all reduction directories are constructed
 		"""
-		dirlist = ['red','red/wcs_tmp','cal','fig','zp_surface']
+		dirlist = ['red','red/wcs_tmp','cal','fig','zp_surface','log','phot_table']
 		for d in dirlist:
 			if not os.path.isdir(self.savepath + d):
 				os.mkdir(self.savepath + d)
@@ -458,7 +459,7 @@ class pouakai():
 			brightlim = 12
 		mask = ((self.mask & 2) + (self.mask & 4) + (self.mask & 8) + (self.mask & 16))
 		mask[mask > 0] = 1
-		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
+		self.cal = cal_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
 							 threshold=threshold,cal_model=model,ax=self.fig_axis['F'],
 							 brightlim=brightlim,rescale=self.rescale)
 		#self._add_image(self.cal.zp_surface,'E',colorbar=True)
@@ -595,9 +596,10 @@ class pouakai():
 		"""
 		Save the log to the global reduction log file.
 		"""
-		log = pd.read_csv('cal_lists/calibrated_image_list.csv')
+		#log = pd.read_csv('cal_lists/calibrated_image_list.csv')
 		new_entry = pd.DataFrame([self.log])
-		log = pd.concat([log, new_entry], ignore_index=True)
+		#log = pd.concat([log, new_entry], ignore_index=True)
+		new_entry.to_csv(f'{package_directory}cal_lists/log/{self.base_name}.csv')
 		#log.to_csv('cal_lists/calibrated_image_list.csv',index=False)
 
 
@@ -652,3 +654,9 @@ class pouakai():
 		self.sat = sat_streaks(self.image,run=True)
 		self._update_header_satellites()
 		
+
+	def _save_phot_table(self):
+		name = save_path + 'phot_table/' + self.base_name + '_phot.fits'
+
+		hdu = fits.BinTableHDU(data=self.cal.ap_photom,header=self.header)
+		hdu.writeto(name)
