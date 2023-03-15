@@ -117,7 +117,7 @@ class ap_photom():
 		daofind = DAOStarFinder(fwhm=fwhm, threshold= threshold * self.data_std)	
 		sources = daofind(self.data - self.data_median)
 		self.sources = sources.to_pandas()
-		self._mask_killer()
+		#self._mask_killer()
 
 	def catalogue_sources(self):
 		ra,dec = self.wcs.all_pix2world(self.data.shape[1]//2,self.data.shape[0]//2,0)
@@ -137,7 +137,9 @@ class ap_photom():
 		sources = tab[['x','y']]
 		sources.rename(columns={'x': 'xcentroid', 'y': 'ycentroid'}, inplace=True)
 		self.sources = sources
-		self._mask_killer()
+		self.source_x = self.sources['xcentroid'].values
+		self.source_y = self.sources['ycentroid'].values
+		#self._mask_killer()
 
 
 	def _calc_radii(self):
@@ -312,8 +314,8 @@ class ap_photom():
 			ax.set_ylabel(r'log$_{10}$(SNR)')
 			ax.set_xlabel('Magnitude Limit')
 
-			ax.text(19,2,r'$3\sigma=$ {:.2f}'.format(self.fitted_line(3)))
-			ax.text(19,2.5,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
+			ax.text(17,2.5,r'$3\sigma=$ {:.2f}'.format(self.fitted_line(3)))
+			ax.text(17,2.8,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
 		 	
 			ax.set_ylim(0,3)
 			ax.set_xlim(13,21)
