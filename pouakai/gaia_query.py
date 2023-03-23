@@ -20,9 +20,11 @@ def get_gaia_region(ra,dec,size=0.4, magnitude_limit = 21):
 		coords 	array	coordinates of sources
 		Gmag 	array 	Gmags of sources
 	"""
-	c1 = SkyCoord(ra, dec, frame='icrs', unit='deg')
+	c1 = SkyCoord(ra, dec, unit='deg')
+	Vizier.ROW_LIMIT = -1
+
 	result = Vizier.query_region(c1, catalog=["I/345/gaia2"],
-                             		 radius=Angle(size, "deg"),column_filters={'Gmag':f'<{magnitude_limit}'})
+                             		 radius=Angle(size, "arcsec"),column_filters={'Gmag':f'<{magnitude_limit}'})
 
 	keys = ['objID','RAJ2000','DEJ2000','e_RAJ2000','e_DEJ2000','gmag','e_gmag','gKmag','e_gKmag','rmag',
 			'e_rmag','rKmag','e_rKmag','imag','e_imag','iKmag','e_iKmag','zmag','e_zmag','zKmag','e_zKmag',
@@ -36,9 +38,9 @@ def get_gaia_region(ra,dec,size=0.4, magnitude_limit = 21):
 		raise no_targets_found_message
 	elif len(result) == 0:
 		raise no_targets_found_message
-	raise no_targets_found_message
+	
 
-	result = result[catalog].to_pandas()
-	result = result.rename(columns={'RAJ2000':'ra','DEJ2000':'dec'})
+	result = result['I/345/gaia2'].to_pandas()
+	result = result.rename(columns={'RA_ICRS':'ra','DE_ICRS':'dec'})
 	return result
 

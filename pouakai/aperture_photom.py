@@ -82,7 +82,7 @@ class cal_photom():
 			if plot:
 				self.mag_limit_fig(ax)
 
-			self.ap_photom['gaiaID'] = self.cat['objID'].values
+			self.ap_photom['gaiaID'] = self.cat['Source'].values
 
 
 
@@ -129,8 +129,9 @@ class cal_photom():
 		#	cat = get_ps1_region([ra],[dec],size=.4*60**2)
 		#else:
 		#	cat = get_skymapper_region([ra],[dec],size=.4*60**2)
-		cat = get_gaia_region([ra],[dec],size=.2*60**2)
+		cat = get_gaia_region([ra],[dec],size=30*60)
 		tab = deepcopy(cat)#.iloc[np.isfinite(cat.r.values)]
+		#print(tab)
 		x, y = self.wcs.all_world2pix(tab.ra.values,tab.dec.values,0)
 		tab['x'] = x
 		tab['y'] = y
@@ -178,6 +179,7 @@ class cal_photom():
 		
 		xcoords = self.sources['xcentroid'].values
 		ycoords = self.sources['ycentroid'].values
+
 		positions = []
 		for i in range(len(xcoords)):
 			positions += [[xcoords[i],ycoords[i]]]

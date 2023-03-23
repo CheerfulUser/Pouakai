@@ -454,9 +454,9 @@ class pouakai():
 			print('Calculating zeropoint')
 
 		if self.log['exptime'] < (2.5 * 60):
-			brightlim = 10
+			brightlim = 5
 		else:
-			brightlim = 12
+			brightlim = 10
 		mask = ((self.mask & 2) + (self.mask & 4) + (self.mask & 8) + (self.mask & 16))
 		mask[mask > 0] = 1
 		self.cal = cal_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
@@ -599,7 +599,7 @@ class pouakai():
 		#log = pd.read_csv('cal_lists/calibrated_image_list.csv')
 		new_entry = pd.DataFrame([self.log])
 		#log = pd.concat([log, new_entry], ignore_index=True)
-		new_entry.to_csv(f'{package_directory}cal_lists/log/{self.base_name}.csv')
+		new_entry.to_csv(f'{self.savepath}log/{self.base_name}.csv')
 		#log.to_csv('cal_lists/calibrated_image_list.csv',index=False)
 
 
@@ -656,7 +656,16 @@ class pouakai():
 		
 
 	def _save_phot_table(self):
-		name = save_path + 'phot_table/' + self.base_name + '_phot.fits'
+		name = self.savepath + 'phot_table/' + self.base_name + '_phot.fits'
+		ind = self.cal.ap_photom.mag.values < self.cal.maglim3
+		tab = self.cal.ap_photom.iloc[ind]
+		ra,dec = self.wcs.all_pix2world(tab['xcenter'].values,tab['ycenter'].values,0)
+		tab['ra'] = ra
+		tab['dec'] = dec
+		rec = np.rec.array([tab['gaiaID'].values,tab['xcenter'].values,tab['ycenter'].values,tab['ra'].values,tab['dec'].values,tab['counts'].values,tab['e_counts'].values,tab['mag'].values,tab['e_mag'].values,tab['snr'].values],
+							formats='int,float32,float32,float32,float32,float32,float32,float32,float32,float32',
+							names='gaiaID,xcenter,ycenter,ra,dec,counts,counts_e,mag,mag_e,snr' )
 
-		hdu = fits.BinTableHDU(data=self.cal.ap_photom,header=self.header)
+		hdu = fits.BinTableHDU(data=rec,header=self.header)
+		
 		hdu.writeto(name)
