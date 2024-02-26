@@ -97,7 +97,7 @@ def dark_processing(index,names,dark_list,time_frame,save_location,verbose):
 	except:
 		print('something went wrong...')
 
-def get_master_dark(jd,exptime,strict=True,tol=1):
+def get_master_dark(jd,exptime,strict=True,tol=10,exp_tol=5):
 	"""
 	ytdhgvj
 	"""
@@ -107,7 +107,7 @@ def get_master_dark(jd,exptime,strict=True,tol=1):
 		darks = darks.iloc[ind]
 	
 	dexptime = darks['exptime'].values
-	exp_ind = dexptime.astype(int) == int(exptime)
+	exp_ind = abs(dexptime.astype(int) - int(exptime)) < exp_tol
 	good = darks.iloc[exp_ind]
 
 	if len(good) > 0:
@@ -123,6 +123,8 @@ def get_master_dark(jd,exptime,strict=True,tol=1):
 		else:
 			return 'none', -999	
 	else:
+		print('no exposure')
+		print(int(exptime))
 		return 'none', -999
 
 
@@ -187,69 +189,81 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 
 	master_arr = []
 	darks = []
-	try:
-		for j in range(len(files)):
-			
-			hdu = fits.open(files[j])[0]
-			header = hdu.header
-			#print(header)
-			data = hdu.data.astype(float)
+	#try:
+	for j in range(len(files)):
+		
+		hdu = fits.open(files[j])[0]
+		header = hdu.header
+		#print(header)
+		data = hdu.data.astype(float)
+		
+		saturations = (data > 50000).flatten()
+		# if more than 10% of pixels are saturated, set array to nan
+		if sum(saturations) > len(saturations) * 0.1:
+			print('image ', files[j], ' is saturated')
+			data = data * np.nan
+		
+		master_arr += [data]
 
-			saturations = (data > 50000).flatten()
-			# if more than 10% of pixels are saturated, set array to nan
-			if sum(saturations) > len(saturations) * 0.1:
-				print('image ', files[j], ' is saturated')
-				data = data * np.nan
-			master_arr += [data]
+		fname, tdiff = get_master_dark(t, exptimes[j])
+		
+		try:
+			darks += [fits.open(fname)[0].data]
+		except:
+			darks += [data * 0]
+			print('No dark available')
 
-			fname, tdiff = get_master_dark(t, exptimes[j])
-			try:
-				darks += [fits.open(fname)[0].data]
-			except:
-				darks += [data * np.nan]
+	master_arr = np.array(master_arr)
+	darks = np.array(darks)
+	master_arr = master_arr - darks
 
-		master_arr = np.array(master_arr)
-		darks = np.array(darks)
-		master_arr = master_arr - darks
-
-		mas = np.nanmean(master_arr,axis=0)
-		std = np.nanstd(master_arr,axis=0)
-		header['JDSTART'] = t 
-		header['MASTER'] = True
-		phdu = fits.PrimaryHDU(data = mas, header = header)
-		ehdu = fits.ImageHDU(data = std, header = header)
-		hdul = fits.HDUList([phdu, ehdu])
-
-		save_name = save_location + n + '.fits'
-		print(f'saving: {save_name}')
-		hdul.writeto(save_name,overwrite=True)
-		compress = 'gzip -f ' + save_name
-		os.system(compress)
-		print('saved')
-		entry['name'] = n
-
-		entry['band'] = header['COLOUR']
-		entry['exptime'] = header['EXPTIME']
-		entry['jd'] = t
-		entry['date'] = header['DATE-OBS']
-		entry['filename'] = save_name + '.gz'
-		entry['nimages'] = len(master_arr)
-
-		if (np.nanmedian(mas) < 15000) | (np.nansum(mas) <= 0):
-			note = 'bad'
-		else:
-			note = 'good'
-		entry['note'] = note
-
-		if verbose:
-			print('Done ', n)
-		return pd.DataFrame([entry])
-	except:
-		print('something went wrong...')
+	mas = np.nanmean(master_arr,axis=0)
+	std = np.nanstd(master_arr,axis=0)
 	
+	header['JDSTART'] = t 
+	header['MASTER'] = True
+	phdu = fits.PrimaryHDU(data = mas, header = header)
+	ehdu = fits.ImageHDU(data = std, header = header)
+	hdul = fits.HDUList([phdu, ehdu])
+
+	save_name = save_location + n + '.fits'
+	print(f'saving: {save_name}')
+	hdul.writeto(save_name,overwrite=True)
+	compress = 'gzip -f ' + save_name
+	os.system(compress)
+	print('saved')
+	entry['name'] = n
+	entry['telescope'] = header['TELESCOP'].strip()
+	entry['band'] = header['FILTER'].strip()
+	entry['exptime'] = header['EXPTIME']
+	entry['jd'] = t
+	entry['date'] = header['DATE-OBS'].strip()
+	entry['filename'] = save_name + '.gz'
+	entry['nimages'] = len(master_arr)
+
+	if (np.nanmedian(mas) < 15000) | (np.nansum(mas) <= 0):
+		note = 'bad'
+	else:
+		note = 'good'
+	entry['note'] = note
+
+	if verbose:
+		print('Done ', n)
+	return pd.DataFrame([entry])
+	#except:
+	#	print('something went wrong...')
+
+def make_masters(verbose=True):
+	make_master_darks(verbose=True)
+	if verbose:
+		print('!!! Finished darks !!!')
+	new_make_master_flats(verbose=True)
+	if verbose:
+		print('!!! Finished flats !!!')
+
 
 if __name__ == '__main__':
 	make_master_darks(verbose=True)
 	print('!!! Finished darks !!!')
 	make_master_flats(verbose=True)
-	#print('!!! Finished flats !!!')
+	print('!!! Finished flats !!!')

@@ -23,6 +23,7 @@ from calibrimbore import sauron, get_skymapper_region, get_ps1_region
 
 from copy import deepcopy
 from gaia_query import get_gaia_region
+from astropy.time import Time
 
 import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
@@ -131,6 +132,17 @@ class cal_photom():
 		#	cat = get_skymapper_region([ra],[dec],size=.4*60**2)
 		cat = get_gaia_region([ra],[dec],size=30*60)
 		tab = deepcopy(cat)#.iloc[np.isfinite(cat.r.values)]
+		#tdiff = (Time(self.header['JD'],format='jd').mjd - 51544) * u.day
+		#tdiff = tdiff.to(u.year).value
+		#dra = (tab['pmRA'].values * tdiff) * u.milliarcsecond
+		#ddec = (tab['pmDE'].values * tdiff) * u.milliarcsecond
+		c = SkyCoord(ra=tab['RA_ICRS'].values*u.deg, dec=tab['DE_ICRS'].values*u.deg,
+             pm_ra_cosdec=tab['pmRA'].values*u.mas/u.yr, pm_dec=tab['pmDE'].values*u.mas/u.yr,
+			 obstime=Time(2016,format='jyear'))
+
+		c2 = c.apply_space_motion(new_obstime=Time(self.header['JD'],format='jd'))
+		tab['ra'] = c2.ra.deg
+		tab['dec'] = c2.dec.deg
 		#print(tab)
 		x, y = self.wcs.all_world2pix(tab.ra.values,tab.dec.values,0)
 		tab['x'] = x
@@ -138,6 +150,7 @@ class cal_photom():
 
 		ind = (x > 15) & (x < self.data.shape[1]-15) & (y > 15) & (y < self.data.shape[0]-15)
 		tab = tab.iloc[ind]
+		
 		self.cat = tab
 		sources = tab[['x','y']]
 		sources.rename(columns={'x': 'xcentroid', 'y': 'ycentroid'}, inplace=True)
@@ -171,8 +184,14 @@ class cal_photom():
 			except:
 				fwhm = np.nan # dummy number 
 			radii += [fwhm]
-		self.radii = np.array(radii) * 1.4
-		self.radius = np.nanmedian(self.radii)
+
+		self.radii = np.array(radii)
+		#self.radii[self.radii < 1] = 3
+		self.radius = np.nanmedian(self.radii) * 1.4
+		if np.isnan(self.radius):
+			self.radius = 3
+			print('!!! NaN radius calculated, forcing to 3 pixels !!!')
+		print('!!!!!! radius: ',self.radius)
 
 
 	def _get_apertures(self):
@@ -211,7 +230,7 @@ class cal_photom():
 		phot_table['counts'] = phot_table['aperture_sum'] - phot_table['aper_bkg']
 		phot_table['e_counts'] = phot_table['bkg_std'] * area
 		phot_table['snr'] = phot_table['counts'] / phot_table['e_counts']
-		phot_table['sysmag'] = -2.5*np.log10(phot_table['counts'])
+		phot_table['sysmag'] = -2.5 * np.log10(phot_table['counts'])
 
 
 		for col in phot_table.colnames:

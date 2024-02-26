@@ -33,10 +33,10 @@ warnings.filterwarnings("ignore")
 class pouakai():
 
 	def __init__(self,file,time_tolerence=100,dark_tolerence=10,savepath='',
-				 local_astrom=True,verbose=True,rescale=True):
+				 local_astrom=True,verbose=True,rescale=True,plot=False):
 
 		self.verbose = verbose
-		self.file = file 
+		self.file = file
 		self.savepath = savepath
 		self._local_astrom = local_astrom
 		self.time_tolerence = time_tolerence
@@ -44,6 +44,8 @@ class pouakai():
 		self.offset = 500
 		self.fail_flag = ''
 		self.rescale = rescale
+		self.field_coord = None
+		self.plot = plot
 
 		self._start_record()
 		self._check_dirs()
@@ -68,22 +70,26 @@ class pouakai():
 
 
 	def reduce(self):
+		print(self.file)
 		#self._check_reduction(reduction)
 		self.reduce_image()
 		self.save_intermediate()
+		
 		if self._local_astrom:
 			self.wcs_astrometrynet_local()
 		else:
 			self.wcs_astrometrynet()
 
-		self.satellite_search()
+		#self.satellite_search()
 		self.Make_mask()
-		self.calculate_zp()
-		self.save_fig()
+		if self._wcs_solution:
+			self.calculate_zp()
+			self.save_fig()
 		self.save_image()
 		#self._update_reduction_log()
 		self._record_reduction()
 		self._save_phot_table()
+		
 	#def _check_reduction(self,reduction):
 
 	def _query_object(self):
@@ -152,7 +158,7 @@ class pouakai():
 		self.jd = hdu.header['JD']
 		self.filter = hdu.header['FILTER'].strip()
 		self.telescope = hdu.header['TELESCOP']
-		self.exp_time = hdu.header['EXPTIME']
+		self.exp_time = int(hdu.header['EXPTIME'])
 		try:
 			self._field_coords()
 		except:
@@ -186,7 +192,7 @@ class pouakai():
 		"""
 		Strip the fluff so that only the base name remains
 		"""
-		self.base_name = self.file.split('/')[-1].split('.f')[0]
+		self.base_name = self.file.split('/')[-1].split('.f')[0].replace(' ','_')
 		self.log['name'] = self.base_name
 
 	def _get_master(self,cal_type):
@@ -206,8 +212,8 @@ class pouakai():
 			masters = pd.read_csv('cal_lists/master_dark_list.csv')
 			ind = masters['telescope'].values == self.telescope
 			masters = masters.iloc[ind]
-			exptimes = masters['exptime'].values
-			ind = np.where(abs(self.exp_time - exptimes)<self.dark_tolerence)[0]
+			exptimes = masters['exptime'].values.astype(int)
+			ind = np.where(abs(self.exp_time - exptimes)<=self.dark_tolerence)[0]
 			if len(ind) == 0:
 				m = 'No master darks with exptime {}'.format(self.exp_time)
 				raise ValueError(m)
@@ -254,7 +260,7 @@ class pouakai():
 		t_diff = abs(m_date - date)
 		t_min = np.nanmin(t_diff)
 		if t_min > tolerence:
-			m = 'No master file in {} that meets the time tolerence of {}'.format(masters, tolerence)
+			m = 'No master file that meets the time tolerence of {}. Closest master is {}'.format(tolerence, t_min)
 			raise ValueError(m)
 		t_ind = np.argmin(t_diff)
 
@@ -285,6 +291,9 @@ class pouakai():
 	def _update_header_satellites(self):
 		self.header['SAT'] = (self.sat.satellite,'Satellite in image')
 		self.header['SATNUM'] = (self.sat.sat_num,'Number of satellites in image')
+
+	def _update_header_wcs(self):
+		self.header['WCSSOLV'] = (self.wcs,'WCS solved')
 
 	def _check_vars(self):
 		"""
@@ -339,7 +348,7 @@ class pouakai():
 		self._update_header_dark()
 		self._update_header_flat()
 		name = self.savepath + 'red/' + self.base_name + '_red.fits'
-
+		name = name.replace(' ','_')
 		self.red_name = name + '.gz'
 
 
@@ -357,7 +366,9 @@ class pouakai():
 		self._update_header_sky()
 		self._update_header_dark()
 		self._update_header_flat()
+		self._update_header_wcs
 		name = self.savepath + 'cal/' + self.base_name + '_cal.fits'
+		name = name.replace(' ','_')
 		self.cal_name = name + '.gz'
 
 		phdu = fits.PrimaryHDU(data = self.image, header = self.header)
@@ -415,21 +426,25 @@ class pouakai():
 			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 --temp-dir {tmp} -O -o {name} -p --ra {self.field_coord.ra.deg} --dec {self.field_coord.dec.deg} --radius 0.4 {self.red_name}"
 		else:
 			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 --temp-dir {tmp} -O -o {name} -p {self.red_name}"
+		try:
+			os.system(astrom_call)
+			#try:
+			wcs_header = fits.open(real_name + '.new')[0].header
+			# get rid of all the astrometry.net junk in the header 
+			del wcs_header['COMMENT']
+			del wcs_header['HISTORY']
+			self.header = wcs_header
+			self.wcs = WCS(self.header)
 
-		os.system(astrom_call)
+			if self.verbose:
+				print('Solved WCS')
+			
+			clear = 'rm -rf ' + real_save_path
+			os.system(clear)
 
-		wcs_header = fits.open(real_name + '.new')[0].header
-		# get rid of all the astrometry.net junk in the header 
-		del wcs_header['COMMENT']
-		del wcs_header['HISTORY']
-		self.header = wcs_header
-		self.wcs = WCS(self.header)
-
-		if self.verbose:
-			print('Solved WCS')
-		
-		clear = 'rm -rf ' + real_save_path
-		os.system(clear)
+			self._wcs_solution = True
+		except:
+			self._wcs_solution = False
 
 		if self.verbose:
 			print('WCS tmp files cleared')
@@ -459,9 +474,14 @@ class pouakai():
 			brightlim = 10
 		mask = ((self.mask & 2) + (self.mask & 4) + (self.mask & 8) + (self.mask & 16))
 		mask[mask > 0] = 1
-		self.cal = cal_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
-							 threshold=threshold,cal_model=model,ax=self.fig_axis['F'],
-							 brightlim=brightlim,rescale=self.rescale)
+		if self.plot:
+			self.cal = cal_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
+								threshold=threshold,cal_model=model,ax=self.fig_axis['F'],
+								brightlim=brightlim,rescale=self.rescale)
+		else:
+			self.cal = cal_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
+								threshold=threshold,cal_model=model,plot=False,
+								brightlim=brightlim,rescale=self.rescale)
 		#self._add_image(self.cal.zp_surface,'E',colorbar=True)
 		self._add_image(self.cal.data,'C')
 		self._add_satellite_trail('C')
@@ -478,11 +498,11 @@ class pouakai():
 
 
 		ind = np.isfinite(self.cal.zps)
-
-		self.fig_axis['D'].plot(self.cal.source_x[ind],self.cal.source_y[ind],'r+')
-		self._zp_hist()
-		#self._zp_color()
-		self.cal.mag_limit_fig(self.fig_axis['F'])
+		if self.plot:
+			self.fig_axis['D'].plot(self.cal.source_x[ind],self.cal.source_y[ind],'r+')
+			self._zp_hist()
+			#self._zp_color()
+			self.cal.mag_limit_fig(self.fig_axis['F'])
 		self._save_zp_surface()
 		if self.verbose:
 			print('Zeropoint found to be ' + str(np.round(self.cal.zp,2)))
@@ -495,22 +515,23 @@ class pouakai():
 		"""
 		Create a histogram of the zeropoint distribution
 		"""
-		zps = self.cal.zps#[self.cal.good]
-		zps = zps[np.isfinite(zps)]
-		#b = int(abs(np.nanmax(zps) - np.nanmin(zps) /(2*iqr(zps)*len(zps)**(-1/3))))
-		self.fig_axis['E'].hist(zps,alpha=0.5)		
-		med = self.cal.zp
-		high = self.cal.zp+self.cal.zp_std
-		low = self.cal.zp-self.cal.zp_std
-		self.fig_axis['E'].axvline(med,color='k',ls='--')
-		self.fig_axis['E'].axvline(low,color='k',ls=':')
-		self.fig_axis['E'].axvline(high,color='k',ls=':')
-		s = ('$zp='+str((np.round(med,2)))+'^{+' + 
-			str(np.round(high-med,2))+'}_{'+
-			str(np.round(low-med,2))+'}$')
-		self.fig_axis['E'].annotate(s,(0.7,0.8),fontsize=10,xycoords='axes fraction')
-		self.fig_axis['E'].set_xlabel('zeropoint',fontsize=15)
-		self.fig_axis['E'].set_ylabel('Occurrence',fontsize=15)
+		if self.plot:
+			zps = self.cal.zps#[self.cal.good]
+			zps = zps[np.isfinite(zps)]
+			#b = int(abs(np.nanmax(zps) - np.nanmin(zps) /(2*iqr(zps)*len(zps)**(-1/3))))
+			self.fig_axis['E'].hist(zps,alpha=0.5)		
+			med = self.cal.zp
+			high = self.cal.zp+self.cal.zp_std
+			low = self.cal.zp-self.cal.zp_std
+			self.fig_axis['E'].axvline(med,color='k',ls='--')
+			self.fig_axis['E'].axvline(low,color='k',ls=':')
+			self.fig_axis['E'].axvline(high,color='k',ls=':')
+			s = ('$zp='+str((np.round(med,2)))+'^{+' + 
+				str(np.round(high-med,2))+'}_{'+
+				str(np.round(low-med,2))+'}$')
+			self.fig_axis['E'].annotate(s,(0.7,0.8),fontsize=10,xycoords='axes fraction')
+			self.fig_axis['E'].set_xlabel('zeropoint',fontsize=15)
+			self.fig_axis['E'].set_ylabel('Occurrence',fontsize=15)
 
 	def _zp_color(self):
 		"""
@@ -535,61 +556,65 @@ class pouakai():
 		"""
 		Save a diagnostic figure
 		"""
-		name = self.savepath + 'fig/' + self.base_name + '_diag.pdf'
-		#self.fig.set_tight_layout(True)
-		self.fig.savefig(name)
+		if self.plot:
+			name = self.savepath + 'fig/' + self.base_name + '_diag.png'
+			#self.fig.set_tight_layout(True)
+			self.fig.savefig(name)
 
 	def _setup_fig(self):
 		"""
 		Set up the large diagnostic plot figure
 		"""
-		self.fig = plt.figure(figsize=(8.27,11.69),constrained_layout=True)
-		self.fig_axis = self.fig.subplot_mosaic(
-											"""
-											ABC
-											ABC
-											DEF
-											"""
-										  )
-		self.fig_axis['A'].set_title('Raw image',fontsize=15)
-		self.fig_axis['B'].set_title('Flat image',fontsize=15)
-		self.fig_axis['C'].set_title('Reduced image',fontsize=15)
-		self.fig_axis['D'].set_title('Calibration sources',fontsize=15)
-		self.fig_axis['E'].set_title('Zeropoint distribution',fontsize=15)
-		#self.fig_axis['F'].set_title('Zeropoint colour',fontsize=15)
-		self.fig_axis['F'].set_title('Signal-Noise Limit',fontsize=15)
+		if self.plot:
+			self.fig = plt.figure(figsize=(8.27,11.69),constrained_layout=True)
+			self.fig_axis = self.fig.subplot_mosaic(
+												"""
+												ABC
+												ABC
+												DEF
+												"""
+											)
+			self.fig_axis['A'].set_title('Raw image',fontsize=15)
+			self.fig_axis['B'].set_title('Flat image',fontsize=15)
+			self.fig_axis['C'].set_title('Reduced image',fontsize=15)
+			self.fig_axis['D'].set_title('Calibration sources',fontsize=15)
+			self.fig_axis['E'].set_title('Zeropoint distribution',fontsize=15)
+			#self.fig_axis['F'].set_title('Zeropoint colour',fontsize=15)
+			self.fig_axis['F'].set_title('Signal-Noise Limit',fontsize=15)
 
 	def _add_image(self,image,ax_ind,colorbar=False):
 		"""
 		Add the provided image to the provided axis.
 		"""
-		vmin = np.percentile(image,16)
-		vmax = np.percentile(image,84)
-		im = self.fig_axis[ax_ind].imshow(image,origin='lower',
-									 vmin=vmin,vmax=vmax)
-		if colorbar:
-			self.fig.colorbar(im,ax=self.fig_axis[ax_ind],fraction=0.046, pad=0.04)
+		if self.plot:
+			vmin = np.percentile(image,16)
+			vmax = np.percentile(image,84)
+			im = self.fig_axis[ax_ind].imshow(image,origin='lower',
+										vmin=vmin,vmax=vmax)
+			if colorbar:
+				self.fig.colorbar(im,ax=self.fig_axis[ax_ind],fraction=0.046, pad=0.04)
 	
 	def _add_satellite_trail(self,ax_ind):
-		for consolidated_line in self.sat.consolidated_lines:
-			angle = consolidated_line[0]
-			points = np.array(consolidated_line[1])
-			x = points[:,0]
-			y = points[:,1]
-			coefs = np.polyfit(x, y, 1)
-			slope = coefs[0]
-			intercept = coefs[1]
-			x1 = np.min(x)
-			y1 = int(slope * x1 + intercept)
-			x2 = np.max(x)
-			y2 = int(slope * x2 + intercept)
-			# create the x and y points for the consolidated line
-			x_points = [x1, x2]
-			y_points = [y1, y2]
+		if self.plot:
+			for consolidated_line in self.sat.consolidated_lines:
+				angle = consolidated_line[0]
+				points = np.array(consolidated_line[1])
+				x = points[:,0]
+				y = points[:,1]
+				coefs = np.polyfit(x, y, 1)
+				slope = coefs[0]
+				intercept = coefs[1]
+				x1 = np.min(x)
+				y1 = int(slope * x1 + intercept)
+				x2 = np.max(x)
+				y2 = int(slope * x2 + intercept)
+				# create the x and y points for the consolidated line
+				x_points = [x1, x2]
+				y_points = [y1, y2]
 
-			# plot the consolidated line
-			self.fig_axis[ax_ind].plot(x_points, y_points, '--r', label='Satellite',alpha = .5)
-			self.fig_axis[ax_ind].legend(loc='upper left')
+				# plot the consolidated line
+				self.fig_axis[ax_ind].plot(x_points, y_points, '--r', label='Satellite',alpha = .5)
+				self.fig_axis[ax_ind].legend(loc='upper left')
 
 
 	def _record_reduction(self):
@@ -630,10 +655,10 @@ class pouakai():
 		
 		saturation_mask = self._saturaton_mask() * 2
 		flat_mask = self._flat_mask() * 4
-		satellite_mask = self.sat.total_mask * 8
+		#satellite_mask = self.sat.total_mask * 8
 		#bpix = self._load_bad_pix_mask() * 16
 
-		self.mask = flat_mask | saturation_mask | satellite_mask #| bpix
+		self.mask = flat_mask | saturation_mask #| satellite_mask #| bpix
 
 		self._update_header_mask_bits()
 
@@ -645,7 +670,7 @@ class pouakai():
 		#head['STARBIT']  = (1, 'bit value for normal sources')
 		self.header['SATBIT']   = (2, 'bit value for saturated sources')
 		self.header['FLATBIT'] = (4, 'bit value for bad flat')
-		self.header['SATBIT'] = (8, 'bit value for satellite pixels')
+		#self.header['SATBIT'] = (8, 'bit value for satellite pixels')
 		self.header['USERBIT']  = (16, 'Bad pixels')
 		#head['SNBIT']    = (32, 'bit value for SN list')
 
@@ -668,4 +693,4 @@ class pouakai():
 
 		hdu = fits.BinTableHDU(data=rec,header=self.header)
 		
-		hdu.writeto(name)
+		hdu.writeto(name,overwrite=True)
