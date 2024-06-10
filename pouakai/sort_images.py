@@ -17,7 +17,7 @@ def sort_darks(verbose=False,num_core=25):
 	dark_files = set(d) 
 	dark_list = pd.read_csv('cal_lists/dark_list.csv')
 	old = set(dark_list['filename'])
-	new = dark_files ^ old
+	new = dark_files - old
 	if verbose: 
 		print('Number of new darks: ',len(new))
 	files = list(new)
@@ -67,7 +67,7 @@ def sort_flats(verbose = False, num_core = 25):
 	flat_files = set(f) 
 	flat_list = pd.read_csv('cal_lists/flat_list.csv')	
 	old = set(flat_list['filename'])
-	new = flat_files ^ old
+	new = flat_files - old
 
 	if verbose: 
 		print('Number of new flats: ',len(new))
@@ -146,7 +146,7 @@ def sort_obs(verbose=False,num_core = 25):
 	cal = np.append(d,f)
 	cals = set(cal) 
 
-	obs_files = a ^ cals
+	obs_files = a - cals
 
 	obs_list = pd.read_csv('cal_lists/obs_list.csv')
 	old = set(obs_list['filename'].values)
@@ -225,7 +225,9 @@ def obs_grab_info(file,verbose=False):
 		df = pd.DataFrame([entry])
 		return df
 
-
+def sort_cals(verbose=True):
+	sort_darks(verbose)
+	sort_flats(verbose)
 
 if __name__=='__main__':
 	sort_darks(verbose=True)

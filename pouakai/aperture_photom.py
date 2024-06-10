@@ -23,6 +23,7 @@ from calibrimbore import sauron, get_skymapper_region, get_ps1_region
 
 from copy import deepcopy
 from gaia_query import get_gaia_region
+from astropy.time import Time
 
 import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
@@ -32,7 +33,7 @@ class cal_photom():
 	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
 				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=10,rescale=True,
 				 plot=True,floor=None,radius_override=None,use_catalogue=True,
-				 band_override=None, ):
+				 band_override=None, limit_source = False):
 		self.file = file
 		self.data = data
 		self.wcs = wcs
@@ -45,6 +46,7 @@ class cal_photom():
 		self.radius_override = radius_override
 		self.use_catalogue = use_catalogue
 		self._band_override = band_override
+		self.limit_source = limit_source
 
 
 		
@@ -76,7 +78,7 @@ class cal_photom():
 				self.Recast_image_scale()
 				self.calculate_zp(threshold)
 			else:
-				self.zp_surface = np.ones_like(self.data)
+				self.zp_surface = np.ones_like(self.data)			
 			self.ap_photom['mag'] = self.ap_photom['sysmag'] + self.zp
 			self.ap_photom['e_mag'] = 2.5/np.log(10)*(self.ap_photom['e_counts']/self.ap_photom['counts'])
 			if plot:
@@ -130,7 +132,22 @@ class cal_photom():
 		#else:
 		#	cat = get_skymapper_region([ra],[dec],size=.4*60**2)
 		cat = get_gaia_region([ra],[dec],size=30*60)
+
+		# print(cat.columns)
+
 		tab = deepcopy(cat)#.iloc[np.isfinite(cat.r.values)]
+		#tdiff = (Time(self.header['JD'],format='jd').mjd - 51544) * u.day
+		#tdiff = tdiff.to(u.year).value
+		#dra = (tab['pmRA'].values * tdiff) * u.milliarcsecond
+		#ddec = (tab['pmDE'].values * tdiff) * u.milliarcsecond
+		c = SkyCoord(ra=tab['RA_ICRS'].values*u.deg, dec=tab['DE_ICRS'].values*u.deg,
+             pm_ra_cosdec=tab['pmRA'].values*u.mas/u.yr, pm_dec=tab['pmDE'].values*u.mas/u.yr,
+			 obstime=Time(2016,format='jyear'))
+
+		c2 = c.apply_space_motion(new_obstime=Time(self.header['JD'],format='jd'))
+
+		tab['ra'] = c2.ra.deg
+		tab['dec'] = c2.dec.deg
 		#print(tab)
 		x, y = self.wcs.all_world2pix(tab.ra.values,tab.dec.values,0)
 		tab['x'] = x
@@ -138,8 +155,25 @@ class cal_photom():
 
 		ind = (x > 15) & (x < self.data.shape[1]-15) & (y > 15) & (y < self.data.shape[0]-15)
 		tab = tab.iloc[ind]
-		self.cat = tab
-		sources = tab[['x','y']]
+		shapey = 100
+		if tab.shape[0] > shapey:
+
+			if (isinstance(self.limit_source, list)) or (isinstance(self.limit_source, tuple)):
+				g_upper = max(self.limit_source)
+				g_lower = min(self.limit_source)
+				
+				filtered_tab = tab[(tab['Gmag'] <= g_upper) & (tab['Gmag'] >=g_lower)]
+
+				first_entries = filtered_tab.head(shapey)
+
+				print(f"Limited sources to {first_entries.shape[0]} from {tab.shape[0]}. Some objects may not be in photometry table if not between G mag: {g_upper} -> {g_lower} or too many objects")
+				self.cat = first_entries
+				
+				sources = first_entries[['x','y']]
+			else:
+				first_entries = tab.head(shapey)				
+				self.cat = first_entries
+				sources = first_entries[['x','y']]
 		sources.rename(columns={'x': 'xcentroid', 'y': 'ycentroid'}, inplace=True)
 		self.sources = sources
 		self.source_x = self.sources['xcentroid'].values
@@ -171,8 +205,14 @@ class cal_photom():
 			except:
 				fwhm = np.nan # dummy number 
 			radii += [fwhm]
-		self.radii = np.array(radii) * 1.4
-		self.radius = np.nanmedian(self.radii)
+
+		self.radii = np.array(radii)
+		#self.radii[self.radii < 1] = 3
+		self.radius = np.nanmedian(self.radii) * 1.4
+		if np.isnan(self.radius):
+			self.radius = 3
+			print('!!! NaN radius calculated, forcing to 3 pixels !!!')
+		print('!!!!!! radius: ',self.radius)
 
 
 	def _get_apertures(self):
@@ -211,7 +251,7 @@ class cal_photom():
 		phot_table['counts'] = phot_table['aperture_sum'] - phot_table['aper_bkg']
 		phot_table['e_counts'] = phot_table['bkg_std'] * area
 		phot_table['snr'] = phot_table['counts'] / phot_table['e_counts']
-		phot_table['sysmag'] = -2.5*np.log10(phot_table['counts'])
+		phot_table['sysmag'] = -2.5 * np.log10(phot_table['counts'])
 
 
 		for col in phot_table.colnames:
@@ -238,7 +278,10 @@ class cal_photom():
 
 	def predict_mags(self):
 		ind = self.ap_photom['flag'].values == 0
+		# print(ind, ind.shape, '--- PLZ ---')
 		ra, dec = self.wcs.all_pix2world(self.ap_photom['xcenter'].iloc[ind],self.ap_photom['ycenter'].iloc[ind],0)
+		# print(ra.shape, dec.shape)
+
 		if self.sauron is not None:
 			mags = self.sauron.estimate_mag(ra=ra,dec=dec,close=True)
 			self.pred_mag = np.ones(len(ind)) * np.nan
@@ -272,15 +315,13 @@ class cal_photom():
 			for i in range(2):
 				self.find_sources(fwhm=self.radius/1.2,threshold=threshold)
 				self._calc_radii()
-
+	
 		self._get_apertures()
 		self.ap_photometry()
-		self._load_sauron()
+		self._load_sauron() 
 		self.predict_mags()
 		self.calc_zp(snr_lim=threshold)
-
 		self.magnitude_limit(snr_lim=threshold)
-
 
 	def magnitude_limit(self,snr_lim=10):
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""

@@ -7,23 +7,28 @@ import numpy as np
 from glob import glob
 import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
-tmp = os.environ['TMPDIR']
+#tmp = os.environ['TMPDIR']
+tmp = '/home/users/zgl12/Temp_Dir/'
 
 class consume_moa():
     def __init__(self,files,savepath,time_tolerence=60,dark_tolerence=1,
 				 local_astrom=True,verbose=True,rescale=True,update_cals=True,
-                 cores=10, overwrite=False):
+                 cores=1, overwrite=False,plot=False,center=None,limit_source = None):
         
-        self.files = list(files)
         self.savepath = savepath
+        self.files = list(files)
+	#print(savepath)
         self.verbose = verbose
         self._overwrite(overwrite=overwrite)
         self._clip_files()
         self.dark_tolerence = dark_tolerence
         self.time_tolerence = time_tolerence
+        self.limit_source = limit_source
         
         self.local_astrom = local_astrom
         self.rescale = rescale
+        self.plot = plot
+        self.center = center
         
         self.cores = cores
 
@@ -58,11 +63,11 @@ class consume_moa():
         try:
             p = pouakai(file,time_tolerence=self.time_tolerence,
                             dark_tolerence=self.dark_tolerence, savepath = self.savepath,
-                            local_astrom=self.local_astrom,rescale=self.rescale,verbose=self.verbose)
+                            local_astrom=self.local_astrom,rescale=self.rescale,verbose=self.verbose,plot=self.plot,center=self.center,limit_source=self.limit_source)
             return p.log
         except Exception as e:
             self._log_error(e)
-            print('Failed')
+            print('!!! Failed: ',file)
             print(e)
 
     def _overwrite(self,overwrite):
@@ -83,7 +88,7 @@ class consume_moa():
                 todo = np.array(todo)
 
                 if self.verbose:
-                    print(f'Droping {len(anum) - len(todo)} files that have already been processed')
+                    print(f'Dropping {len(anum) - len(todo)} files that have already been processed')
                 self.files = list(np.array(self.files)[todo])
             except:
                 pass
@@ -107,6 +112,7 @@ class consume_moa():
         else:
             for i in range(len(self.files)):
                 self._run_func(self.files[i])
+        self._update_log()
         
         
 

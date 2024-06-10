@@ -41,6 +41,7 @@ def get_gaia_region(ra,dec,size=0.4, magnitude_limit = 21):
 	
 
 	result = result['I/345/gaia2'].to_pandas()
-	result = result.rename(columns={'RA_ICRS':'ra','DE_ICRS':'dec'})
+	#result = result.rename(columns={'RA_ICRS':'ra','DE_ICRS':'dec'})
+	#account for proper motion
 	return result
 
