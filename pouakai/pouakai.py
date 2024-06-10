@@ -6,6 +6,8 @@ import pandas as pd
 import numpy as np
 from glob import glob
 import os
+import gc
+from copy import deepcopy
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 #tmp = os.environ['TMPDIR']
 tmp = '/home/users/zgl12/Temp_Dir/'
@@ -65,6 +67,7 @@ class consume_moa():
                             dark_tolerence=self.dark_tolerence, savepath = self.savepath,
                             local_astrom=self.local_astrom,rescale=self.rescale,verbose=self.verbose,plot=self.plot,center=self.center,limit_source=self.limit_source)
             return p.log
+
         except Exception as e:
             self._log_error(e)
             print('!!! Failed: ',file)

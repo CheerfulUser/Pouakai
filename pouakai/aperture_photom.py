@@ -145,7 +145,6 @@ class cal_photom():
 			 obstime=Time(2016,format='jyear'))
 
 		c2 = c.apply_space_motion(new_obstime=Time(self.header['JD'],format='jd'))
-
 		tab['ra'] = c2.ra.deg
 		tab['dec'] = c2.dec.deg
 		#print(tab)
@@ -155,6 +154,7 @@ class cal_photom():
 
 		ind = (x > 15) & (x < self.data.shape[1]-15) & (y > 15) & (y < self.data.shape[0]-15)
 		tab = tab.iloc[ind]
+
 		shapey = 100
 		if tab.shape[0] > shapey:
 
@@ -174,6 +174,7 @@ class cal_photom():
 				first_entries = tab.head(shapey)				
 				self.cat = first_entries
 				sources = first_entries[['x','y']]
+
 		sources.rename(columns={'x': 'xcentroid', 'y': 'ycentroid'}, inplace=True)
 		self.sources = sources
 		self.source_x = self.sources['xcentroid'].values

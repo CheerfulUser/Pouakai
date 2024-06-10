@@ -58,6 +58,7 @@ class pouakai():
 		self.center = center
 		self.limit_source = limit_source
 
+
 		self._start_record()
 		self._check_dirs()
 		self._set_base_name() 
@@ -228,6 +229,7 @@ class pouakai():
 		count = sum(1 for s in self.filter_list if s == filters[-1])
 
 		self.base_name = result + str(count).zfill(4) + '_' + filters[-1]
+
 		self.log['name'] = self.base_name
 		# np.savetxt('/home/phys/astronomy/zgl12/fli_pouakai/pouakai/filters_list.csv', self.filter_list, delimiter = ',', fmt = '%s')
 
@@ -414,6 +416,7 @@ class pouakai():
 		self._update_header_sky()
 		self._update_header_dark()
 		self._update_header_flat()
+		self._update_header_wcs
 		name = self.savepath + 'cal/' + self.base_name + '_cal.fits'
 		name = name.replace(' ','_')
 		self.cal_name = name + '.gz'
@@ -428,51 +431,6 @@ class pouakai():
 		compress = 'gzip -f ' + name
 		os.system(compress)
 		self.log['savename'] = self.cal_name
-
-	def wcs_astrometrynet_local(self):
-		"""
-		Calculate the image wcs using the local libraries for astrometry.net
-		"""
-		try:
-			astrom_call = "solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 -O -o {savename} -p {file}"
-
-			save_path = 'wcs_tmp/'
-			real_save_path = self.savepath + 'red/' + save_path
-			if not path.exists(real_save_path):
-				os.mkdir(real_save_path)
-		
-			name = save_path + self.base_name + '_wcs'
-			real_name = real_save_path + self.base_name + '_wcs'
-
-			solver = astrom_call.format(savename = name, file = self.red_name)
-		
-			with subprocess.Popen(solver, stdout=subprocess.PIPE, shell=True) as proc:
-				# Wait for the process to finish and capture its output
-				stdout, _ = proc.communicate()
-
-			f = fits.open(real_name + '.new')
-			wcs_header = f[0].header
-			f.close()
-			# get rid of all the astrometry.net junk in the header 
-			del wcs_header['COMMENT']
-			del wcs_header['HISTORY']
-			self.header = wcs_header
-			self.wcs = WCS(self.header)
-			self._wcs_solution = True		
-			
-			if self.verbose:
-				print('Solved WCS')
-			
-			clear = 'rm -rf ' + real_save_path
-			subprocess.run(clear,stdout=subprocess.PIPE,shell=True)
-			#os.system(clear)
-
-			if self.verbose:
-				print('WCS tmp files cleared')
-
-		except:
-			self._wcs_solution = False
-			raise ValueError('Could not solve WCS')
 
 	def wcs_astrometrynet(self,timeout=200):
 		"""
@@ -537,6 +495,46 @@ class pouakai():
 		self.header = new_head
 		self.wcs = WCS(self.header)
 
+	def wcs_astrometrynet_local(self):
+		"""
+		Calculate the image wcs using the local libraries for astrometry.net
+		"""
+		# a reasonable search radius is already selected (2deg)
+		save_path = 'wcs_tmp/' + self.base_name + '/'
+		real_save_path = self.savepath + 'red/' + save_path
+		#if not path.exits(real_save_path):
+		os.mkdir(real_save_path)
+	
+		name = save_path + self.base_name + '_wcs'
+		real_name = real_save_path + self.base_name + '_wcs'
+
+		if self.field_coord is not None:
+			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 --temp-dir {tmp} -O -o {name} -p --ra {self.field_coord.ra.deg} --dec {self.field_coord.dec.deg} --radius 0.4 {self.red_name}"
+		else:
+			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 --temp-dir {tmp} -O -o {name} -p {self.red_name}"
+		try:
+			os.system(astrom_call)
+			#try:
+			wcs_header = fits.open(real_name + '.new')[0].header
+			# get rid of all the astrometry.net junk in the header 
+			del wcs_header['COMMENT']
+			del wcs_header['HISTORY']
+			self.header = wcs_header
+			self.wcs = WCS(self.header)
+
+			if self.verbose:
+				print('Solved WCS')
+			
+			clear = 'rm -rf ' + real_save_path
+			os.system(clear)
+
+			self._wcs_solution = True
+		except:
+			self._wcs_solution = False
+
+		if self.verbose:
+			print('WCS tmp files cleared')
+
 
 	def save_intermediate_wcs(self):
 		"""
@@ -580,6 +578,7 @@ class pouakai():
 			self.cal = cal_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
 								threshold=threshold,cal_model=model,plot=False,
 								brightlim=brightlim,rescale=self.rescale,limit_source=self.limit_source)
+      
 		#self._add_image(self.cal.zp_surface,'E',colorbar=True)
 		self._add_image(self.cal.data,'C')
 		self._add_satellite_trail('C')
