@@ -24,7 +24,6 @@ from satellite_detection import sat_streaks
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 tmp = os.environ['TMPDIR'] # this is a bash environment variable, add TMPDIR to your .bashrc or equivalent
 
-
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -362,7 +361,7 @@ class pouakai():
 		"""
 		Check that all reduction directories are constructed
 		"""
-		dirlist = ['red', 'cal','fig','zp_surface','log','phot_table']
+		dirlist = ['red', 'cal','fig','zp_surface','log','phot_table','red/wcs_tmp']
 		
 		for d in dirlist:
 			if not os.path.isdir(self.savepath + d):
@@ -502,7 +501,10 @@ class pouakai():
 		save_path = 'wcs_tmp/' + self.base_name + '/'
 		real_save_path = self.savepath + 'red/' + save_path
 		#if not path.exits(real_save_path):
-		os.mkdir(real_save_path)
+		try:
+			os.mkdir(real_save_path)
+		except:
+			pass
 	
 		name = save_path + self.base_name + '_wcs'
 		real_name = real_save_path + self.base_name + '_wcs'
@@ -512,7 +514,11 @@ class pouakai():
 		else:
 			astrom_call = f"solve-field --no-plots --scale-units arcminwidth --scale-low 24 --scale-high 26 --temp-dir {tmp} -O -o {name} -p {self.red_name}"
 		try:
-			os.system(astrom_call)
+			print(astrom_call)
+			#os.system(astrom_call)
+			with subprocess.Popen(astrom_call, stdout=subprocess.PIPE, shell=True) as proc:
+									# Wait for the process to finish and capture its output
+									stdout, _ = proc.communicate()
 			#try:
 			wcs_header = fits.open(real_name + '.new')[0].header
 			# get rid of all the astrometry.net junk in the header 
@@ -525,7 +531,7 @@ class pouakai():
 				print('Solved WCS')
 			
 			clear = 'rm -rf ' + real_save_path
-			os.system(clear)
+			#os.system(clear)
 
 			self._wcs_solution = True
 		except:

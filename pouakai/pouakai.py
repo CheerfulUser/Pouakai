@@ -9,8 +9,8 @@ import os
 import gc
 from copy import deepcopy
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
-#tmp = os.environ['TMPDIR']
-tmp = '/home/users/zgl12/Temp_Dir/'
+tmp = os.environ['TMPDIR']
+
 
 class consume_moa():
     def __init__(self,files,savepath,time_tolerence=60,dark_tolerence=1,
@@ -62,16 +62,16 @@ class consume_moa():
 
 
     def _run_func(self,file):
-        try:
-            p = pouakai(file,time_tolerence=self.time_tolerence,
-                            dark_tolerence=self.dark_tolerence, savepath = self.savepath,
-                            local_astrom=self.local_astrom,rescale=self.rescale,verbose=self.verbose,plot=self.plot,center=self.center,limit_source=self.limit_source)
-            return p.log
+        #try:
+        p = pouakai(file,time_tolerence=self.time_tolerence,
+                        dark_tolerence=self.dark_tolerence, savepath = self.savepath,
+                        local_astrom=self.local_astrom,rescale=self.rescale,verbose=self.verbose,plot=self.plot,center=self.center,limit_source=self.limit_source)
+        return p.log
 
-        except Exception as e:
-            self._log_error(e)
-            print('!!! Failed: ',file)
-            print(e)
+        #except Exception as e:
+        #    self._log_error(e)
+        #    print('!!! Failed: ',file)
+        #    print(e)
 
     def _overwrite(self,overwrite):
         if not overwrite:
