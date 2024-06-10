@@ -22,8 +22,7 @@ from scipy.ndimage.filters import convolve
 from satellite_detection import sat_streaks
 
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
-#tmp = os.environ['TMPDIR']
-tmp = '/home/users/zgl12/Temp_Dir/'
+tmp = os.environ['TMPDIR'] # this is a bash environment variable, add TMPDIR to your .bashrc or equivalent
 
 
 import warnings
