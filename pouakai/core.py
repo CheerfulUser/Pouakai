@@ -11,6 +11,9 @@ from astropy.stats import sigma_clipped_stats
 import astropy.units as u
 from astropy.wcs import WCS
 from copy import deepcopy
+import subprocess
+from hidden_prints import HiddenPrints
+import gc
 
 from scipy.stats import iqr
 from aperture_photom import cal_photom
@@ -19,7 +22,8 @@ from scipy.ndimage.filters import convolve
 from satellite_detection import sat_streaks
 
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
-tmp = os.environ['TMPDIR']
+#tmp = os.environ['TMPDIR']
+tmp = '/home/users/zgl12/Temp_Dir/'
 
 
 import warnings
@@ -33,7 +37,7 @@ warnings.filterwarnings("ignore")
 class pouakai():
 
 	def __init__(self,file,time_tolerence=100,dark_tolerence=10,savepath='',
-				 local_astrom=True,verbose=True,rescale=True,plot=False):
+				 local_astrom=True,verbose=True,rescale=True,plot=False, calibrate=True, center = None, limit_source = None):
 
 		self.verbose = verbose
 		self.file = file
@@ -42,14 +46,23 @@ class pouakai():
 		self.time_tolerence = time_tolerence
 		self.dark_tolerence = dark_tolerence
 		self.offset = 500
+		# try:
+		# 	self.filter_list = np.genfromtxt('/home/phys/astronomy/zgl12/fli_pouakai/pouakai/filters_list.csv', 
+		# 					delimiter = ',', dtype = str).flatten().tolist()
+		# except:
+		self.filter_list = []
 		self.fail_flag = ''
 		self.rescale = rescale
 		self.field_coord = None
 		self.plot = plot
+		self.center = center
+		self.limit_source = limit_source
+
 
 		self._start_record()
 		self._check_dirs()
 		self._set_base_name() 
+		self._calibrate = calibrate
 		
 		self._read_science_image()
 
@@ -67,7 +80,8 @@ class pouakai():
 		if self.fail_flag != '':
 			self._fail_log()
 		
-
+		del self
+		gc.collect()
 
 	def reduce(self):
 		print(self.file)
@@ -79,17 +93,23 @@ class pouakai():
 			self.wcs_astrometrynet_local()
 		else:
 			self.wcs_astrometrynet()
-
-		#self.satellite_search()
+		
+		self.satellite_search()
 		self.Make_mask()
-		if self._wcs_solution:
+		if self._calibrate:
 			self.calculate_zp()
 			self.save_fig()
-		self.save_image()
+		self.save_intermediate_wcs()
+		#self.save_image()
+		#print('!!!!!!!!!!!!!!!!!!!!!!!!SAVED')
 		#self._update_reduction_log()
 		self._record_reduction()
-		self._save_phot_table()
-		
+		#print('!!!!!!!!!!!!!!!!!!!!!!!!REDUCTION')
+		if self._calibrate:
+			#print('!!!!!!!!!!!!!!!!!!!!!!!!Initial Cal')
+			self._save_phot_table()
+			del self.cal
+		del self
 	#def _check_reduction(self,reduction):
 
 	def _query_object(self):
@@ -146,7 +166,6 @@ class pouakai():
 		log = pd.concat([log, new_entry], ignore_index=True)
 		log.to_csv(package_directory + 'cal_lists/calibrated_image_list.csv',index=False)
 
-
 	def _read_science_image(self):
 		"""
 		Read in the science image to be calibrated.
@@ -192,8 +211,28 @@ class pouakai():
 		"""
 		Strip the fluff so that only the base name remains
 		"""
-		self.base_name = self.file.split('/')[-1].split('.f')[0].replace(' ','_')
+		basesname = self.file.split('/')[-1].split('.f')[0].replace(' ','_')
+		basename = basesname.split('-')
+
+		bases_list = []
+
+		for i in range(len(basename) - 1):
+			bases_list.append(basename[i])
+			bases_list.append('_')
+
+		bases_list[-1] = '-' 
+		result = ''.join(bases_list)
+		filters = basename[-1].split('_')
+		self.filter_list.append(filters[-1])
+
+		# Count occurrences of 'g'
+		count = sum(1 for s in self.filter_list if s == filters[-1])
+
+		self.base_name = result + str(count).zfill(4) + '_' + filters[-1]
+
 		self.log['name'] = self.base_name
+		# np.savetxt('/home/phys/astronomy/zgl12/fli_pouakai/pouakai/filters_list.csv', self.filter_list, delimiter = ',', fmt = '%s')
+
 
 	def _get_master(self,cal_type):
 		"""
@@ -293,7 +332,17 @@ class pouakai():
 		self.header['SATNUM'] = (self.sat.sat_num,'Number of satellites in image')
 
 	def _update_header_wcs(self):
-		self.header['WCSSOLV'] = (self.wcs,'WCS solved')
+		#print(self.wcs.wcs.naxis)
+		self.header['WCSSOLV'] = 'WCS solved'
+
+		new_header = fits.Header()
+
+		for card in self.wcs.cards:
+			if card[0].startswith('CTYPE') or card[0].startswith('CRVAL') or card[0].startswith('CRPIX') or card[0].startswith('CD'):
+				self.header[card[0]] = (card[1], card[2], card.comments)
+
+		#self.header.update(new_header.to_header())
+		#self.header['CTYPE'] = self.wcs['CTYPE']
 
 	def _check_vars(self):
 		"""
@@ -314,7 +363,8 @@ class pouakai():
 		"""
 		Check that all reduction directories are constructed
 		"""
-		dirlist = ['red','red/wcs_tmp','cal','fig','zp_surface','log','phot_table']
+		dirlist = ['red', 'cal','fig','zp_surface','log','phot_table']
+		
 		for d in dirlist:
 			if not os.path.isdir(self.savepath + d):
 				os.mkdir(self.savepath + d)
@@ -370,18 +420,19 @@ class pouakai():
 		name = self.savepath + 'cal/' + self.base_name + '_cal.fits'
 		name = name.replace(' ','_')
 		self.cal_name = name + '.gz'
-
 		phdu = fits.PrimaryHDU(data = self.image, header = self.header)
 		mhdu = fits.ImageHDU(data = self.mask, header = self.header)
 		hdul = fits.HDUList([phdu, mhdu])
+		print(hdul)
 		if self.verbose:
 			print('Saving final calibrated image')
+		
 		hdul.writeto(name,overwrite=True)
 		compress = 'gzip -f ' + name
 		os.system(compress)
 		self.log['savename'] = self.cal_name
 
-	def wcs_astrometrynet(self,timeout=120):
+	def wcs_astrometrynet(self,timeout=200):
 		"""
 		Calculate the image wcs using the portal for astrometry.net
 		"""
@@ -389,16 +440,52 @@ class pouakai():
 		ast.api_key = 'csffdfuichpbiata'
 		attempt = 0
 		solved = False
-		while (attempt < 10) & (not solved):
+
+		attempts_allowed = 16
+
+		#while (attempt < 10) & (not solved):
+
+		# print(self.center, type(self.center))
+
+
+		for attempt in range(attempts_allowed):
+
 			try:
-				wcs_head = ast.solve_from_image(self.file,solve_timeout=timeout)
-				del wcs_head['COMMENT']
-				del wcs_head['HISTORY']
-				solved = True
+				with HiddenPrints():
+					if (isinstance(self.center, list)) or (isinstance(self.center, tuple)) or (isinstance(self.center, np.ndarray)):
+						print('Using given coordinates')
+						wcs_head = ast.solve_from_image(self.file, solve_timeout = timeout, 
+													scale_units = 'arcminwidth', scale_type='ul', 
+													scale_upper = 26, scale_lower = 24, 
+													center_ra = self.center[0], center_dec = self.center[1], 
+													radius = 0.5, crpix_center=True)
+					
+					else:
+						print('fail_print')
+						wcs_head = ast.solve_from_image(self.file, solve_timeout = timeout, 
+													scale_units = 'arcminwidth', scale_type='ul', 
+													scale_upper = 26, scale_lower = 24, crpix_center=True)
+
+					# else:
+					# 	wcs_head = ast.solve_from_image(self.file, solve_timeout = timeout, 
+					# 									scale_units = 'arcminwidth', scale_type='ul', 
+					# 									scale_upper = 26, scale_lower = 24)
+
+					del wcs_head['COMMENT']
+					del wcs_head['HISTORY']
+					solved = True
 			except:
-				attempt += 1
-		if (attempt > 10) | (not solved):
-			raise ValueError('Could not solve WCS in {} attempts'.format(attempt))
+				wcs_head = 0
+
+			if wcs_head != 0:
+				solved = True
+				break
+
+		self._wcs_solution = True		
+		if solved == False:
+			self._wcs_solution = False
+			raise ValueError('Could not solve WCS in {} attempts'.format(attempt + 1))
+
 		new_head = deepcopy(self.header)
 		for key in wcs_head:
 			new_head[key] = (wcs_head[key],wcs_head.comments[key])
@@ -407,7 +494,6 @@ class pouakai():
 			print('Solved WCS, saving file')
 		self.header = new_head
 		self.wcs = WCS(self.header)
-
 
 	def wcs_astrometrynet_local(self):
 		"""
@@ -454,12 +540,22 @@ class pouakai():
 		"""
 		Save the intermediate image with a wcs solution.
 		"""
-		name = self.savepath + 'wcs/' + self.base_name + '_wcs.fits'
+		if not os.path.exists(self.savepath + 'cal/'):
+			os.makedirs(self.savepath + 'cal/')
+
+		name = self.savepath + 'cal/' + self.base_name + '_wcs.fits'
+		name = name.replace(' ','_')
+		self.cal_name = name + '.gz'
 		self.wcs_name = name
 
 		if self.verbose:
 			print('Saving intermediated wcs file')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
+
+		compress = 'gzip -f ' + name
+		os.system(compress)
+		self.log['savename'] = self.cal_name
+
 
 	def calculate_zp(self,threshold=3,model='ckmodel'):
 		"""
@@ -477,25 +573,25 @@ class pouakai():
 		if self.plot:
 			self.cal = cal_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
 								threshold=threshold,cal_model=model,ax=self.fig_axis['F'],
-								brightlim=brightlim,rescale=self.rescale)
+								brightlim=brightlim,rescale=self.rescale,limit_source=self.limit_source)
 		else:
 			self.cal = cal_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
 								threshold=threshold,cal_model=model,plot=False,
-								brightlim=brightlim,rescale=self.rescale)
+								brightlim=brightlim,rescale=self.rescale,limit_source=self.limit_source)
+      
 		#self._add_image(self.cal.zp_surface,'E',colorbar=True)
 		self._add_image(self.cal.data,'C')
 		self._add_satellite_trail('C')
 		self.image = self.cal.data
 
-		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
-		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
+		self.header['ZP'] = (str(np.round(self.cal.zp,4)), 'Calibrimbore zeropoint')
+		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,4)), 'Calibrimbore zeropoint error')
 		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
 		self.header['MAGLIM3'] = (str(np.round(self.cal.maglim3)), '3 sig mag lim')
-		self.log['zp'] = np.round(self.cal.zp,3)
-		self.log['zperr'] = np.round(self.cal.zp_std,3)
-		self.log['maglim5'] = np.round(self.cal.maglim5,3)
-		self.log['maglim3'] = np.round(self.cal.maglim3,3)
-
+		self.log['zp'] = np.round(self.cal.zp,4)
+		self.log['zperr'] = np.round(self.cal.zp_std,4)
+		self.log['maglim5'] = np.round(self.cal.maglim5,4)
+		self.log['maglim3'] = np.round(self.cal.maglim3,4)
 
 		ind = np.isfinite(self.cal.zps)
 		if self.plot:

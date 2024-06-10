@@ -171,7 +171,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/fli/data/maste
 		masters = masters.append(entries, ignore_index=True)
 		masters.to_csv('cal_lists/master_flat_list.csv',index=False)
 
-def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
+def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose, threshold = 350):
 	i = index
 	entry = {}
 	n = new[i]
@@ -196,12 +196,29 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 		header = hdu.header
 		#print(header)
 		data = hdu.data.astype(float)
-		
-		saturations = (data > 50000).flatten()
-		# if more than 10% of pixels are saturated, set array to nan
-		if sum(saturations) > len(saturations) * 0.1:
-			print('image ', files[j], ' is saturated')
+		data_c = deepcopy(data)
+		for idx in range(4):
+			ind = idx*512
+			indx = idx*511
+			data_c[indx] = np.nan
+			data_c[ind] = np.nan
+		data_c[-1] = np.nan
+
+		data_collapse = np.nanmean(data_c, axis = 1)
+		grads = np.gradient(data_collapse)
+
+		failed_rows = np.where(abs(grads) > threshold)[0]
+
+		if len(failed_rows) > 0:
+			print('image ', files[j], 'has readout error')
 			data = data * np.nan
+		
+		else:
+			saturations = (data > 50000).flatten()
+			# if more than 10% of pixels are saturated, set array to nan
+			if sum(saturations) > len(saturations) * 0.1:
+				print('image ', files[j], ' is saturated')
+				data = data * np.nan
 		
 		master_arr += [data]
 
@@ -247,6 +264,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 		note = 'good'
 	entry['note'] = note
 
+
 	if verbose:
 		print('Done ', n)
 	return pd.DataFrame([entry])
@@ -257,7 +275,8 @@ def make_masters(verbose=True):
 	make_master_darks(verbose=True)
 	if verbose:
 		print('!!! Finished darks !!!')
-	new_make_master_flats(verbose=True)
+	make_master_flats(verbose=True)
+
 	if verbose:
 		print('!!! Finished flats !!!')
 
@@ -266,4 +285,5 @@ if __name__ == '__main__':
 	make_master_darks(verbose=True)
 	print('!!! Finished darks !!!')
 	make_master_flats(verbose=True)
+
 	print('!!! Finished flats !!!')
