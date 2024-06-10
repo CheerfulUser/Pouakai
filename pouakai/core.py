@@ -1,11 +1,16 @@
-import os
+import matplotlib 
+#%matplotlib inline
+matplotlib.use('Agg')
+import os, psutil
 from os import path
+import subprocess
 from astropy.io import fits
 from glob import glob
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from astroquery.astrometry_net import AstrometryNet
+
+#from astroquery.astrometry_net import AstrometryNet
 from astropy.coordinates import SkyCoord
 from astropy.stats import sigma_clipped_stats
 import astropy.units as u
@@ -17,6 +22,7 @@ from aperture_photom import ap_photom
 
 from scipy.ndimage.filters import convolve
 from satellite_detection import sat_streaks
+import gc
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -29,7 +35,7 @@ warnings.filterwarnings("ignore")
 class pouakai():
 
 	def __init__(self,file,time_tolerence=100,dark_tolerence=10,savepath='',
-				 local_astrom=True,verbose=True,rescale=True):
+				 local_astrom=True,verbose=True,rescale=True,plot=True,calibrate=True):
 
 		self.verbose = verbose
 		self.file = file 
@@ -40,10 +46,11 @@ class pouakai():
 		self.offset = 500
 		self.fail_flag = ''
 		self.rescale = rescale
-
+		self.plotting = plot
 		self._start_record()
 		self._check_dirs()
 		self._set_base_name() 
+		self._calibrate = calibrate
 		
 		self._read_science_image()
 
@@ -62,21 +69,42 @@ class pouakai():
 			self._fail_log()
 		
 
+		
+
 
 	def reduce(self):
 		#self._check_reduction(reduction)
+		process = psutil.Process()
+        
 		self.reduce_image()
+		print('Reduce image ',process.memory_info().rss/1024**2)  # in bytes 
 		self.save_intermediate()
+		print('save image ',process.memory_info().rss/1024**2)  # in bytes 
+		
 		if self._local_astrom:
 			self.wcs_astrometrynet_local()
 		else:
 			self.wcs_astrometrynet()
-
+		print('wcs',process.memory_info().rss/1024**2)  # in bytes 
 		self.satellite_search()
+		print('satellite ',process.memory_info().rss/1024**2)  # in bytes 
 		self.Make_mask()
-		self.calculate_zp()
+		print('Mask ',process.memory_info().rss/1024**2)  # in bytes 
+		if self._calibrate:
+			self.calculate_zp()
+		print('zp ',process.memory_info().rss/1024**2)  # in bytes 
 		self.save_fig()
 		self.save_image()
+		print('save full image',process.memory_info().rss/1024**2)  # in bytes 
+		self._record_reduction()
+		print('record red',process.memory_info().rss/1024**2)  # in bytes 
+		if self._calibrate:
+			self._save_phot_table()
+			del self.cal
+		print('record phot',process.memory_info().rss/1024**2)  # in bytes 
+		
+		gc.collect()
+		print('del cal: ',process.memory_info().rss/1024**2)  # in bytes 
 		#self._record_reduction()
 	#def _check_reduction(self,reduction):
 
@@ -104,11 +132,16 @@ class pouakai():
 		"""
 		Read in the science image to be calibrated.
 		"""
-		hdu = fits.open(self.file)[0]
+		f = fits.open(self.file)
+		hdu = f[0]
+		
 		self.header = hdu.header
 		self.raw_image = hdu.data
-		self.jd = hdu.header['JDSTART']
-		self.filter = hdu.header['COLOUR']
+		self.jd = (hdu.header['JDEND'] + hdu.header['JDSTART']) / 2 
+		try:
+			self.filter = hdu.header['COLOUR']
+		except:
+			self.filter = hdu.header['FILTER']
 		self.chip = hdu.header['CHIP']
 		self.exp_time = hdu.header['EXPTIME']
 		self._field_coords()
@@ -120,7 +153,7 @@ class pouakai():
 		self.log['exptime'] = self.exp_time
 		self.log['date'] = hdu.header['DATE-OBS'].strip()
 		self.log['field'] = hdu.header['FIELD'].strip()
-
+		f.close()
 
 	def _field_coords(self):
 		"""
@@ -172,17 +205,18 @@ class pouakai():
 			file += '.gz'
 		self.log[cal_type] = file
 		self.log['tdiff_' + cal_type] = tdiff
-		print('tdiff for ' + cal_type + '=' + str(tdiff))
+		if self.verbose:
+			print('tdiff for ' + cal_type + '=' + str(tdiff))
 		hdu = fits.open(file)
 		data = hdu[0].data
 		err =  hdu[1].data
+		hdu.close()
 
 
 		if cal_type.lower() == 'flat':
 			self.flat_file = file 
 			self.flat = data
 			self.flat_err = err
-			print('flat',file)
 		elif cal_type.lower() == 'dark':
 			self.dark_file = file 
 			self.dark = data
@@ -217,6 +251,10 @@ class pouakai():
 
 	#def _update_header_obj()
 
+
+	def _update_header_standardisation(self):
+		self.header.rename_keyword('COLOUR','FILTER')
+		self.header['JD'] = (self.jd,'JD at obs midpoint')
 
 	def _update_header_sky(self):
 		"""
@@ -258,7 +296,7 @@ class pouakai():
 		"""
 		Check that all reduction directories are constructed
 		"""
-		dirlist = ['red','red/wcs_tmp','cal','fig','zp_surface']
+		dirlist = ['red','red/wcs_tmp','cal','fig','zp_surface','log','phot_table']
 		for d in dirlist:
 			if not os.path.isdir(self.savepath + d):
 				os.mkdir(self.savepath + d)
@@ -288,6 +326,7 @@ class pouakai():
 		"""
 		Save the flattened science image
 		"""
+		self._update_header_standardisation()
 		self._update_header_sky()
 		self._update_header_dark()
 		self._update_header_flat()
@@ -299,6 +338,7 @@ class pouakai():
 		if self.verbose:
 			print('Saving intermediated calibrated file')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
+		
 		compress = 'gzip -f ' + name
 		os.system(compress)
 
@@ -365,25 +405,25 @@ class pouakai():
 	
 		name = save_path + self.base_name + '_wcs'
 		real_name = real_save_path + self.base_name + '_wcs'
-		print('!!!',name)
-		print(save_path)
-		print(self.base_name)
 		solver = astrom_call.format(savename = name, ra = self.field_coord.ra.deg,
 									dec = self.field_coord.dec.deg, file = self.red_name)
-		os.system(solver)
+		solve = subprocess.run(solver,stdout=subprocess.PIPE,shell=True)
 
-		wcs_header = fits.open(real_name + '.new')[0].header
+		f = fits.open(real_name + '.new')
+		wcs_header = f[0].header
+		f.close()
 		# get rid of all the astrometry.net junk in the header 
 		del wcs_header['COMMENT']
 		del wcs_header['HISTORY']
 		self.header = wcs_header
 		self.wcs = WCS(self.header)
-
+		
 		if self.verbose:
 			print('Solved WCS')
 		
 		clear = 'rm -rf ' + real_save_path
-		os.system(clear)
+		subprocess.run(clear,stdout=subprocess.PIPE,shell=True)
+		#os.system(clear)
 
 		if self.verbose:
 			print('WCS tmp files cleared')
@@ -413,9 +453,13 @@ class pouakai():
 			brightlim = 15
 		mask = ((self.mask & 2) + (self.mask & 4) + (self.mask & 8) + (self.mask & 16))
 		mask[mask > 0] = 1
+		ax = None
+		if self.plotting:
+			ax = self.fig_axis['I']
 		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
-							 threshold=threshold,cal_model=model,ax=self.fig_axis['I'],
-							 brightlim=brightlim,rescale=self.rescale)
+							threshold=threshold,cal_model=model,ax=ax,
+							brightlim=brightlim,rescale=self.rescale,plot=self.plotting)
+
 		self._add_image(self.cal.zp_surface,'E',colorbar=True)
 		self._add_image(self.cal.data,'F')
 		self._add_satellite_trail('F')
@@ -429,18 +473,29 @@ class pouakai():
 		self.log['zperr'] = self.cal.zp_std
 		self.log['maglim5'] = self.cal.maglim5
 		self.log['maglim3'] = self.cal.maglim3
-
-		self.fig_axis['D'].plot(self.cal.source_x[self.cal.good],self.cal.source_y[self.cal.good],'r.')
-		self._zp_hist()
-		self._zp_color()
-		self.cal.mag_limit_fig(self.fig_axis['I'])
+		
+		if self.plotting:
+			self.fig_axis['D'].plot(self.cal.source_x[self.cal.good],self.cal.source_y[self.cal.good],'r.')
+			self._zp_hist()
+			self._zp_color()
+			self.cal.mag_limit_fig(self.fig_axis['I'])
 		self._save_zp_surface()
+		self._save_zp_surface_sources()
 		if self.verbose:
 			print('Zeropoint found to be ' + str(np.round(self.cal.zp,2)))
 
 	def _save_zp_surface(self):
 		path = f'{self.savepath}/zp_surface/{self.base_name}_zp_surface'
 		np.save(path,self.cal.zp_surface)
+	
+	def _save_zp_surface_sources(self):
+		path = f'{self.savepath}/zp_surface/{self.base_name}_zp_points.txt'
+		x_data = (self.cal.ap_photom['xcenter'].values + 0.5).astype(int)
+		y_data = (self.cal.ap_photom['ycenter'].values + 0.5).astype(int)
+		z_data = self.cal.zps
+		arr = np.array([x_data,y_data,z_data])
+		np.savetxt(path,arr)
+
 
 	def _zp_hist(self):
 		"""
@@ -486,74 +541,85 @@ class pouakai():
 		"""
 		Save a diagnostic figure
 		"""
-		name = self.savepath + 'fig/' + self.base_name + '_diag.pdf'
-		#self.fig.set_tight_layout(True)
-		self.fig.savefig(name)
+		if self.plotting:
+			name = self.savepath + 'fig/' + self.base_name + '_diag.pdf'
+			#self.fig.set_tight_layout(True)
+			self.fig.savefig(name)
+			plt.close(self.fig)
+			self.fig.clear()
+			plt.close('all')
+			plt.cla()
+			plt.clf()
+
 
 	def _setup_fig(self):
 		"""
 		Set up the large diagnostic plot figure
 		"""
-		self.fig = plt.figure(figsize=(8.27,11.69),constrained_layout=True)
-		self.fig_axis = self.fig.subplot_mosaic(
-											"""
-											ABC
-											ABC
-											DEF
-											DEF
-											GHI
-											"""
-										  )
-		self.fig_axis['A'].set_title('Raw image',fontsize=15)
-		self.fig_axis['B'].set_title('Flat image',fontsize=15)
-		self.fig_axis['C'].set_title('Reduced image',fontsize=15)
-		self.fig_axis['D'].set_title('Calibration sources',fontsize=15)
-		self.fig_axis['E'].set_title('Zeropoint correction',fontsize=15)
-		self.fig_axis['F'].set_title('Rescaled image',fontsize=15)
-		self.fig_axis['G'].set_title('Zeropoint distribution',fontsize=15)
-		self.fig_axis['H'].set_title('Zeropoint colour',fontsize=15)
-		self.fig_axis['I'].set_title('Signal-Noise Limit',fontsize=15)
+		if self.plotting:
+			self.fig = plt.figure(figsize=(8.27,11.69),constrained_layout=True)
+			self.fig_axis = self.fig.subplot_mosaic(
+												"""
+												ABC
+												ABC
+												DEF
+												DEF
+												GHI
+												"""
+											)
+			self.fig_axis['A'].set_title('Raw image',fontsize=15)
+			self.fig_axis['B'].set_title('Flat image',fontsize=15)
+			self.fig_axis['C'].set_title('Reduced image',fontsize=15)
+			self.fig_axis['D'].set_title('Calibration sources',fontsize=15)
+			self.fig_axis['E'].set_title('Zeropoint correction',fontsize=15)
+			self.fig_axis['F'].set_title('Rescaled image',fontsize=15)
+			self.fig_axis['G'].set_title('Zeropoint distribution',fontsize=15)
+			self.fig_axis['H'].set_title('Zeropoint colour',fontsize=15)
+			self.fig_axis['I'].set_title('Signal-Noise Limit',fontsize=15)
 
 	def _add_image(self,image,ax_ind,colorbar=False):
 		"""
 		Add the provided image to the provided axis.
 		"""
-		vmin = np.percentile(image,16)
-		vmax = np.percentile(image,84)
-		im = self.fig_axis[ax_ind].imshow(image,origin='lower',
-									 vmin=vmin,vmax=vmax)
-		if colorbar:
-			self.fig.colorbar(im,ax=self.fig_axis[ax_ind],fraction=0.046, pad=0.04)
+		if self.plotting:
+			vmin = np.percentile(image,16)
+			vmax = np.percentile(image,84)
+			im = self.fig_axis[ax_ind].imshow(image,origin='lower',
+										vmin=vmin,vmax=vmax)
+			if colorbar:
+				self.fig.colorbar(im,ax=self.fig_axis[ax_ind],fraction=0.046, pad=0.04)
 	
 	def _add_satellite_trail(self,ax_ind):
-		for consolidated_line in self.sat.consolidated_lines:
-			angle = consolidated_line[0]
-			points = np.array(consolidated_line[1])
-			x = points[:,0]
-			y = points[:,1]
-			coefs = np.polyfit(x, y, 1)
-			slope = coefs[0]
-			intercept = coefs[1]
-			x1 = np.min(x)
-			y1 = int(slope * x1 + intercept)
-			x2 = np.max(x)
-			y2 = int(slope * x2 + intercept)
-			# create the x and y points for the consolidated line
-			x_points = [x1, x2]
-			y_points = [y1, y2]
+		if self.plotting:
+			for consolidated_line in self.sat.consolidated_lines:
+				angle = consolidated_line[0]
+				points = np.array(consolidated_line[1])
+				x = points[:,0]
+				y = points[:,1]
+				coefs = np.polyfit(x, y, 1)
+				slope = coefs[0]
+				intercept = coefs[1]
+				x1 = np.min(x)
+				y1 = int(slope * x1 + intercept)
+				x2 = np.max(x)
+				y2 = int(slope * x2 + intercept)
+				# create the x and y points for the consolidated line
+				x_points = [x1, x2]
+				y_points = [y1, y2]
 
-			# plot the consolidated line
-			self.fig_axis[ax_ind].plot(x_points, y_points, '--r', label='Satellite',alpha = .5)
-			self.fig_axis[ax_ind].legend(loc='upper left')
+				# plot the consolidated line
+				self.fig_axis[ax_ind].plot(x_points, y_points, '--r', label='Satellite',alpha = .5)
+				self.fig_axis[ax_ind].legend(loc='upper left')
 
 
 	def _record_reduction(self):
 		"""
 		Save the log to the global reduction log file.
 		"""
-		log = pd.read_csv('cal_lists/calibrated_image_list.csv')
+		#log = pd.read_csv('cal_lists/calibrated_image_list.csv')
 		new_entry = pd.DataFrame([self.log])
-		log = pd.concat([log, new_entry], ignore_index=True)
+		#log = pd.concat([log, new_entry], ignore_index=True)
+		new_entry.to_csv(f'{self.savepath}log/{self.base_name}.csv')
 		#log.to_csv('cal_lists/calibrated_image_list.csv',index=False)
 
 
@@ -587,7 +653,7 @@ class pouakai():
 		satellite_mask = self.sat.total_mask * 8
 		bpix = self._load_bad_pix_mask() * 16
 
-		self.mask = flat_mask | saturation_mask | satellite_mask | bpix
+		self.mask = flat_mask | saturation_mask | bpix | satellite_mask
 
 		self._update_header_mask_bits()
 
@@ -607,4 +673,19 @@ class pouakai():
 	def satellite_search(self):
 		self.sat = sat_streaks(self.image,run=True)
 		self._update_header_satellites()
+		
+	def _save_phot_table(self):
+		name = self.savepath + 'phot_table/' + self.base_name + '_phot.fits'
+		ind = self.cal.ap_photom.mag.values < self.cal.maglim3
+		tab = self.cal.ap_photom.iloc[ind]
+		ra,dec = self.wcs.all_pix2world(tab['xcenter'].values,tab['ycenter'].values,0)
+		tab['ra'] = ra
+		tab['dec'] = dec
+		rec = np.rec.array([tab['gaiaID'].values,tab['xcenter'].values,tab['ycenter'].values,tab['ra'].values,tab['dec'].values,tab['counts'].values,tab['e_counts'].values,tab['mag'].values,tab['e_mag'].values,tab['snr'].values],
+							formats='int,float32,float32,float32,float32,float32,float32,float32,float32,float32',
+							names='gaiaID,xcenter,ycenter,ra,dec,counts,counts_e,mag,mag_e,snr' )
+
+		hdu = fits.BinTableHDU(data=rec,header=self.header)
+		
+		hdu.writeto(name,overwrite=True)
 		

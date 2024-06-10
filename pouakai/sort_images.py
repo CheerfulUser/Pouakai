@@ -26,16 +26,26 @@ def _update_paths(files,csv,cal_type):
 			csv.iloc[ind]['filename'] = file
 	csv.to_csv(package_directory + 'cal_lists/{}_list.csv'.format(cal_type),index=False)
 	return csv
-
+def _kill_old_paths(csv,cal_type):
+	ind = []
+	for i in range(len(csv)):
+		try:
+			hdu = fits.open(csv.iloc[i]['filename'])
+			ind += [i]
+		except:
+			print('bad path')
+	csv_new = csv.iloc[ind]
+	csv_new.to_csv(package_directory + 'cal_lists/{}_list.csv'.format(cal_type),index=False)
+	return csv_new
 
 def sort_darks(verbose=False,num_core=25):
 	f = np.append(glob(moa_darks_dir + '*/*.gz'),glob(moa_darks_dir + '*.gz')) # first for year sudbdir, second for file
 
 	dark_files = set(f) 
 	dark_list = pd.read_csv(package_directory + 'cal_lists/dark_list.csv')
-	dark_list = _update_paths(f,dark_list,'dark')
+	#dark_list = _kill_old_paths(dark_list,'dark')
 	old = set(dark_list['filename'])
-	new = dark_files ^ old
+	new = dark_files - old
 	if verbose: 
 		print('Number of new darks: ',len(new))
 	files = list(new)
@@ -81,9 +91,9 @@ def sort_flats(verbose = False, num_core = 25):
 	flat_files = set(f)
 
 	flat_list = pd.read_csv(package_directory + 'cal_lists/flat_list.csv')	
-	flat_list = _update_paths(f,flat_list,'flat')
+	#flat_list = _kill_old_paths(flat_list,'flat')
 	old = set(flat_list['filename'])
-	new = flat_files ^ old
+	new = flat_files - old
 
 	if verbose: 
 		print('Number of new flats: ',len(new))
@@ -132,7 +142,7 @@ def sort_obs(verbose=False,num_core = 25):
 	#try:
 	obs_list = pd.read_csv(package_directory + 'cal_lists/obs_list.csv')
 	old = set(obs_list['filename'].values)
-	new = obs_files ^ old
+	new = obs_files - old
 	if verbose: 
 		print('Number of new obs: ',len(new))
 	files = list(new)

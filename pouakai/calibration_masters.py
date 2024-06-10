@@ -21,12 +21,18 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 	all_names = set(names)
 	master_names = set(split_names(masters['name'].values))
 
-	new = all_names ^ master_names
+	new = all_names - master_names
 	new = list(new)
 	new.sort(reverse=True)
 	print('sorted')
 	indexer = np.arange(len(new),dtype=int)
-	entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,names,dark_list,save_location,verbose) for index in indexer)
+	if num_cores > 1:
+		entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,names,dark_list,save_location,verbose) for index in indexer)
+	else:
+		entries = []
+		for index in indexer:
+			entries += [dark_processing(index,new,names,dark_list,save_location,verbose)]
+			print('!!! ', entries)
 	for entry in entries:
 		masters = masters.append(entry,ignore_index=True)
 	masters.to_csv('cal_lists/master_dark_list.csv',index=False)
@@ -36,12 +42,12 @@ def dark_processing(index,new,names,dark_list,save_location,verbose):
 	n = new[index]
 	ind = np.array(names) == n
 	all_chips = dark_list.iloc[ind]
-
+	#print(all_chips)
 	for j in range(10):
 		try:
 			j += 1
 			entry = {}
-			chip_ind = all_chips['chip'].values == j
+			chip_ind = all_chips['chip'].values.astype(int) == j
 			chip = all_chips.iloc[chip_ind]
 			chip_files = chip['filename'].values
 			master = []
@@ -56,7 +62,7 @@ def dark_processing(index,new,names,dark_list,save_location,verbose):
 				print('Used ',len(master),' images in median')
 			m = np.nanmedian(master,axis=0)
 			std = np.nanstd(master,axis=0)
-			time = np.nanmean(chip['jd'])
+			time = np.nanmean(chip['jd'].astype(float))
 			#print('calc mean')
 			header['JDSTART'] = time 
 			header['MASTER'] = True
@@ -156,7 +162,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 	all_names = set(names)
 	master_names = set(split_names(masters['name'].values))
 	print(len(all_names))
-	new = all_names ^ master_names
+	new = all_names - master_names
 	new = list(new)
 	print(new)
 	print(len(new))
@@ -171,7 +177,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 		dark_get = True
 		for j in range(10):
 			j += 1
-			chip_ind = all_chips['chip'].values == j
+			chip_ind = all_chips['chip'].values.astype(int) == j
 			chip = all_chips.iloc[chip_ind]
 			chip_files = chip['filename'].values
 			master = []
@@ -232,7 +238,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/maste
 			print('saved')
 			entry['name'] = base_name
 
-			entry['band'] = header['COLOUR'].str.strip()
+			entry['band'] = header['COLOUR'].strip()
 			entry['chip'] = header['CHIP']
 			entry['exptime'] = header['EXPTIME']
 			entry['jd'] = time
@@ -289,7 +295,7 @@ def new_make_master_flats(save_location = '/home/phys/astronomy/rri38/moa/data/m
 
 	all_names = set(names)
 	master_names = set(split_names(masters['name'].values))
-	new = all_names ^ master_names
+	new = all_names - master_names
 	new = list(new)
 	print('Number of new flat entries: ',len(new))
 	if len(new) > 0:
@@ -321,6 +327,8 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 
 	master_arr = []
 	darks = []
+	if len(files) > 10:
+		files = files[:10]
 	for j in range(len(files)):
 		
 		hdu = fits.open(files[j])[0]
@@ -345,7 +353,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 	darks = np.array(darks)
 	master_arr = master_arr - darks
 
-	mas = np.nanmedian(master_arr,axis=0)
+	mas = np.nanmean(master_arr,axis=0)
 	std = np.nanstd(master_arr,axis=0)
 	header['JDSTART'] = t 
 	header['MASTER'] = True
@@ -361,7 +369,7 @@ def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose):
 	print('saved')
 	entry['name'] = n
 
-	entry['band'] = header['COLOUR'].str.strip()
+	entry['band'] = header['COLOUR'].strip()
 	entry['chip'] = header['CHIP']
 	entry['exptime'] = header['EXPTIME']
 	entry['jd'] = t

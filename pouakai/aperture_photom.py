@@ -15,12 +15,12 @@ from scipy.ndimage import gaussian_filter
 from scipy.interpolate import griddata
 
 from mpl_toolkits.mplot3d import Axes3D
-
+from gaia_query import get_gaia_region
 
 from scipy.optimize import minimize
 
 from calibrimbore import sauron, get_skymapper_region, get_ps1_region
-
+from astropy.time import Time
 from copy import deepcopy
 
 import os
@@ -93,7 +93,7 @@ class ap_photom():
 			self._get_filter()
 
 	def _get_filter(self):
-		self.band = self.header['COLOUR'].strip(' ')
+		self.band = self.header['FILTER'].strip(' ')
 
 
 
@@ -112,32 +112,41 @@ class ap_photom():
 
 	def catalogue_sources(self):
 		ra,dec = self.wcs.all_pix2world(self.data.shape[1]//2,self.data.shape[0]//2,0)
-		if dec > -25:
-			cat = get_ps1_region([ra],[dec],size=.4*60**2)
-		else:
-			cat = get_skymapper_region([ra],[dec],size=.4*60**2)
-		
-		tab = cat.iloc[np.isfinite(cat.r.values)]
-		x, y = self.wcs.all_world2pix(tab['ra'].values,tab.dec.values,0)
+		#if dec > -25:
+		#	cat = get_ps1_region([ra],[dec],size=.4*60**2)
+		#else:
+		#	cat = get_skymapper_region([ra],[dec],size=.4*60**2)
+		cat = get_gaia_region([ra],[dec],size=0.4*60**2)
+		tab = deepcopy(cat)#.iloc[np.isfinite(cat.r.values)]
+
+		c = SkyCoord(ra=tab['RA_ICRS'].values*u.deg, dec=tab['DE_ICRS'].values*u.deg,
+             pm_ra_cosdec=tab['pmRA'].values*u.mas/u.yr, pm_dec=tab['pmDE'].values*u.mas/u.yr,
+			 obstime=Time(2016,format='jyear'))
+
+		c2 = c.apply_space_motion(new_obstime=Time(self.header['JDSTART'],format='jd'))
+		tab['ra'] = c2.ra.deg
+		tab['dec'] = c2.dec.deg
+		#print(tab)
+		x, y = self.wcs.all_world2pix(tab.ra.values,tab.dec.values,0)
 		tab['x'] = x
 		tab['y'] = y
 
-		ind = (x > 30) & (x < self.data.shape[1]-30) & (y > 30) & (y < self.data.shape[0]-30)
+		ind = (x > 15) & (x < self.data.shape[1]-15) & (y > 15) & (y < self.data.shape[0]-15)
 		tab = tab.iloc[ind]
+		self.cat = tab
 		sources = tab[['x','y']]
 		sources.rename(columns={'x': 'xcentroid', 'y': 'ycentroid'}, inplace=True)
 		self.sources = sources
-		self._mask_killer()
+		self.source_x = self.sources['xcentroid'].values + 0.5
+		self.source_y = self.sources['ycentroid'].values + 0.5
+		#self._mask_killer()
 
 
 	def _calc_radii(self):
-		xcoords = self.sources['xcentroid'].values + 0.5
-		self.source_x = xcoords
-		xcoords = xcoords.astype(int)
+
+		xcoords = self.source_x.astype(int)
 		
-		ycoords = self.sources['ycentroid'].values + 0.5
-		self.source_y = ycoords
-		ycoords = ycoords.astype(int)
+		ycoords = self.source_y.astype(int)
 		
 		data = deepcopy(self.data) - self.data_median
 
@@ -176,7 +185,6 @@ class ap_photom():
 
 	def ap_photometry(self):
 
-
 		phot_table = aperture_photometry(self.data,self.aperture)
 		masked = deepcopy(self.data)
 		masked[self.source_mask==0] = np.nan
@@ -204,6 +212,7 @@ class ap_photom():
 			table = phot_table.to_pandas()
 
 		self.ap_photom = table
+		self.ap_photom['gaiaID'] = self.cat['Source'].values
 		#near_mask = self._check_mask()
 		#near_source = self._check_distance()
 		#ind =  (near_mask<100) #& (near_source==0)
@@ -256,7 +265,8 @@ class ap_photom():
 			for i in range(2):
 				self.find_sources(fwhm=self.radius/1.2,threshold=threshold)
 				self._calc_radii()
-
+		#print(len(self.cat))
+		#print(len(self.sou))
 		self._get_apertures()
 		self.ap_photometry()
 		self._load_sauron()
@@ -326,7 +336,7 @@ class ap_photom():
 			d = np.sqrt((sx[:,np.newaxis] - x[np.newaxis,])**2 + (sy[:,np.newaxis] - y[np.newaxis,])**2)
 			mind = np.nanmin(d,axis=1)
 			ind = mind > 1
-			print(f'Killed {len(sx) - np.sum(ind*1)} sources')
+			#print(f'Killed {len(sx) - np.sum(ind*1)} sources')
 			self.sources = self.sources.iloc[ind]
 			
 			self.source_x = self.sources['xcentroid'].values
