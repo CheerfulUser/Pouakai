@@ -24,7 +24,7 @@ def sort_darks(verbose=False,num_core=25):
 	if len(files) > 0:
 		entries = Parallel(num_core)(delayed(dark_info_grab)(file,verbose) for file in files)
 		for entry in entries:
-			dark_list = dark_list.append(entry, ignore_index=True)
+			dark_list = pd.concat([dark_list, entry], ignore_index=True)
 		dark_list.to_csv('cal_lists/dark_list.csv',index=False)
 	if verbose:
 		print('Updated darks')
@@ -75,7 +75,7 @@ def sort_flats(verbose = False, num_core = 25):
 	if len(files) > 0:
 		entries = Parallel(num_core)(delayed(flat_info_grab)(file,verbose) for file in files)
 		for entry in entries:
-			flat_list = flat_list.append(entry, ignore_index=True)
+			flat_list = pd.concat([flat_list, entry], ignore_index=True)
 		flat_list.to_csv('cal_lists/flat_list.csv',index=False)
 	if verbose:
 		print('Updated flats')

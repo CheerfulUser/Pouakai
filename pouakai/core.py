@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from astroquery.astrometry_net import AstrometryNet
 from astropy.coordinates import SkyCoord
 from astropy.stats import sigma_clipped_stats
+from astropy.time import Time
 import astropy.units as u
 from astropy.wcs import WCS
 from copy import deepcopy
@@ -18,19 +19,17 @@ import gc
 from scipy.stats import iqr
 from aperture_photom import cal_photom
 
-from scipy.ndimage.filters import convolve
+from scipy.ndimage import convolve
 from satellite_detection import sat_streaks
 
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 tmp = os.environ['TMPDIR'] # this is a bash environment variable, add TMPDIR to your .bashrc or equivalent
 
+
 import warnings
 warnings.filterwarnings("ignore")
 
 
-#class Consume_moa():
-	
-#	def __init__(self,images,):
 		
 class pouakai():
 
@@ -44,10 +43,6 @@ class pouakai():
 		self.time_tolerence = time_tolerence
 		self.dark_tolerence = dark_tolerence
 		self.offset = 500
-		# try:
-		# 	self.filter_list = np.genfromtxt('/home/phys/astronomy/zgl12/fli_pouakai/pouakai/filters_list.csv', 
-		# 					delimiter = ',', dtype = str).flatten().tolist()
-		# except:
 		self.filter_list = []
 		self.fail_flag = ''
 		self.rescale = rescale
@@ -59,10 +54,10 @@ class pouakai():
 
 		self._start_record()
 		self._check_dirs()
-		self._set_base_name() 
 		self._calibrate = calibrate
 		
 		self._read_science_image()
+		self._set_base_name() 
 
 		self._get_master('dark')
 		self._get_master('flat')
@@ -209,27 +204,10 @@ class pouakai():
 		"""
 		Strip the fluff so that only the base name remains
 		"""
-		basesname = self.file.split('/')[-1].split('.f')[0].replace(' ','_')
-		basename = basesname.split('-')
-
-		bases_list = []
-
-		for i in range(len(basename) - 1):
-			bases_list.append(basename[i])
-			bases_list.append('_')
-
-		bases_list[-1] = '-' 
-		result = ''.join(bases_list)
-		filters = basename[-1].split('_')
-		self.filter_list.append(filters[-1])
-
-		# Count occurrences of 'g'
-		count = sum(1 for s in self.filter_list if s == filters[-1])
-
-		self.base_name = result + str(count).zfill(4) + '_' + filters[-1]
+		current_date = Time(self.jd, format='jd').iso.split()[0]
+		self.base_name = f"{current_date}_{os.path.basename(self.file).split('.f')[0]}"
 
 		self.log['name'] = self.base_name
-		# np.savetxt('/home/phys/astronomy/zgl12/fli_pouakai/pouakai/filters_list.csv', self.filter_list, delimiter = ',', fmt = '%s')
 
 
 	def _get_master(self,cal_type):
