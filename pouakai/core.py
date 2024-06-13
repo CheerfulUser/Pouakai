@@ -18,7 +18,7 @@ import gc
 from scipy.stats import iqr
 from aperture_photom import cal_photom
 
-from scipy.ndimage.filters import convolve
+from scipy.ndimage import convolve
 from satellite_detection import sat_streaks
 
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
@@ -209,6 +209,8 @@ class pouakai():
 		"""
 		Strip the fluff so that only the base name remains
 		"""
+		self.base_name = self.file.split('/')[-1].split('.f')[0]
+		
 		basesname = self.file.split('/')[-1].split('.f')[0].replace(' ','_')
 		basename = basesname.split('-')
 
@@ -226,10 +228,7 @@ class pouakai():
 		# Count occurrences of 'g'
 		count = sum(1 for s in self.filter_list if s == filters[-1])
 
-		self.base_name = result + str(count).zfill(4) + '_' + filters[-1]
-
 		self.log['name'] = self.base_name
-		# np.savetxt('/home/phys/astronomy/zgl12/fli_pouakai/pouakai/filters_list.csv', self.filter_list, delimiter = ',', fmt = '%s')
 
 
 	def _get_master(self,cal_type):

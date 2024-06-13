@@ -27,7 +27,7 @@ def make_master_darks(save_location = '/home/phys/astronomy/rri38/fli/data/maste
 		indexer = np.arange(len(new))
 		entries = Parallel(n_jobs=num_cores)(delayed(dark_processing)(index,new,dark_list,time_frame,save_location,verbose)  for index in indexer)
 	for entry in entries:
-		masters = masters.append(entry,ignore_index=True)
+		masters = pd.concat([masters, entry],ignore_index=True)
 	masters.to_csv('cal_lists/master_dark_list.csv',index=False)
 
 def assign_master_name(darks):
@@ -94,8 +94,9 @@ def dark_processing(index,names,dark_list,time_frame,save_location,verbose):
 		entry = pd.DataFrame([entry])
 			
 		return entry
-	except:
-		print('something went wrong...')
+	except Exception as e:
+		print(e)
+		print('Something went wrong...')
 
 def get_master_dark(jd,exptime,strict=True,tol=10,exp_tol=5):
 	"""
@@ -168,7 +169,7 @@ def make_master_flats(save_location = '/home/phys/astronomy/rri38/fli/data/maste
 		entries = Parallel(n_jobs=num_cores)(delayed(flat_processing)(index,new,flat_list,times,time_frame,save_location,verbose) for index in indexer)
 		entries = pd.concat(entries,ignore_index=True)	
 		
-		masters = masters.append(entries, ignore_index=True)
+		masters = pd.concat([masters, entries], ignore_index=True)
 		masters.to_csv('cal_lists/master_flat_list.csv',index=False)
 
 def flat_processing(index,new,flat_list,times,time_frame,save_location,verbose, threshold = 350):
