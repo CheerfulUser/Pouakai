@@ -692,3 +692,21 @@ class pouakai():
 		
 		hdu.writeto(name,overwrite=True)
 		
+	def _save_phot_table(self):
+		name = self.savepath + 'phot_table/' + self.base_name + '_phot.fits'
+		ind = self.cal.ap_photom.mag.values < self.cal.maglim3
+		tab = self.cal.ap_photom.iloc[ind]
+		ra, dec = self.wcs.all_pix2world(tab['xcenter'].values, tab['ycenter'].values, 0)
+		tab['ra'] = ra
+		tab['dec'] = dec
+		rec = np.rec.array([tab['gaiaID'].values, tab['xcenter'].values, tab['ycenter'].values, tab['ra'].values, tab['dec'].values, tab['counts'].values, tab['e_counts'].values, tab['mag'].values, tab['e_mag'].values, tab['snr'].values],
+						formats='int,float32,float32,float32,float32,float32,float32,float32,float32,float32',
+						names='gaiaID,xcenter,ycenter,ra,dec,counts,counts_e,mag,mag_e,snr')
+
+		hdu = fits.BinTableHDU(data=rec, header=self.header)
+		hdu.writeto(name, overwrite=True)
+
+		script_path = os.path.join(os.getcwd(), 'MPC_maker.py')
+		subprocess.run(['python', script_path, name])
+
+		return
