@@ -107,9 +107,6 @@ def compare_objects(data_pouakai, data_MPC, tolerance):
     return matches
 
 
-
-
-
 def get_object_designation(matches):
     """
     Extracts relevant information from the match list and returns the formatted object designation for a minor planet.
@@ -301,8 +298,6 @@ def format_to_MPC(matches, date, band, mag_list, file_path):
             # Write the formatted string to the file
             file.write(MPC_file + '\n')
 
-    print(f"File saved to {full_path}")
-
     return
 
 
@@ -337,6 +332,10 @@ def MPC_maker(file_path):
         filename = file_path.split('/')[-1].split('.')[0]+"_MPC_submission.txt"
         full_path = os.path.join(os.getcwd(), "MPC_tests", filename)
 
+        if os.path.exists(full_path): 
+            print(f"File exists: {full_path}")
+            return
+
         if len(matches) !=0:
             print(f'{len(matches)} Match(es) Found!')
             # print(matches)
@@ -351,14 +350,9 @@ def MPC_maker(file_path):
         print(f"An error occurred: {e}")
 
 
-# if __name__ == "__main__":
-#     if len(sys.argv) != 2:
-#         print("Usage: python process_fits.py <file_path>")
-#     else:
-#         file_path = sys.argv[1]
-#         MPC_maker(file_path)
-
-
-file_path1 = '/Users/redwy/MPC_Pouakai_pull_req/A6524-lsst2-R-6_phot.fits'
-file_path2 = '/Users/redwy/MPC_Pouakai_pull_req/A6394-lsst1-R-10_phot.fits'
-MPC_maker(file_path2)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python process_fits.py <file_path>")
+    else:
+        file_path = sys.argv[1]
+        MPC_maker(file_path)
