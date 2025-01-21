@@ -704,9 +704,8 @@ class pouakai():
 						names='gaiaID,xcenter,ycenter,ra,dec,counts,counts_e,mag,mag_e,snr')
 
 		hdu = fits.BinTableHDU(data=rec, header=self.header)
+
 		hdu.writeto(name, overwrite=True)
 
 		script_path = os.path.join(os.getcwd(), 'MPC_maker.py')
 		subprocess.run(['python', script_path, name])
-
-		return
