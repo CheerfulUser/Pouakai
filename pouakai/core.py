@@ -27,6 +27,8 @@ import gc
 import warnings
 warnings.filterwarnings("ignore")
 
+from MPC_maker import MPC_maker
+
 
 #class Consume_moa():
 	
@@ -691,4 +693,6 @@ class pouakai():
 		hdu = fits.BinTableHDU(data=rec,header=self.header)
 		
 		hdu.writeto(name,overwrite=True)
+
+		MPC_maker(name)
 		
