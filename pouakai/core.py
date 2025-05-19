@@ -272,6 +272,21 @@ class pouakai():
 		This cane be used to retrieve flats or darks.
 		"""
 		if cal_type.lower() == 'flat':
+<<<<<<< HEAD
+			masters = pd.read_csv('cal_lists/master_flat_list.csv')
+			ind = (masters['band'].values == self.filter) & (masters['chip'].values == self.chip)
+			masters = masters.iloc[ind]
+
+			ind = (masters['note'].values == 'good') & (masters['flat_type'].values == 'dome')
+			masters = masters.iloc[ind]
+
+		elif cal_type.lower() == 'dark':
+			masters = pd.read_csv('cal_lists/master_dark_list.csv')
+			ind = masters['chip'].values == self.chip
+			masters = masters.iloc[ind]
+			exptimes = masters['exptime'].values
+			ind = np.where(abs(self.exp_time - exptimes)<self.dark_tolerence)[0]
+=======
 			### ZAC SOLVE NAMING CONVENTION
 			masters = pd.read_csv(package_directory + f'cal_lists/{self.telescope.lower()}_master_flat_list.csv')
 
@@ -292,6 +307,7 @@ class pouakai():
 			masters = masters.iloc[ind]
 			exptimes = masters['exptime'].values.astype(int)
 			ind = np.where(abs(self.exp_time - exptimes)<self.dark_tolerance)[0]
+>>>>>>> master
 			if len(ind) == 0:
 				m = 'No master darks with exptime {}'.format(self.exp_time)
 				raise ValueError(m)
@@ -311,6 +327,10 @@ class pouakai():
 		err =  hdu[1].data
 		hdu.close()
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
 		if cal_type.lower() == 'flat':
 			self.flat_file = file 
 			self.flat = data
@@ -325,6 +345,17 @@ class pouakai():
 		"""
 		Find the best master image for the science image.
 		"""
+<<<<<<< HEAD
+		chip = self.chip
+		date = self.jd
+		tolerence = self.time_tolerence
+
+		chip_ind = masters['chip'].values == chip
+		if len(chip_ind) == 0:
+			m = 'No master files for chip {} listed in {}'.format(chip,masters)
+			raise ValueError(m)
+		m = masters.iloc[chip_ind]
+=======
 
 		chip = self.chip
 		telescope = self.scope
@@ -347,12 +378,18 @@ class pouakai():
 			raise ValueError(m)
 
 		m = masters.iloc[chip_ind & telescope_ind & read_ind]
+>>>>>>> master
 		m_date = m.jd.values
 
 		t_diff = abs(m_date - date)
 		t_min = np.nanmin(t_diff)
+<<<<<<< HEAD
+		if t_min > tolerence:
+			m = 'No master file in {} that meets the time tolerence of {}'.format(masters, tolerence)
+=======
 		if t_min > tolerance:
 			m = 'No master file in {} that meets the time tolerance of {}'.format(masters, tolerance)
+>>>>>>> master
 			raise ValueError(m)
 		t_ind = np.argmin(t_diff)
 
@@ -437,16 +474,27 @@ class pouakai():
 		"""
 		Save the flattened science image
 		"""
+<<<<<<< HEAD
+		self._update_header_standardisation()
+=======
 
 		if self.telescope.lower() == 'moa':
 			self._update_header_standardisation()
+>>>>>>> master
 		self._update_header_sky()
 		self._update_header_dark()
 		self._update_header_flat()
 		name = self.savepath + 'red/' + self.base_name + '_red.fits'
+<<<<<<< HEAD
+
+		self.red_name = name + '.gz'
+
+
+=======
 		name = name.replace(' ','_')
 		self.red_name = name + '.gz'
 
+>>>>>>> master
 		if self.verbose:
 			print('Saving intermediated calibrated file')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
@@ -463,7 +511,10 @@ class pouakai():
 		self._update_header_dark()
 		self._update_header_flat()
 		name = self.savepath + 'cal/' + self.base_name + '_cal.fits'
+<<<<<<< HEAD
+=======
 		name = name.replace(' ','_')
+>>>>>>> master
 		self.cal_name = name + '.gz'
 
 		phdu = fits.PrimaryHDU(data = self.image, header = self.header)
@@ -476,7 +527,11 @@ class pouakai():
 		os.system(compress)
 		self.log['savename'] = self.cal_name
 
+<<<<<<< HEAD
+	def wcs_astrometrynet(self,timeout=120):
+=======
 	def wcs_astrometrynet(self,timeout=200):
+>>>>>>> master
 		"""
 		Calculate the image wcs using the portal for astrometry.net
 		"""
@@ -484,6 +539,18 @@ class pouakai():
 		ast.api_key = 'csffdfuichpbiata'
 		attempt = 0
 		solved = False
+<<<<<<< HEAD
+		while (attempt < 10) & (not solved):
+			try:
+				wcs_head = ast.solve_from_image(self.file,solve_timeout=timeout)
+				del wcs_head['COMMENT']
+				del wcs_head['HISTORY']
+				solved = True
+			except:
+				attempt += 1
+		if (attempt > 10) | (not solved):
+			raise ValueError('Could not solve WCS in {} attempts'.format(attempt))
+=======
 
 		attempts_allowed = 16
 
@@ -526,6 +593,7 @@ class pouakai():
 			self._wcs_solution = False
 			raise ValueError('Could not solve WCS in {} attempts'.format(attempt + 1))
 
+>>>>>>> master
 		new_head = deepcopy(self.header)
 		for key in wcs_head:
 			new_head[key] = (wcs_head[key],wcs_head.comments[key])
@@ -535,11 +603,49 @@ class pouakai():
 		self.header = new_head
 		self.wcs = WCS(self.header)
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
 	def wcs_astrometrynet_local(self):
 		"""
 		Calculate the image wcs using the local libraries for astrometry.net
 		"""
 		# a reasonable search radius is already selected (2deg)
+<<<<<<< HEAD
+		astrom_call = "solve-field --no-plots -O -o {savename} -p --ra {ra} --dec {dec} --radius 2 {file}"
+
+		save_path = 'wcs_tmp/' + self.base_name + '/'
+		real_save_path = self.savepath + 'red/' + save_path
+		#if not path.exits(real_save_path):
+		os.mkdir(real_save_path)
+	
+		name = save_path + self.base_name + '_wcs'
+		real_name = real_save_path + self.base_name + '_wcs'
+		solver = astrom_call.format(savename = name, ra = self.field_coord.ra.deg,
+									dec = self.field_coord.dec.deg, file = self.red_name)
+		solve = subprocess.run(solver,stdout=subprocess.PIPE,shell=True)
+
+		f = fits.open(real_name + '.new')
+		wcs_header = f[0].header
+		f.close()
+		# get rid of all the astrometry.net junk in the header 
+		del wcs_header['COMMENT']
+		del wcs_header['HISTORY']
+		self.header = wcs_header
+		self.wcs = WCS(self.header)
+		
+		if self.verbose:
+			print('Solved WCS')
+		
+		clear = 'rm -rf ' + real_save_path
+		subprocess.run(clear,stdout=subprocess.PIPE,shell=True)
+		#os.system(clear)
+
+		if self.verbose:
+			print('WCS tmp files cleared')
+
+=======
 
 		save_path = 'wcs_tmp/' + self.base_name
 		real_save_path = self.savepath + 'red/' + save_path
@@ -585,28 +691,37 @@ class pouakai():
 		# clear = 'rm -rf ' + real_save_path
 		# subprocess.run(clear,stdout=subprocess.PIPE,shell=True)
 		# os.system(clear)
+>>>>>>> master
 
 	def save_intermediate_wcs(self):
 		"""
 		Save the intermediate image with a wcs solution.
 		"""
+<<<<<<< HEAD
+		name = self.savepath + 'wcs/' + self.base_name + '_wcs.fits'
+=======
 		if not os.path.exists(self.savepath + 'cal/'):
 			os.makedirs(self.savepath + 'cal/')
 
 		name = self.savepath + 'cal/' + self.base_name + '_wcs.fits'
 		name = name.replace(' ','_')
 		self.cal_name = name + '.gz'
+>>>>>>> master
 		self.wcs_name = name
 
 		if self.verbose:
 			print('Saving intermediated wcs file')
 		fits.writeto(name,self.image,header=self.header,overwrite=True)
 
+<<<<<<< HEAD
+	def calculate_zp(self,threshold=10,model='ckmodel'):
+=======
 		compress = 'gzip -f ' + name
 		os.system(compress)
 		self.log['savename'] = self.cal_name
 
 	def calculate_zp(self,threshold=3,model='ckmodel'):
+>>>>>>> master
 		"""
 		Use calibrimbore to calculate the zeropoint for the image and the magnitude limits.
 		"""
@@ -614,6 +729,41 @@ class pouakai():
 			print('Calculating zeropoint')
 
 		if self.log['exptime'] < (2.5 * 60):
+<<<<<<< HEAD
+			brightlim = 13
+		else:
+			brightlim = 15
+		mask = ((self.mask & 2) + (self.mask & 4) + (self.mask & 8) + (self.mask & 16))
+		mask[mask > 0] = 1
+		ax = None
+		if self.plotting:
+			ax = self.fig_axis['I']
+		self.cal = ap_photom(data=self.image,wcs=self.wcs,mask=mask, header=self.header,
+							threshold=threshold,cal_model=model,ax=ax,
+							brightlim=brightlim,rescale=self.rescale,plot=self.plotting)
+
+		self._add_image(self.cal.zp_surface,'E',colorbar=True)
+		self._add_image(self.cal.data,'F')
+		self._add_satellite_trail('F')
+		self.image = self.cal.data
+
+		self.header['ZP'] = (str(np.round(self.cal.zp,2)), 'Calibrimbore zeropoint')
+		self.header['ZPERR'] = (str(np.round(self.cal.zp_std,2)), 'Calibrimbore zeropoint error')
+		self.header['MAGLIM5'] = (str(np.round(self.cal.maglim5)), '5 sig mag lim')
+		self.header['MAGLIM3'] = (str(np.round(self.cal.maglim3)), '3 sig mag lim')
+		self.log['zp'] = self.cal.zp
+		self.log['zperr'] = self.cal.zp_std
+		self.log['maglim5'] = self.cal.maglim5
+		self.log['maglim3'] = self.cal.maglim3
+		
+		if self.plotting:
+			self.fig_axis['D'].plot(self.cal.source_x[self.cal.good],self.cal.source_y[self.cal.good],'r.')
+			self._zp_hist()
+			self._zp_color()
+			self.cal.mag_limit_fig(self.fig_axis['I'])
+		self._save_zp_surface()
+		self._save_zp_surface_sources()
+=======
 			if self.telescope.lower() == 'moa':
 				brightlim = 13
 			else:
@@ -657,6 +807,7 @@ class pouakai():
 			#self._zp_color()
 			self.cal.mag_limit_fig(self.fig_axis['F'])
 		self._save_zp_surface()
+>>>>>>> master
 		if self.verbose:
 			print('Zeropoint found to be ' + str(np.round(self.cal.zp,2)))
 
@@ -717,7 +868,11 @@ class pouakai():
 		"""
 		Save a diagnostic figure
 		"""
+<<<<<<< HEAD
+		if self.plotting:
+=======
 		if self.plot:
+>>>>>>> master
 			name = self.savepath + 'fig/' + self.base_name + '_diag.pdf'
 			#self.fig.set_tight_layout(True)
 			self.fig.savefig(name)
@@ -732,7 +887,11 @@ class pouakai():
 		"""
 		Set up the large diagnostic plot figure
 		"""
+<<<<<<< HEAD
+		if self.plotting:
+=======
 		if self.plot:
+>>>>>>> master
 			self.fig = plt.figure(figsize=(8.27,11.69),constrained_layout=True)
 			self.fig_axis = self.fig.subplot_mosaic(
 												"""
@@ -757,7 +916,11 @@ class pouakai():
 		"""
 		Add the provided image to the provided axis.
 		"""
+<<<<<<< HEAD
+		if self.plotting:
+=======
 		if self.plot:
+>>>>>>> master
 			vmin = np.percentile(image,16)
 			vmax = np.percentile(image,84)
 			im = self.fig_axis[ax_ind].imshow(image,origin='lower',
@@ -766,7 +929,11 @@ class pouakai():
 				self.fig.colorbar(im,ax=self.fig_axis[ax_ind],fraction=0.046, pad=0.04)
 	
 	def _add_satellite_trail(self,ax_ind):
+<<<<<<< HEAD
+		if self.plotting:
+=======
 		if self.plot:
+>>>>>>> master
 			for consolidated_line in self.sat.consolidated_lines:
 				angle = consolidated_line[0]
 				points = np.array(consolidated_line[1])
@@ -819,22 +986,33 @@ class pouakai():
 		return mask
 
 	def _load_bad_pix_mask(self):
+<<<<<<< HEAD
+		bpix = np.load(f'badpix/chip{self.chip}_bpix.npy')
+		return bpix.astype(int)
+=======
 		if self.telescope.lower() == 'moa':
 			bpix = np.load(package_directory + f'badpix/chip{self.chip}_bpix.npy')
 			return bpix.astype(int)
 		else:
 			return None
+>>>>>>> master
 
 	def Make_mask(self):
 		
 		saturation_mask = self._saturaton_mask() * 2
 		flat_mask = self._flat_mask() * 4
 		satellite_mask = self.sat.total_mask * 8
+<<<<<<< HEAD
+		bpix = self._load_bad_pix_mask() * 16
+
+		self.mask = flat_mask | saturation_mask | bpix | satellite_mask
+=======
 		if self.telescope.lower() == 'moa':
 			bpix = self._load_bad_pix_mask() * 16
 			self.mask = flat_mask | saturation_mask | bpix | satellite_mask
 		else:
 			self.mask = flat_mask | saturation_mask | satellite_mask
+>>>>>>> master
 
 		self._update_header_mask_bits()
 
@@ -869,4 +1047,8 @@ class pouakai():
 		hdu = fits.BinTableHDU(data=rec,header=self.header)
 		
 		hdu.writeto(name,overwrite=True)
+<<<<<<< HEAD
 		
+=======
+		
+>>>>>>> master
