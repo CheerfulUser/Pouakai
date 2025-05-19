@@ -15,25 +15,22 @@ from scipy.ndimage import gaussian_filter
 from scipy.interpolate import griddata
 
 from mpl_toolkits.mplot3d import Axes3D
+from gaia_query import get_gaia_region
 
 from scipy.optimize import minimize
 
 from calibrimbore import sauron, get_skymapper_region, get_ps1_region
-
-from copy import deepcopy
-from gaia_query import get_gaia_region
 from astropy.time import Time
+from copy import deepcopy
 
 import os
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
 
-class cal_photom():
+class ap_photom():
 
 	def __init__(self,file=None,data=None,wcs=None,mask=None,header=None,ax=None,
-				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=10,rescale=True,
-				 plot=True,floor=None,radius_override=None,use_catalogue=True,
-				 band_override=None, limit_source = False, telescope = 'MOA'):
-	
+				 threshold=5.0,run=True,cal_model='ckmodel',brightlim=14,rescale=True,
+				 plot=True,floor=None,radius_override=None,use_catalogue=True):
 		self.file = file
 		self.data = data
 		self.wcs = wcs
@@ -45,9 +42,9 @@ class cal_photom():
 		self.image_floor = floor
 		self.radius_override = radius_override
 		self.use_catalogue = use_catalogue
-		self._band_override = band_override
-		self.limit_source = limit_source
-		self.telescope = telescope
+
+
+		
 
 		self.data_median = None 
 		self.data_std = None
@@ -60,11 +57,11 @@ class cal_photom():
 
 		self.cal_sys = None
 		self.cal_model = cal_model.lower()
+		self.band = None
 		self.sauron = None
 		self.zp = None 
 		self.zp_std = None  
 		self.zps = None
-		self.phot_table = None
 
 		if run:
 			self._load_image()
@@ -81,7 +78,8 @@ class cal_photom():
 			if plot:
 				self.mag_limit_fig(ax)
 
-			self.ap_photom['gaiaID'] = self.cat['Source'].values
+
+
 
 	def _load_image(self):
 		if self.file is not None:
@@ -95,21 +93,15 @@ class cal_photom():
 			self._get_filter()
 
 	def _get_filter(self):
-		if self._band_override is None:
-			self.band = self.header['FILTER'].strip(' ')
-			if self.telescope.lower() == 'bc':
-				if self.band in {'B','V','R','I'}:
-					self.band = 'bessell_' + self.band
-				if self.band in {'g','r','i','z'}:
-					self.band = 'sloan_' + self.band
-		else:
-			self.band = self._band_override
-		
+		self.band = self.header['FILTER'].strip(' ')
+
+
 
 	def _image_stats(self,sigma=3):
 		mode,median,std = sigma_clipped_stats(self.data, sigma=sigma)
 		self.data_median = median 
 		self.data_std = std
+
 
 	def find_sources(self,fwhm = 5, threshold=100):
 
@@ -124,20 +116,14 @@ class cal_photom():
 		#	cat = get_ps1_region([ra],[dec],size=.4*60**2)
 		#else:
 		#	cat = get_skymapper_region([ra],[dec],size=.4*60**2)
-		cat = get_gaia_region([ra],[dec],size=120*60)
-
-		# print(cat.columns)
-
+		cat = get_gaia_region([ra],[dec],size=0.4*60**2)
 		tab = deepcopy(cat)#.iloc[np.isfinite(cat.r.values)]
-		#tdiff = (Time(self.header['JD'],format='jd').mjd - 51544) * u.day
-		#tdiff = tdiff.to(u.year).value
-		#dra = (tab['pmRA'].values * tdiff) * u.milliarcsecond
-		#ddec = (tab['pmDE'].values * tdiff) * u.milliarcsecond
+
 		c = SkyCoord(ra=tab['RA_ICRS'].values*u.deg, dec=tab['DE_ICRS'].values*u.deg,
              pm_ra_cosdec=tab['pmRA'].values*u.mas/u.yr, pm_dec=tab['pmDE'].values*u.mas/u.yr,
 			 obstime=Time(2016,format='jyear'))
 
-		c2 = c.apply_space_motion(new_obstime=Time(self.header['JD'],format='jd'))
+		c2 = c.apply_space_motion(new_obstime=Time(self.header['JDSTART'],format='jd'))
 		tab['ra'] = c2.ra.deg
 		tab['dec'] = c2.dec.deg
 		#print(tab)
@@ -147,32 +133,14 @@ class cal_photom():
 
 		ind = (x > 15) & (x < self.data.shape[1]-15) & (y > 15) & (y < self.data.shape[0]-15)
 		tab = tab.iloc[ind]
-
-		shapey = 100
-		if tab.shape[0] > shapey:
-
-			if (isinstance(self.limit_source, list)) or (isinstance(self.limit_source, tuple)):
-				g_upper = max(self.limit_source)
-				g_lower = min(self.limit_source)
-				
-				filtered_tab = tab[(tab['Gmag'] <= g_upper) & (tab['Gmag'] >=g_lower)]
-
-				first_entries = filtered_tab.head(shapey)
-
-				print(f"Limited sources to {first_entries.shape[0]} from {tab.shape[0]}. Some objects may not be in photometry table if not between G mag: {g_upper} -> {g_lower} or too many objects")
-				self.cat = first_entries
-				
-				sources = first_entries[['x','y']]
-			else:
-				first_entries = tab.head(shapey)				
-				self.cat = first_entries
-				sources = first_entries[['x','y']]
-
+		self.cat = tab
+		sources = tab[['x','y']]
 		sources.rename(columns={'x': 'xcentroid', 'y': 'ycentroid'}, inplace=True)
 		self.sources = sources
-		self.source_x = self.sources['xcentroid'].values
-		self.source_y = self.sources['ycentroid'].values
-		# self._mask_killer()
+		self.source_x = self.sources['xcentroid'].values + 0.5
+		self.source_y = self.sources['ycentroid'].values + 0.5
+		#self._mask_killer()
+
 
 	def _calc_radii(self):
 
@@ -195,13 +163,9 @@ class cal_photom():
 			except:
 				fwhm = np.nan # dummy number 
 			radii += [fwhm]
-
-		self.radii = np.array(radii) * np.sqrt(2)
+		self.radii = np.array(radii) * 1.4
 		self.radius = np.nanmedian(self.radii)
-		if np.isnan(self.radius):
-			self.radius = 3
-			print('!!! NaN radius calculated, forcing to 3 pixels !!!')
-		print('!!!!!! radius: ',self.radius)
+
 
 	def _get_apertures(self):
 		
@@ -261,12 +225,8 @@ class cal_photom():
 			self.cal_sys = 'skymapper'
 		else:
 			self.cal_sys = 'ps1'
-		if self.telescope.lower() == 'moa':
-			fname = 'cal_files/MOA-{filt}_{sys}_{model}.npy'.format(filt=self.band,
-											sys=self.cal_sys,model=self.cal_model)
-		else:
-			fname = 'cal_files/{filt}_{sys}_{model}.npy'.format(filt=self.band,
-											sys=self.cal_sys,model=self.cal_model)
+		fname = 'cal_files/MOA-{filt}_{sys}_{model}.npy'.format(filt=self.band,
+										sys=self.cal_sys,model=self.cal_model)
 		self.sauron = sauron(load_state = package_directory + fname)
 
 	def predict_mags(self):
@@ -287,7 +247,7 @@ class cal_photom():
 		ind = sigma_clip(zps,maxiters=10).mask
 		zps[ind] = np.nan
 		zp = np.nanmedian(zps)
-		zp_std = np.nanstd(zps, ddof = 1)
+		zp_std = np.nanstd(zps)
 		self.zps = zps
 		self.zp = zp
 		self.zp_std = zp_std
@@ -305,13 +265,16 @@ class cal_photom():
 			for i in range(2):
 				self.find_sources(fwhm=self.radius/1.2,threshold=threshold)
 				self._calc_radii()
-
+		#print(len(self.cat))
+		#print(len(self.sou))
 		self._get_apertures()
 		self.ap_photometry()
 		self._load_sauron()
 		self.predict_mags()
 		self.calc_zp(snr_lim=threshold)
+
 		self.magnitude_limit(snr_lim=threshold)
+
 
 	def magnitude_limit(self,snr_lim=10):
 		"""Returns the magnitude limit of the filter at a given signal to noise raio"""
@@ -339,20 +302,21 @@ class cal_photom():
 		sigclip = ~sigma_clip(mag[ind] - self.fitted_line(sig_noise[ind])).mask
 		yz = np.linspace(1,10**5,295)
 
-		if ax is not None:
-			ax.plot(mag[ind][sigclip],np.log10(sig_noise[ind][sigclip]),'.',alpha=0.5)
-			ax.plot(self.fitted_line(yz),np.log10(yz),'-')
+		#ax.plot(mag[ind],np.log10(sig_noise[ind]),'.',alpha=0.5)
+		ax.plot(mag[ind][sigclip],np.log10(sig_noise[ind][sigclip]),'.',alpha=0.5)
+		ax.plot(self.fitted_line(yz),np.log10(yz),'-')
 
-			ax.axhline(np.log10(3),ls='-.',color='k')
-			ax.axhline(np.log10(5),ls='--',color='k')
-			ax.set_ylabel(r'log$_{10}$(SNR)')
-			ax.set_xlabel('Magnitude Limit')
+		ax.axhline(np.log10(3),ls='-.',color='k')
+		ax.axhline(np.log10(5),ls='--',color='k')
+		ax.set_ylabel(r'log$_{10}$(SNR)')
+		ax.set_xlabel('Magnitude Limit')
 
-			ax.text(17,2.5,r'$3\sigma=$ {:.2f}'.format(self.fitted_line(3)))
-			ax.text(17,2.8,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
-		 	
-			ax.set_ylim(0,3)
-			ax.set_xlim(13,21)
+		ax.text(19,2,r'$3\sigma=$ {:.2f}'.format(self.fitted_line(3)))
+		ax.text(19,2.5,r'$5\sigma=$ {:.2f}'.format(self.fitted_line(5)))
+	 	
+		ax.set_ylim(0,3)
+		ax.set_xlim(13,21)
+
 
 	def _maglim_minimizer(self,var,snr,mag):
 		self.snr_model = var
@@ -472,6 +436,7 @@ class cal_photom():
 			new_image = ((self.data - np.nanmedian(self.data)) * 10**((self.zp_surface - newzp) / -2.5)) + np.nanmedian(self.data)
 		self.data = new_image
 
+
 	def ZP_correction(self,sigma=2):
 		"""
 		Correct the zeropoint for the residual background varibility.
@@ -483,6 +448,13 @@ class cal_photom():
 		cut = ~sigma_clip(diff,sigma=sigma).mask
 		estimate,bitmask = self.Fit_surface(mask=cut,smoother=30)
 		self.zp_surface = estimate
+
+		
+
+
+
+		
+
 
 	def plot_zp_correction(self,ax,cut):
 		"""
