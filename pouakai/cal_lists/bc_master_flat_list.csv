@@ -1,0 +1,7 @@
+name,telescope,exptime,jd,date,band,chip,readout,filename,nimages,flattype,shape,note
+flat_2460689_100d_r_500KHz,B&C,13.0,2460689,2025-01-13T16:40:31.01,r,-1,500KHz,/home/phys/astronomy/rri38/fli/data/master/flat/flat_2460689_100d_r_500KHz.fits.gz,8,sky,2048,good
+flat_2460689_100d_i_500KHz,B&C,30.0,2460689,2025-01-13T16:32:37.81,i,-1,500KHz,/home/phys/astronomy/rri38/fli/data/master/flat/flat_2460689_100d_i_500KHz.fits.gz,6,sky,2048,good
+flat_2460689_100d_g_500KHz,B&C,3.0,2460689,2025-01-13T16:43:07.37,g,-1,500KHz,/home/phys/astronomy/rri38/fli/data/master/flat/flat_2460689_100d_g_500KHz.fits.gz,9,sky,2048,good
+flat_2460689_100d_SII_500KHz,B&C,30.0,2460689,2025-01-13T16:55:29.03,SII,-1,500KHz,/home/phys/astronomy/rri38/fli/data/master/flat/flat_2460689_100d_SII_500KHz.fits.gz,5,sky,2048,good
+flat_2460689_100d_OIII_500KHz,B&C,7.0,2460689,2025-01-13T17:02:05.46,OIII,-1,500KHz,/home/phys/astronomy/rri38/fli/data/master/flat/flat_2460689_100d_OIII_500KHz.fits.gz,9,sky,2048,good
+flat_2460689_100d_Halpha_500KHz,B&C,23.0,2460689,2025-01-13T16:58:56.74,Halpha,-1,500KHz,/home/phys/astronomy/rri38/fli/data/master/flat/flat_2460689_100d_Halpha_500KHz.fits.gz,6,sky,2048,good
