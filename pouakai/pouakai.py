@@ -8,22 +8,28 @@ from glob import glob
 import os, psutil
 import gc
 package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
+package_directory = os.path.dirname(os.path.abspath(__file__)) + '/'
+tmp = os.environ['TMPDIR']
 
 class consume_moa():
-    def __init__(self,files,savepath,time_tolerence=100,dark_tolerence=10,
+    def __init__(self,files,savepath,time_tolerance=30,dark_tolerance=3,
 				 local_astrom=True,verbose=True,rescale=True,update_cals=True,
-                 cores=10, overwrite=False,compress=True,calibrate=True,plot=True):
+                 cores=10, overwrite=False,compress=True,calibrate=True,
+                 plot=True, limit_source = None, center = None, telescope = 'moa'):
         
         self.files = list(files)
         self.savepath = savepath
         self.verbose = verbose
         self._overwrite(overwrite=overwrite)
         self._clip_files()
-        self.dark_tolerence = dark_tolerence
-        self.time_tolerence = time_tolerence
+        self.dark_tolerance = dark_tolerance
+        self.time_tolerance = time_tolerance
         self.calibrate = calibrate
         self.compress = compress
         self.plot = plot
+        self.center = center
+        self.telescope = telescope
+        self.limit_source = limit_source
         
         self.local_astrom = local_astrom
         self.rescale = rescale
@@ -36,6 +42,7 @@ class consume_moa():
             self._update_masters()
 
         self.digest()
+        self._kill_wcs_tmp()
         
     def _clip_files(self):
         ind = []
@@ -51,67 +58,78 @@ class consume_moa():
         os.system(call)
 
     def _update_cals(self):
-        sort_cals(self.verbose)
+        print('Updating cals')
+        sort_cals(self.verbose, num_cores = self.cores, telescope = self.telescope)
     
     def _update_masters(self):
-        make_masters(self.verbose)
+        print('Updating masters')
+        make_masters(time_frame_dark = self.dark_tolerance, time_frame_flat = self.time_tolerance, num_cores=self.cores,verbose=self.verbose, telescope = self.telescope, dark_tolerance = 1)
 
 
     def _run_func(self,file):
-        process = psutil.Process()
-        print('start mem: ', process.memory_info().rss/1024**2)  # in bytes 
+        # process = psutil.Process()
+        # print('start mem: ', process.memory_info().rss/1024**2)  # in bytes 
         
-        try:
-            p = pouakai(file,time_tolerence=self.time_tolerence,
-                            dark_tolerence=self.dark_tolerence, savepath = self.savepath,
-                            local_astrom=self.local_astrom,rescale=self.rescale,verbose=self.verbose,
-                            calibrate=self.calibrate,plot=self.plot)
-            from ctypes import cdll, CDLL
-            cdll.LoadLibrary('libc.so.6')
-            libc = CDLL('libc.so.6')
-            libc.malloc_trim(0)
-        
-        except Exception as e:
-         #   self._log_error(e)
-            print('Failed: ' + file)
-            print(e)
+        p = pouakai(file,time_tolerance=self.time_tolerance,
+                        dark_tolerance=self.dark_tolerance, savepath = self.savepath,
+                        local_astrom=self.local_astrom,rescale=self.rescale,
+                        verbose=self.verbose, center = self.center, limit_source = self.limit_source,
+                        calibrate=self.calibrate,plot=self.plot, telescope = self.telescope)
+        return p.log
 
     def _overwrite(self,overwrite):
         if not overwrite:
             #print('!!!!!!!!!!!!!!!!!!!!')
-            #try: 
-            anum = []
-            for file in self.files:
-                anum += [file.split('/')[-1].split('.')[0]]
-            done = glob(self.savepath + 'cal/*.gz')
-            dnum =  []
-            for file in done:
-                dnum += [file.split('/')[-1].split('_')[0]]
-            dnum = set(dnum)
-            todo = []
-            for i in range(len(anum)):
-                if not dnum.intersection({anum[i]}):
-                    todo += [i]
-            todo = np.array(todo)
+            try: 
+                anum = []
+                for file in self.files:
+                    anum += [file.split('/')[-1].split('.')[0]]
+                done = glob(self.savepath + 'cal/*.gz')
+                dnum =  []
+                for file in done:
+                    dnum += [file.split('/')[-1].split('_')[0]]
+                dnum = set(dnum)
+                todo = []
+                for i in range(len(anum)):
+                    if not dnum.intersection({anum[i]}):
+                        todo += [i]
+                todo = np.array(todo)
 
-            if self.verbose:
-                print(f'Droping {len(anum) - len(todo)} files that have already been processed')
-            self.files = list(np.array(self.files)[todo])
-            #except:
-             #   pass
+                if self.verbose:
+                    print(f'Dropping {len(anum) - len(todo)} files that have already been processed')
+                self.files = list(np.array(self.files)[todo])
+            except:
+               pass
 
 
 
     def _load_calibration_log(self):
-        self.log = pd.read_csv(package_directory + 'cal_lists/calibrated_image_list.csv')
+        ### ZAAAACCCC
+        try:
+            if self.telescope.lower() == 'moa':
+                self.log = pd.read_csv(package_directory + 'cal_lists/moa_calibrated_image_list.csv')
+            else:
+                self.log = pd.read_csv(package_directory + 'cal_lists/bc_calibrated_image_list.csv')
+        except:
+            document = {'name':None, 'band':None,'chip':None, 'telescope':None, 'readout':None,
+					'exptime':None,'jd':None,'date':None,
+					'field':None,'filename':None,'flat':None,
+					'dark':None,'tdiff_flat':None,
+					'tdiff_dark':None,'zp':None,'zperr':None,
+					'maglim5':None,'maglim3':None,'savename':None}
+
+            self.log = pd.DataFrame(columns= document.keys())
 
     def _load_error_log(self):
-        self.error_log = pd.read_csv(package_directory + 'cal_lists/error_log.csv')
+        ##### ZAAAAACCCCC
+        if self.telescope.lower() == 'moa':
+            self.error_log = pd.read_csv(package_directory + 'cal_lists/moa_error_log.csv')
+        else:
+            self.error_log = pd.read_csv(package_directory + 'cal_lists/bc_error_log.csv')
     
     def _log_error(self,error):
         self._load_error_log()
         error 
-
 
     def _compress(self):
         compress = 'gzip -f ' + self.savepath+'/*.fits'
@@ -120,11 +138,15 @@ class consume_moa():
     def _update_log(self):
         self._load_calibration_log()
         logs = glob(self.savepath + 'log/*.csv')
+        # logs = glob(self.savepath + 'log/*.csv')
         for log in logs:
             new_entry = pd.read_csv(log)
             self.log = pd.concat([self.log, new_entry], ignore_index=True)
         
-        self.log.to_csv(package_directory + 'cal_lists/calibrated_image_list.csv',index=False)
+        if self.telescope.lower() == 'moa':
+            self.log.to_csv(package_directory + 'cal_lists/moa_calibrated_image_list.csv',index=False)
+        else:
+            self.log.to_csv(package_directory + 'cal_lists/bc_calibrated_image_list.csv',index=False)
         os.system(f'rm -rf {self.savepath}log/*.csv')
 
     def digest(self):
@@ -133,8 +155,6 @@ class consume_moa():
         else:
             for i in range(len(self.files)):
                 self._run_func(self.files[i])
-
-        self._load_calibration_log()
 
         self._update_log()
 
